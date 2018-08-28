@@ -1,0 +1,121 @@
+options {
+  STATIC = false;
+  DEBUG_PARSER = true;
+  DEBUG_LOOKAHEAD = true;
+  DEBUG_TOKEN_MANAGER = false;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = false;
+  UNICODE_INPUT = false;
+  IGNORE_CASE = false;
+  USER_TOKEN_MANAGER = false;
+  USER_CHAR_STREAM = false;
+  BUILD_PARSER = true;
+  BUILD_TOKEN_MANAGER = true;
+  SANITY_CHECK = true;
+  FORCE_LA_CHECK = true;
+}
+
+PARSER_BEGIN(MiniLisp)
+
+package com.threelambda.minilisp;
+
+import com.threelambda.minilisp.node.*;
+import java.util.*;
+
+public class MiniLisp {
+
+  /** Main entry point. */
+  public static void main(String args[]) throws ParseException {
+    MiniLisp parser = new MiniLisp(System.in);
+    parser.Input();
+  }
+
+}
+PARSER_END(MiniLisp)
+
+
+TOKEN :
+{
+      <EMPTY: [" ","\t","\n","\r"] ([" ","\t","\n","\r"])*>
+    | <LP: "(">
+    | <RP: ")">
+    | <DOT: ".">
+    | <MINUS: "-">
+    | <PLUS: "+">
+    | <EQ: "=">
+    | <AND: "and">
+    | <NOT: "not">
+    | <OR: "or">
+    | <GT: ">">
+    | <LT: "<">
+    | <LE: "<=">
+    | <GE: ">=">
+    | <SQUOTE: "'">
+    | <QUOTE: "quote">
+    | <NUM: ["1"-"9"] ( ["0"-"9"] )* | "0">
+    | <ID: (["a"-"z","A"-"Z","_","@","?","$","%","*"]) (~["\n","\r"," ","(",")","\t","#",";","{","}","[","]"])* >
+    | <COMMENT: ([";"])(~["\n","\r"])* ["\n","\r"]>
+}
+
+
+/** Root production. */
+void Input() :
+{}
+{
+    ( Expr() )*  <EOF>
+}
+
+void Expr():
+{}
+{
+      NonSExpr()
+    | SExpr()
+}
+
+
+void NonSExpr():
+{}
+{
+    <EMPTY>
+   |<COMMENT>
+}
+
+
+void SExpr() :
+{}
+{
+      SymbolExpr()
+    | <LP> (NonSExpr())* (SExpr() (NonSExpr())* )*  [<DOT> (NonSExpr())*  (SExpr() (NonSExpr())* )*] <RP>
+    | SQuoteExpr()
+}
+
+void SQuoteExpr():
+{}
+{
+    <SQUOTE> SExpr()
+}
+
+
+void SymbolExpr():
+{}
+{
+    Symbol() LOOKAHEAD({ getToken(1).kind == LP || getToken(1).kind == RP|| getToken(1).kind == DOT || getToken(1).kind == COMMENT || getToken(1).kind == EMPTY })
+}
+
+void Symbol():
+{}
+{
+       <PLUS>
+    |  <EQ>
+    |  <AND>
+    |  <NOT>
+    |  <OR>
+    |  <GT>
+    |  <LT>
+    |  <LE>
+    |  <GE>
+    |  LOOKAHEAD(2) <MINUS> <NUM>
+    |  <MINUS>
+    |  <NUM>
+    |  <ID>
+}

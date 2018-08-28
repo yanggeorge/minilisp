@@ -1,0 +1,199 @@
+options {
+  STATIC = false;
+  DEBUG_PARSER = false;
+  DEBUG_LOOKAHEAD = false;
+  DEBUG_TOKEN_MANAGER = false;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = false;
+  UNICODE_INPUT = false;
+  IGNORE_CASE = false;
+  USER_TOKEN_MANAGER = false;
+  USER_CHAR_STREAM = false;
+  BUILD_PARSER = true;
+  BUILD_TOKEN_MANAGER = true;
+  SANITY_CHECK = true;
+  FORCE_LA_CHECK = true;
+}
+
+PARSER_BEGIN(MiniLisp)
+
+package com.threelambda.minilisp;
+
+import com.threelambda.minilisp.node.*;
+import com.threelambda.minilisp.node.NonSExprNode.NonSExprNodeType;
+import java.util.*;
+
+public class MiniLisp {
+
+  /** Main entry point. */
+  public static void main(String args[]) throws ParseException {
+    MiniLisp parser = new MiniLisp(System.in);
+    parser.Input();
+  }
+
+}
+PARSER_END(MiniLisp)
+
+
+TOKEN :
+{
+      <EMPTY: [" ","\t","\n","\r"] ([" ","\t","\n","\r"])*>
+    | <LP: "(">
+    | <RP: ")">
+    | <DOT: ".">
+    | <MINUS: "-">
+    | <PLUS: "+">
+    | <EQ: "=">
+    | <AND: "and">
+    | <NOT: "not">
+    | <OR: "or">
+    | <GT: ">">
+    | <LT: "<">
+    | <LE: "<=">
+    | <GE: ">=">
+    | <SQUOTE: "'">
+    | <NUM: ["1"-"9"] ( ["0"-"9"] )* | "0">
+    | <ID: (["a"-"z","A"-"Z","_","@","?","$","%","*"]) (~["\n","\r"," ","(",")","\t","#",";","{","}","[","]","."])* >
+    | <COMMENT: ";" (~["\n","\r"])* ("\n" | "\r" | "\r\n")?>
+}
+
+
+/** Root production. */
+List<Node> Input() :
+{
+    List<Node> list = new ArrayList<Node>();
+    Node n;
+}
+{
+    ( n=Expr() {list.add(n);} )*  <EOF> {return list;}
+}
+
+ExprNode Expr():
+{
+    NonSExprNode nse;
+    SExprNode se;
+    ExprNode exprNode;
+}
+{
+      nse=NonSExpr() {exprNode = new ExprNode(); exprNode.node = nse; return exprNode;}
+    | se=SExpr()    {exprNode = new ExprNode(); exprNode.node = se; return exprNode;}
+}
+
+
+NonSExprNode NonSExpr():
+{
+    Token t;
+    NonSExprNode nse;
+}
+{
+    t=<EMPTY>   {nse =  new NonSExprNode(); nse.image = t.image; nse.type = NonSExprNodeType.EMPTY; return nse;}
+   |t=<COMMENT> {nse =  new NonSExprNode(); nse.image = t.image; nse.type = NonSExprNodeType.COMMENT; return nse;}
+}
+
+
+SExprNode SExpr() :
+{
+    SymbolExprNode sym;
+    SExprNode se;
+    CellNode nextCell = new CellNode();
+    NonSExprNode nse;
+    SQuoteExprNode sqe;
+    List<SExprNode> selist = new ArrayList<SExprNode>();
+    List<SExprNode> rselist = new ArrayList<SExprNode>();
+    Token dot = new Token();
+}
+{
+      sym=SymbolExpr() {se=new SExprNode(); se.node = (Node)sym ; return se;}
+    | <LP> (nse=NonSExpr() )*
+            (se=SExpr() {selist.add(se);}  (nse=NonSExpr())* )*
+            [dot=<DOT>  (nse=NonSExpr())*
+                se=SExpr() { rselist.add(se); }  (nse=NonSExpr() )* ]
+            <RP>
+            {
+                if(dot.kind != DOT){
+                    if(selist.size() == 1){
+                        nextCell = new CellNode();
+                        nextCell.car = selist.get(0);
+                        nextCell.cdr = CellNode.NIL;
+                    }else if( selist.size() > 1){
+                        int i = selist.size() -1 ;
+                        nextCell = CellNode.NIL;
+                        while( i >= 0 ){
+                            CellNode cell = new CellNode();
+                            cell.car = selist.get(i);
+                            cell.cdr = nextCell;
+                            nextCell = cell;
+                            i--;
+                        }
+                    }else{
+                        nextCell.nil = true;
+                    }
+                    return new SExprNode((Node)nextCell);
+                }else{
+                    if(selist.size() == 1){
+                        nextCell = new CellNode();
+                        nextCell.car = selist.get(0);
+                        nextCell.cdr = rselist.get(0);
+                    }else if( selist.size() > 1){
+                        int i = selist.size() -1 ;
+                        nextCell = new CellNode();
+                        nextCell.car = selist.get(i);
+                        nextCell.cdr = rselist.get(0);
+                        i--;
+                        while( i >= 0 ){
+                            CellNode cell = new CellNode();
+                            cell.car = selist.get(i);
+                            cell.cdr = nextCell;
+                            nextCell = cell;
+                            i--;
+                        }
+                    }else{
+                        nextCell.nil = true;
+                    }
+                    return new SExprNode((Node)nextCell);
+                }
+            }
+    | sqe=SQuoteExpr() {se=new SExprNode(); se.node = (Node)sqe ; return se;}
+}
+
+SQuoteExprNode SQuoteExpr():
+{
+    SExprNode se;
+    SQuoteExprNode sqe;
+}
+{
+    <SQUOTE> se=SExpr() {sqe = new SQuoteExprNode(); sqe.node = se; return sqe; }
+}
+
+
+SymbolExprNode SymbolExpr():
+{
+    SymbolNode sym;
+}
+{
+    sym=Symbol() LOOKAHEAD({ getToken(1).kind == LP || getToken(1).kind == RP|| getToken(1).kind == DOT
+       || getToken(1).kind == COMMENT || getToken(1).kind == EMPTY || getToken(1).kind == EOF })
+        {
+            return new SymbolExprNode(sym);
+        }
+}
+
+SymbolNode Symbol():
+{
+    Token t;
+}
+{
+       t=<PLUS>                       {return new SymbolNode("PLUS",t.image);}
+    |  t=<EQ>                         {return new SymbolNode("EQ",t.image);}
+    |  t=<AND>                        {return new SymbolNode("AND",t.image);}
+    |  t=<NOT>                        {return new SymbolNode("NOT",t.image);}
+    |  t=<OR>                         {return new SymbolNode("OR",t.image);}
+    |  t=<GT>                         {return new SymbolNode("GT",t.image);}
+    |  t=<LT>                         {return new SymbolNode("LT",t.image);}
+    |  t=<LE>                         {return new SymbolNode("LE",t.image);}
+    |  t=<GE>                         {return new SymbolNode("GE",t.image);}
+    |  LOOKAHEAD(2) <MINUS> t=<NUM>   {return new SymbolNode("NUM","-"+t.image);}
+    |  t=<MINUS>                      {return new SymbolNode("MINUS",t.image);}
+    |  t=<NUM>                        {return new SymbolNode("NUM",t.image);}
+    |  t=<ID>                         {return new SymbolNode("ID",t.image);}
+}
