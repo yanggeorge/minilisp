@@ -8,19 +8,17 @@ import com.threelambda.minilisp.node.SExprNode;
  */
 public class SetqFunc extends FuncType {
 
-
     public SetqFunc() {
         super("SetqFunc");
     }
 
-
-    public Type eval(Visitor visitor, CellNode  cellNode) {
+    public Type eval(Visitor visitor, CellNode cellNode) {
         try {
             SExprNode first = (SExprNode)cellNode.car;
-            SExprNode second = (SExprNode) ((CellNode) cellNode.cdr).car;
-            CellNode third = (CellNode)((CellNode) cellNode.cdr).cdr ;
+            SExprNode second = (SExprNode)((CellNode)cellNode.cdr).car;
+            CellNode third = (CellNode)((CellNode)cellNode.cdr).cdr;
             assert third.nil == true;
-            StringType name = (StringType) Utils.getSymbolName(visitor,first);
+            StringType name = (StringType)Util.getSymbolName(visitor, first);
             Type val = visitor.visit(second);
             visitor.seekAndSetValue(name.val, val);
 

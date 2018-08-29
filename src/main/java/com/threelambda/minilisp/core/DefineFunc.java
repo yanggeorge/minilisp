@@ -18,7 +18,7 @@ public class DefineFunc extends FuncType {
 
         Node first = cellNode.car;
         Node second = ((CellNode) cellNode.cdr).car;
-        String symbol = ((StringType) Utils.getSymbolName(visitor, (SExprNode) first)).val;
+        String symbol = ((StringType) Util.getSymbolName(visitor, (SExprNode) first)).val;
         Env env = visitor.peekEnv();
         Type obj = null;
         try {

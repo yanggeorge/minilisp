@@ -395,6 +395,18 @@ public class EvalTest {
         Assert.assertEquals("(1 2)\n",ret);
     }
 
+    /**
+     * 条件判断
+     * @throws ParseException
+     */
+    @Test
+    public void test201() throws ParseException {
+        String s = "(if 1 'a) \n" ;
+        String ret = call(s);
+        Assert.assertEquals("a\n",ret);
+    }
+
+
     private String call(String s) throws ParseException {
         String ret = "";
         MiniLisp parser = new MiniLisp(new StringReader(s));

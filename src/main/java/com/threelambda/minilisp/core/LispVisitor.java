@@ -92,8 +92,8 @@ public class LispVisitor implements Visitor {
         Node first = node.car;
         Node params = node.cdr;
         if (first instanceof SExprNode) {
-            if (Utils.isLambdaFunc((SExprNode)first)) {
-                LambdaFunc lambdaFunc = Utils.buildLambdaFunc((CellNode)params);
+            if (Util.isLambdaFunc((SExprNode)first)) {
+                LambdaFunc lambdaFunc = Util.buildLambdaFunc((CellNode)params);
                 return lambdaFunc;
             } else {
                 Type result = this.visitSExprNode((SExprNode)first);

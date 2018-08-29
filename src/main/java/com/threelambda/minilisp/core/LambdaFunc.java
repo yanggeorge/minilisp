@@ -55,7 +55,7 @@ public class LambdaFunc extends FuncType {
         //            //当参数是函数的时候，需要进行lexical scope binding。
         //            keepEnvs((FuncType) tmp, visitor.getEnvStack());
         //        }
-        //        Type name = Utils.getSymbolName(visitor, (SExprNode) args.car);
+        //        Type name = Util.getSymbolName(visitor, (SExprNode) args.car);
         //        StringType nameString = (StringType) name;
         //        local.update(nameString.val, tmp);
         //        args = (CellNode) args.cdr;
@@ -99,7 +99,7 @@ public class LambdaFunc extends FuncType {
         }
 
         if(args.car instanceof SExprNode && params.car instanceof SExprNode){
-            Type name = Utils.getSymbolName(visitor, (SExprNode) args.car);
+            Type name = Util.getSymbolName(visitor, (SExprNode) args.car);
             StringType nameString = (StringType) name;
             SExprNode param = (SExprNode) params.car;
             Type tmp = visitor.visit(param);
@@ -131,7 +131,7 @@ public class LambdaFunc extends FuncType {
                     evalParam(visitor, argsCdrNode, paramsCdr, local);
                 }
             } else if (argsCdr.node instanceof SymbolExprNode) {
-                Type name = Utils.getSymbolName(visitor, argsCdr);
+                Type name = Util.getSymbolName(visitor, argsCdr);
                 StringType nameString = (StringType) name;
 
                 SExprNode param = new SExprNode();

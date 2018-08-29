@@ -9,7 +9,7 @@ import com.threelambda.minilisp.node.SymbolNode;
 /**
  * Created by ym on 6/4/2017.
  */
-class Utils {
+class Util {
 
     static boolean isLambdaFunc(SExprNode se) {
         try {

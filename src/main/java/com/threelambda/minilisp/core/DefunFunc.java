@@ -19,12 +19,12 @@ public class DefunFunc extends FuncType {
         try {
             SExprNode first = (SExprNode)cellNode.car;
             CellNode second = (CellNode)cellNode.cdr;
-            StringType name = (StringType) Utils.getSymbolName(visitor, first);
+            StringType name = (StringType) Util.getSymbolName(visitor, first);
 //            List<SExprNode> tmpList = new ArrayList<>();
 //            for (int i = 0; i < parameters.length; i++) {
 //                tmpList.add((SExprNode) parameters[i]);
 //            }
-            lambdaFunc = Utils.buildLambdaFunc(second);
+            lambdaFunc = Util.buildLambdaFunc(second);
             visitor.peekEnv().update(name.val, lambdaFunc);
         } catch (Exception e) {
             throw new RuntimeException("Defun eval fail.");
