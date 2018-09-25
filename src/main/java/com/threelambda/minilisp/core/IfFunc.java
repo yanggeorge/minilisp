@@ -26,7 +26,10 @@ public class IfFunc extends FuncType {
             SExprNode cond = CellNodeUtil.getFirst(cellNode);
             Type result = visitor.visit(cond);
             // to define true and false .
+            if(result instanceof BoolType){
+                BoolType boolType = (BoolType) result;
 
+            }
         } catch (Exception e) {
             throw new RuntimeException("Malformed if func.");
         }
