@@ -17,23 +17,59 @@ public class IfFunc extends FuncType {
      * 如果为false则返回最后一个cellNode的car
      *
      * 注意与rui314的实现保持一致
+     *
      * @param visitor
      * @param cellNode
      * @return
      */
     public Type eval(Visitor visitor, CellNode cellNode) {
         try {
+            Integer length = CellNodeUtil.length(cellNode);
+            if (length < 2) {
+                throw new RuntimeException("list is too short");
+            }
+
             SExprNode cond = CellNodeUtil.getFirst(cellNode);
             Type result = visitor.visit(cond);
             // to define true and false .
-            if(result instanceof BoolType){
-                BoolType boolType = (BoolType) result;
-
+            Boolean condValue = null;
+            if (result == null) {
+                condValue = false;
+            } else if (result instanceof BoolType) {
+                BoolType boolResult = (BoolType)result;
+                condValue = boolResult.getValue();
+            } else if (result instanceof NumType) {
+                condValue = true;
+            } else if (result instanceof ExprType) {
+                ExprType exprType = (ExprType)result;
+                condValue = true;
             }
+
+            if (condValue == null) {
+                throw new RuntimeException("cond cannot eval");
+            }
+            CellNode next = CellNodeUtil.nextCell(cellNode);
+            if (condValue) {
+                SExprNode firstExpr = CellNodeUtil.getFirst(next);
+                return visitor.visit(firstExpr);
+            }
+
+            next = CellNodeUtil.nextCell(next);
+            Type secondResult = null;
+            while (!next.nil) {
+                SExprNode tmp = CellNodeUtil.getFirst(next);
+                secondResult = visitor.visit(tmp);
+                next = CellNodeUtil.nextCell(next);
+            }
+            if (secondResult != null) {
+                return secondResult;
+            } else {
+                return new NullType();
+            }
+
         } catch (Exception e) {
-            throw new RuntimeException("Malformed if func.");
+            throw new RuntimeException("Malformed if func.", e);
         }
 
-        return new StringType("");
     }
 }

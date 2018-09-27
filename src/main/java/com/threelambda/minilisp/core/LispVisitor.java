@@ -135,6 +135,10 @@ public class LispVisitor implements Visitor {
                         ConsFunc consFunc = (ConsFunc)func;
                         result = consFunc.eval(this, (CellNode)params);
                         return result;
+                    } else if (func instanceof IfFunc) {
+                        IfFunc ifFunc = (IfFunc) func;
+                        result = ifFunc.eval(this, (CellNode)params);
+                        return result;
                     }
                 } else if (result instanceof NumType) {
                     return result;

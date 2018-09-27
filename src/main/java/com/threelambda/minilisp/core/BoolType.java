@@ -5,17 +5,17 @@ package com.threelambda.minilisp.core;
  */
 public class BoolType extends Type {
 
-    private static Boolean value;
+    private Boolean value;
 
     public BoolType(String kind) {
         super("BoolType");
     }
 
-    public static void setValue(Boolean value) {
-        BoolType.value = value;
+    public void setValue(Boolean value) {
+        this.value = value;
     }
 
-    public static Boolean getValue() {
+    public Boolean getValue() {
         return value;
     }
 }

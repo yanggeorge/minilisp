@@ -401,9 +401,16 @@ public class EvalTest {
      */
     @Test
     public void test201() throws ParseException {
-        String s = "(if 1 'a) \n" ;
+        String s = "(println (if 1 'a)) \n" ;
         String ret = call(s);
         Assert.assertEquals("a\n",ret);
+    }
+
+    @Test
+    public void test202() throws ParseException {
+        String s = "(println (if () 'a 'b)) \n" ;
+        String ret = call(s);
+        Assert.assertEquals("b\n",ret);
     }
 
 

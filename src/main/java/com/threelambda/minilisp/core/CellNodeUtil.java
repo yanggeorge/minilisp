@@ -30,7 +30,7 @@ public class CellNodeUtil {
      * @return
      */
     public static CellNode nextCell(CellNode cellNode) {
-        if (cellNode != null) {
+        if (!cellNode.nil) {
             Node cdr = cellNode.cdr;
             if (cdr instanceof CellNode) {
                 return (CellNode)cdr;
@@ -63,5 +63,17 @@ public class CellNodeUtil {
             next = nextCell(curr);
         }
         return curr;
+    }
+
+    public static Integer length(CellNode cellNode) {
+        if (cellNode == null) {
+            return 0;
+        }
+        int i = 0;
+        while (cellNode != null) {
+            i ++ ;
+            cellNode = nextCell(cellNode);
+        }
+        return i;
     }
 }

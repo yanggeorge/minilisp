@@ -42,6 +42,8 @@ public class Env {
         hash.put("quote", quoteFunc);
         ConsFunc consFunc = new ConsFunc();
         hash.put("cons", consFunc);
+        IfFunc ifFunc = new IfFunc();
+        hash.put("if", ifFunc);
         return this;
     }
 
