@@ -7,8 +7,9 @@ public class BoolType extends Type {
 
     private Boolean value;
 
-    public BoolType(String kind) {
+    public BoolType(Boolean value) {
         super("BoolType");
+        this.value = value;
     }
 
     public void setValue(Boolean value) {
@@ -17,5 +18,14 @@ public class BoolType extends Type {
 
     public Boolean getValue() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        if (this.value) {
+            return "t";
+        }else{
+            return "()";
+        }
     }
 }

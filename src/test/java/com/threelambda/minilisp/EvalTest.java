@@ -420,6 +420,21 @@ public class EvalTest {
         Assert.assertEquals("c\n",ret);
     }
 
+    @Test
+    public void test210() throws ParseException {
+        String s = "(println (= 1 1)) \n" ;
+        String ret = call(s);
+        Assert.assertEquals("t\n",ret);
+    }
+
+    @Test
+    public void test211() throws ParseException {
+        String s = "(println (= 1 2)) \n" ;
+        String ret = call(s);
+        Assert.assertEquals("()\n",ret);
+    }
+
+
 
     private String call(String s) throws ParseException {
         String ret = "";

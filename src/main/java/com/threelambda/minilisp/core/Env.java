@@ -44,6 +44,8 @@ public class Env {
         hash.put("cons", consFunc);
         IfFunc ifFunc = new IfFunc();
         hash.put("if", ifFunc);
+        EqFunc eqFunc = new EqFunc();
+        hash.put("=", eqFunc);
         return this;
     }
 

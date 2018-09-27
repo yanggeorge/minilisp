@@ -34,6 +34,9 @@ public class PrintLnFunc extends FuncType {
                 case "ExprType":
                     val = result.toString();
                     break;
+                case "BoolType":
+                    val = ((BoolType)result).toString();
+                    break;
                 default:
                     throw new RuntimeException("type not known.");
             }

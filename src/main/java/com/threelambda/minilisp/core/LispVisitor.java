@@ -139,6 +139,10 @@ public class LispVisitor implements Visitor {
                         IfFunc ifFunc = (IfFunc) func;
                         result = ifFunc.eval(this, (CellNode)params);
                         return result;
+                    } else if (func instanceof EqFunc) {
+                        EqFunc eqFunc = (EqFunc) func;
+                        result = eqFunc.eval(this, (CellNode)params);
+                        return result;
                     }
                 } else if (result instanceof NumType) {
                     return result;
@@ -160,6 +164,8 @@ public class LispVisitor implements Visitor {
             case "NUM":
                 return new NumType(Integer.valueOf(image));
             case "ID":
+                return this.seekValue(image);
+            case "EQ":
                 return this.seekValue(image);
             default:
                 throw new RuntimeException("Symbol not exist:" + node.toString());
