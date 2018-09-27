@@ -70,7 +70,7 @@ public class CellNodeUtil {
             return 0;
         }
         int i = 0;
-        while (cellNode != null) {
+        while (cellNode != null && !cellNode.nil) {
             i ++ ;
             cellNode = nextCell(cellNode);
         }

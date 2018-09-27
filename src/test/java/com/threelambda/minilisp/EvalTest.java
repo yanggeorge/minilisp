@@ -413,6 +413,13 @@ public class EvalTest {
         Assert.assertEquals("b\n",ret);
     }
 
+    @Test
+    public void test203() throws ParseException {
+        String s = "(println (if () 'a 'b 'c)) \n" ;
+        String ret = call(s);
+        Assert.assertEquals("c\n",ret);
+    }
+
 
     private String call(String s) throws ParseException {
         String ret = "";

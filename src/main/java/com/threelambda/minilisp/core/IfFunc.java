@@ -56,7 +56,7 @@ public class IfFunc extends FuncType {
 
             next = CellNodeUtil.nextCell(next);
             Type secondResult = null;
-            while (!next.nil) {
+            while (next!= null && !next.nil) {
                 SExprNode tmp = CellNodeUtil.getFirst(next);
                 secondResult = visitor.visit(tmp);
                 next = CellNodeUtil.nextCell(next);
