@@ -434,6 +434,55 @@ public class EvalTest {
         Assert.assertEquals("()\n",ret);
     }
 
+    @Test
+    public void test212() throws ParseException {
+        String s = "(println (if (= 1 1) 'a 'b )) \n" ;
+        String ret = call(s);
+        Assert.assertEquals("a\n",ret);
+        s = "(println (if (= 1 2) 'a 'b )) \n" ;
+        ret = call(s);
+        Assert.assertEquals("b\n",ret);
+    }
+
+    @Test
+    public void test213() throws ParseException {
+        String s = "(println (if (< 1 2) 'a 'b )) \n" ;
+        String ret = call(s);
+        Assert.assertEquals("a\n",ret);
+        s = "(println (if (< 1 1) 'a 'b )) \n" ;
+        ret = call(s);
+        Assert.assertEquals("b\n",ret);
+    }
+
+    @Test
+    public void test214() throws ParseException {
+        String s = "(println (if (> 2 1) 'a 'b )) \n" ;
+        String ret = call(s);
+        Assert.assertEquals("a\n",ret);
+        s = "(println (if (> 2 2) 'a 'b )) \n" ;
+        ret = call(s);
+        Assert.assertEquals("b\n",ret);
+    }
+
+    @Test
+    public void test215() throws ParseException {
+        String s = "(println (if (<= 2 2) 'a 'b )) \n" ;
+        String ret = call(s);
+        Assert.assertEquals("a\n",ret);
+        s = "(println (if (<= 2 1) 'a 'b )) \n" ;
+        ret = call(s);
+        Assert.assertEquals("b\n",ret);
+    }
+
+    @Test
+    public void test216() throws ParseException {
+        String s = "(println (if (>= 2 2) 'a 'b )) \n" ;
+        String ret = call(s);
+        Assert.assertEquals("a\n",ret);
+        s = "(println (if (>= 1 2) 'a 'b )) \n" ;
+        ret = call(s);
+        Assert.assertEquals("b\n",ret);
+    }
 
 
     private String call(String s) throws ParseException {

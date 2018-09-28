@@ -136,11 +136,27 @@ public class LispVisitor implements Visitor {
                         result = consFunc.eval(this, (CellNode)params);
                         return result;
                     } else if (func instanceof IfFunc) {
-                        IfFunc ifFunc = (IfFunc) func;
+                        IfFunc ifFunc = (IfFunc)func;
                         result = ifFunc.eval(this, (CellNode)params);
                         return result;
                     } else if (func instanceof EqFunc) {
-                        EqFunc eqFunc = (EqFunc) func;
+                        EqFunc eqFunc = (EqFunc)func;
+                        result = eqFunc.eval(this, (CellNode)params);
+                        return result;
+                    } else if (func instanceof LtFunc) {
+                        LtFunc eqFunc = (LtFunc)func;
+                        result = eqFunc.eval(this, (CellNode)params);
+                        return result;
+                    } else if (func instanceof GtFunc) {
+                        GtFunc eqFunc = (GtFunc)func;
+                        result = eqFunc.eval(this, (CellNode)params);
+                        return result;
+                    } else if (func instanceof LeFunc) {
+                        LeFunc eqFunc = (LeFunc)func;
+                        result = eqFunc.eval(this, (CellNode)params);
+                        return result;
+                    } else if (func instanceof GeFunc) {
+                        GeFunc eqFunc = (GeFunc)func;
                         result = eqFunc.eval(this, (CellNode)params);
                         return result;
                     }
@@ -166,7 +182,15 @@ public class LispVisitor implements Visitor {
             case "ID":
                 return this.seekValue(image);
             case "EQ":
-                return this.seekValue(image);
+                return this.seekValue("<EqFunc>");
+            case "LT":
+                return this.seekValue("<LtFunc>");
+            case "LE":
+                return this.seekValue("<LeFunc>");
+            case "GT":
+                return this.seekValue("<GtFunc>");
+            case "GE":
+                return this.seekValue("<GeFunc>");
             default:
                 throw new RuntimeException("Symbol not exist:" + node.toString());
         }

@@ -26,26 +26,20 @@ public class Env {
     }
 
     public Env initPrimitiveFunc(){
-        DefineFunc defineFunc = new DefineFunc();
-        hash.put("define", defineFunc);
-        PrintLnFunc printLnFunc = new PrintLnFunc();
-        hash.put("println", printLnFunc);
-        AddFunc addFunc = new AddFunc();
-        hash.put("<AddFunc>", addFunc);
-        MinusFunc minusFunc = new MinusFunc();
-        hash.put("<MinusFunc>", minusFunc);
-        DefunFunc defunFunc = new DefunFunc();
-        hash.put("defun", defunFunc);
-        SetqFunc setqFunc = new SetqFunc();
-        hash.put("setq", setqFunc);
-        QuoteFunc quoteFunc = new QuoteFunc();
-        hash.put("quote", quoteFunc);
-        ConsFunc consFunc = new ConsFunc();
-        hash.put("cons", consFunc);
-        IfFunc ifFunc = new IfFunc();
-        hash.put("if", ifFunc);
-        EqFunc eqFunc = new EqFunc();
-        hash.put("=", eqFunc);
+        hash.put("define", new DefineFunc());
+        hash.put("println", new PrintLnFunc());
+        hash.put("<AddFunc>", new AddFunc());
+        hash.put("<MinusFunc>", new MinusFunc());
+        hash.put("defun", new DefunFunc());
+        hash.put("setq", new SetqFunc());
+        hash.put("quote", new QuoteFunc());
+        hash.put("cons", new ConsFunc());
+        hash.put("if", new IfFunc());
+        hash.put("<EqFunc>", new EqFunc());
+        hash.put("<LtFunc>", new LtFunc());
+        hash.put("<LeFunc>", new LeFunc());
+        hash.put("<GtFunc>", new GtFunc());
+        hash.put("<GeFunc>", new GeFunc());
         return this;
     }
 
