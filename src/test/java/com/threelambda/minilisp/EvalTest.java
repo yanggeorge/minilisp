@@ -264,7 +264,6 @@ public class EvalTest {
         s = "(println (cons '(1) '(2 3 4 5)))\n";
         ret = call(s);
         Assert.assertEquals("((1) 2 3 4 5)\n", ret);
-
     }
 
     @Test
