@@ -89,6 +89,9 @@ public class LispVisitor implements Visitor {
 
     @Override
     public Type visitCellNode(CellNode node) {
+        if (node.nil) {
+            return new NullType();
+        }
         Node first = node.car;
         Node params = node.cdr;
         if (first instanceof SExprNode) {
@@ -165,7 +168,7 @@ public class LispVisitor implements Visitor {
                 }
             }
         }
-        return null;
+        return new NullType();
     }
 
     @Override

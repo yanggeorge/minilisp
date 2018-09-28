@@ -33,7 +33,7 @@ public class IfFunc extends FuncType {
             Type result = visitor.visit(cond);
             // to define true and false .
             Boolean condValue = null;
-            if (result == null) {
+            if (result instanceof NullType) {
                 condValue = false;
             } else if (result instanceof BoolType) {
                 BoolType boolResult = (BoolType)result;
