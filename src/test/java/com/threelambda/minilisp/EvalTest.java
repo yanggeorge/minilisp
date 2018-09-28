@@ -499,8 +499,26 @@ public class EvalTest {
         Assert.assertEquals("b\n",ret);
     }
 
+    /**
+     * 默认支持递归
+     * @throws ParseException
+     */
+    @Test
+    public void test220() throws ParseException {
+        String s = "(defun fab (x)  \n" +
+                "     (if (<= x 2)  \n" +
+                "         1  \n" +
+                "         (+ (fab (- x 1)) (fab (- x 2)))  \n" +
+                "      )  \n" +
+                "    )\n" +
+                "   (println (fab 7)) \n" +
+                "   (println (fab 20)) \n" ;
+        String ret = call(s);
+        Assert.assertEquals("13\n6765\n",ret);
+    }
 
     private String call(String s) throws ParseException {
+        System.out.println(s);
         String ret = "";
         MiniLisp parser = new MiniLisp(new StringReader(s));
         List<Node> result = parser.Input();
