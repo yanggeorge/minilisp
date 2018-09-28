@@ -505,14 +505,14 @@ public class EvalTest {
      */
     @Test
     public void test220() throws ParseException {
-        String s = "(defun fab (x)  \n" +
-                "     (if (<= x 2)  \n" +
-                "         1  \n" +
-                "         (+ (fab (- x 1)) (fab (- x 2)))  \n" +
-                "      )  \n" +
-                "    )\n" +
-                "   (println (fab 7)) \n" +
-                "   (println (fab 20)) \n" ;
+        String s = ";;recursive func \n" +
+                "(defun fab (x)                             \n" +
+                "   (if (<= x 2)                            \n" +
+                "       1                                   \n" +
+                "       (+ (fab (- x 1))                    \n" +
+                "          (fab (- x 2)))))                 \n" +
+                "(println (fab 7))    ;; -> 13              \n" +
+                "(println (fab 20))   ;; ->6765             \n" ;
         String ret = call(s);
         Assert.assertEquals("13\n6765\n",ret);
     }
