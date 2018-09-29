@@ -511,7 +511,7 @@ public class EvalTest {
                 "       (+ (fab (- x 1))                    \n" +
                 "          (fab (- x 2)))))                 \n" +
                 "(println (fab 7))    ;; -> 13              \n" +
-                "(println (fab 20))   ;; ->6765             \n" ;
+                "(println (fab 20))   ;; -> 6765            \n" ;
         String ret = call(s);
         Assert.assertEquals("13\n6765\n",ret);
     }
