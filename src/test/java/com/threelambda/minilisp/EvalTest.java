@@ -516,6 +516,24 @@ public class EvalTest {
         Assert.assertEquals("13\n6765\n",ret);
     }
 
+    @Test
+    public void test230() throws ParseException {
+        String s = "\n" +
+            "(defun seven () 7)                         \n" +
+            "(println ((lambda () (seven))) )           \n" ;
+        String ret = call(s);
+        Assert.assertEquals("7\n",ret);
+    }
+
+    @Test
+    public void test231() throws ParseException {
+        String s = "\n" +
+            "(defmacro seven () 7)                      \n" +
+            "(println ((lambda () (seven))) )           \n" ;
+        String ret = call(s);
+        Assert.assertEquals("7\n",ret);
+    }
+
     private String call(String s) throws ParseException {
         System.out.println(s);
         String ret = "";
