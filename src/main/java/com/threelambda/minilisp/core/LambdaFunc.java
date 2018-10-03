@@ -54,7 +54,7 @@ public class LambdaFunc extends FuncType {
                 result = visitor.visit(bodyCopy.car);
                 bodyCopy = (CellNode) bodyCopy.cdr;
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new RuntimeException("evalBody while loop fail.", e);
             }
         }
 
