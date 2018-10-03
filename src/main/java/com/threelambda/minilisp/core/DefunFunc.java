@@ -20,14 +20,10 @@ public class DefunFunc extends FuncType {
             SExprNode first = (SExprNode)cellNode.car;
             CellNode second = (CellNode)cellNode.cdr;
             StringType name = (StringType) Util.getSymbolName(visitor, first);
-//            List<SExprNode> tmpList = new ArrayList<>();
-//            for (int i = 0; i < parameters.length; i++) {
-//                tmpList.add((SExprNode) parameters[i]);
-//            }
             lambdaFunc = Util.buildLambdaFunc(second);
             visitor.peekEnv().update(name.val, lambdaFunc);
         } catch (Exception e) {
-            throw new RuntimeException("Defun eval fail.");
+            throw new RuntimeException("Defun eval fail.", e);
         }
 
         return lambdaFunc;

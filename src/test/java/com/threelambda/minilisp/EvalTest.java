@@ -534,6 +534,16 @@ public class EvalTest {
         Assert.assertEquals("7\n",ret);
     }
 
+    @Test
+    public void test232() throws ParseException {
+        String s = "\n" +
+            "(defun list (x . y) (cons x y))                      \n" +
+            "(defmacro if-zero (x then) (list 'if (list '= x 0) then))                     \n" +
+            "(println (if-zero 0 42) )           \n" ;
+        String ret = call(s);
+        Assert.assertEquals("42\n",ret);
+    }
+
     private String call(String s) throws ParseException {
         System.out.println(s);
         String ret = "";

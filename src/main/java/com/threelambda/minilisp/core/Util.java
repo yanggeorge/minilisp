@@ -28,8 +28,7 @@ class Util {
             lambdaFunc.args = (CellNode) ((SExprNode)cellNode.car).node;
             lambdaFunc.body = (CellNode) cellNode.cdr;
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new Error("Malformed lambda func.");
+            throw new RuntimeException("Malformed lambda func.", e);
         }
         return lambdaFunc;
     }
@@ -76,4 +75,14 @@ class Util {
         return null;
     }
 
+    public static MacroFunc buildMacroFunc(CellNode cellNode) {
+        MacroFunc macroFunc = new MacroFunc();
+        try {
+            macroFunc.args = (CellNode) ((SExprNode)cellNode.car).node;
+            macroFunc.body = (CellNode) cellNode.cdr;
+        } catch (Exception e) {
+            throw new RuntimeException("Malformed lambda func.", e);
+        }
+        return macroFunc;
+    }
 }

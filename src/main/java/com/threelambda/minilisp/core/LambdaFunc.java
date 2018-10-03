@@ -46,25 +46,6 @@ public class LambdaFunc extends FuncType {
 
         evalParam(visitor, args, cellNode, local);
 
-
-        //while (!args.nil) {
-        //    try {
-        //        SExprNode param = (SExprNode) cellNode.car;
-        //        Type tmp = visitor.visit(param);
-        //        if(tmp instanceof FuncType){
-        //            //当参数是函数的时候，需要进行lexical scope binding。
-        //            keepEnvs((FuncType) tmp, visitor.getEnvStack());
-        //        }
-        //        Type name = Util.getSymbolName(visitor, (SExprNode) args.car);
-        //        StringType nameString = (StringType) name;
-        //        local.update(nameString.val, tmp);
-        //        args = (CellNode) args.cdr;
-        //        cellNode = (CellNode) cellNode.cdr;
-        //    } catch (Exception e) {
-        //        throw new RuntimeException("evalBody fail", e);
-        //    }
-        //}
-
         visitor.pushEnv(local);
         Type result = null;
         CellNode bodyCopy = body;
