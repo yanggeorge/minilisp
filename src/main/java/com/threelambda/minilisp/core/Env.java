@@ -40,6 +40,8 @@ public class Env {
         hash.put("<LeFunc>", new LeFunc());
         hash.put("<GtFunc>", new GtFunc());
         hash.put("<GeFunc>", new GeFunc());
+        hash.put("defmacro", new DefmacroFunc());
+        hash.put("macroexpand", new MacroExpandFunc());
         return this;
     }
 

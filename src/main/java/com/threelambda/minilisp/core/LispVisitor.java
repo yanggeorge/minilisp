@@ -17,7 +17,9 @@ import com.threelambda.minilisp.node.SymbolNode;
 public class LispVisitor implements Visitor {
 
     public String[] KEYWORDS = new String[] {
-        "lambda", "println", "define"
+        "lambda", "println", "define","defun",
+        "setq","quote","cons","if","defmacro",
+        "macroexpand"
     };
 
     private Stack<Env> envs = new Stack<>();
@@ -93,74 +95,73 @@ public class LispVisitor implements Visitor {
             return new NullType();
         }
         Node first = node.car;
-        Node params = node.cdr;
+        CellNode params = (CellNode)node.cdr;
         if (first instanceof SExprNode) {
             if (Util.isLambdaFunc((SExprNode)first)) {
-                LambdaFunc lambdaFunc = Util.buildLambdaFunc((CellNode)params);
-                return lambdaFunc;
+                return Util.buildLambdaFunc(params);
             } else {
                 Type result = this.visitSExprNode((SExprNode)first);
                 if (result instanceof FuncType) {
                     FuncType func = (FuncType)result;
                     if (func instanceof PrintLnFunc) {
                         PrintLnFunc printLnFunc = (PrintLnFunc)func;
-                        result = printLnFunc.eval(this, (CellNode)params);
+                        result = printLnFunc.eval(this, params);
                         return result;
                     } else if (func instanceof DefineFunc) {
                         DefineFunc defineFunc = (DefineFunc)func;
-                        result = defineFunc.eval(this, (CellNode)params);
+                        result = defineFunc.eval(this, params);
                         return result;
                     } else if (func instanceof AddFunc) {
                         AddFunc addFunc = (AddFunc)func;
-                        result = addFunc.eval(this, (CellNode)params);
+                        result = addFunc.eval(this, params);
                         return result;
                     } else if (func instanceof MinusFunc) {
                         MinusFunc minusFunc = (MinusFunc)func;
-                        result = minusFunc.eval(this, (CellNode)params);
+                        result = minusFunc.eval(this, params);
                         return result;
                     } else if (func instanceof LambdaFunc) {
                         LambdaFunc lambdaFunc = (LambdaFunc)func;
-                        result = lambdaFunc.eval(this, (CellNode)params);
+                        result = lambdaFunc.eval(this, params);
                         return result;
                     } else if (func instanceof DefunFunc) {
                         DefunFunc defunFunc = (DefunFunc)func;
-                        result = defunFunc.eval(this, (CellNode)params);
+                        result = defunFunc.eval(this, params);
                         return result;
                     } else if (func instanceof SetqFunc) {
                         SetqFunc setqFunc = (SetqFunc)func;
-                        result = setqFunc.eval(this, (CellNode)params);
+                        result = setqFunc.eval(this, params);
                         return result;
                     } else if (func instanceof QuoteFunc) {
                         QuoteFunc quoteFunc = (QuoteFunc)func;
-                        result = quoteFunc.eval(this, (CellNode)params);
+                        result = quoteFunc.eval(this, params);
                         return result;
                     } else if (func instanceof ConsFunc) {
                         ConsFunc consFunc = (ConsFunc)func;
-                        result = consFunc.eval(this, (CellNode)params);
+                        result = consFunc.eval(this, params);
                         return result;
                     } else if (func instanceof IfFunc) {
                         IfFunc ifFunc = (IfFunc)func;
-                        result = ifFunc.eval(this, (CellNode)params);
+                        result = ifFunc.eval(this, params);
                         return result;
                     } else if (func instanceof EqFunc) {
                         EqFunc eqFunc = (EqFunc)func;
-                        result = eqFunc.eval(this, (CellNode)params);
+                        result = eqFunc.eval(this, params);
                         return result;
                     } else if (func instanceof LtFunc) {
                         LtFunc eqFunc = (LtFunc)func;
-                        result = eqFunc.eval(this, (CellNode)params);
+                        result = eqFunc.eval(this, params);
                         return result;
                     } else if (func instanceof GtFunc) {
                         GtFunc eqFunc = (GtFunc)func;
-                        result = eqFunc.eval(this, (CellNode)params);
+                        result = eqFunc.eval(this, params);
                         return result;
                     } else if (func instanceof LeFunc) {
                         LeFunc eqFunc = (LeFunc)func;
-                        result = eqFunc.eval(this, (CellNode)params);
+                        result = eqFunc.eval(this, params);
                         return result;
                     } else if (func instanceof GeFunc) {
                         GeFunc eqFunc = (GeFunc)func;
-                        result = eqFunc.eval(this, (CellNode)params);
+                        result = eqFunc.eval(this, params);
                         return result;
                     }
                 } else if (result instanceof NumType) {
@@ -265,7 +266,7 @@ public class LispVisitor implements Visitor {
                 return new NullType();
             }
         }
-        throw new Error(String.format("<Symbol:%s> is not defined.", name));
+        throw new RuntimeException(String.format("<Symbol:%s> is not defined.", name));
     }
 
     @Override
