@@ -23,8 +23,13 @@ public class MacroFunc extends FuncType {
     }
 
     public Type eval(Visitor visitor, CellNode cellNode) {
+        try {
 
-        return null;
+        } catch (Exception e) {
+            throw new RuntimeException("MacroFunc eval fail", e);
+        }
+
+        return new NullType();
     }
 
 }

@@ -6,9 +6,9 @@ import com.threelambda.minilisp.node.SExprNode;
 /**
  * @author yangming 2018/10/3
  */
-public class DefmacroFunc extends FuncType {
+public class DefMacroFunc extends FuncType {
 
-    public DefmacroFunc() {
+    public DefMacroFunc() {
         super("defmacro");
     }
 
@@ -21,8 +21,8 @@ public class DefmacroFunc extends FuncType {
             macroFunc = Util.buildMacroFunc(second);
             visitor.peekEnv().update(name.val, macroFunc);
         } catch (Exception e) {
-            throw new RuntimeException("DefmacroFunc eval fail.", e);
+            throw new RuntimeException("DefMacroFunc eval fail.", e);
         }
-        return null;
+        return new NullType();
     }
 }

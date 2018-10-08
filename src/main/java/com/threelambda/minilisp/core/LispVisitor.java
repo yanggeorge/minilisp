@@ -163,6 +163,18 @@ public class LispVisitor implements Visitor {
                         GeFunc eqFunc = (GeFunc)func;
                         result = eqFunc.eval(this, params);
                         return result;
+                    } else if (func instanceof DefMacroFunc) {
+                        DefMacroFunc defmacroFunc = (DefMacroFunc) func;
+                        result = defmacroFunc.eval(this, params);
+                        return result;
+                    } else if (func instanceof MacroExpandFunc) {
+                        MacroExpandFunc macroExpandFunc = (MacroExpandFunc)func;
+                        result = macroExpandFunc.eval(this, params);
+                        return result;
+                    } else if (func instanceof MacroFunc) {
+                        MacroFunc macroFunc = (MacroFunc) func;
+                        result = macroFunc.eval(this, params);
+                        return result;
                     }
                 } else if (result instanceof NumType) {
                     return result;

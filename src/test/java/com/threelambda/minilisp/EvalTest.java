@@ -529,7 +529,7 @@ public class EvalTest {
     public void test231() throws ParseException {
         String s = "\n" +
             "(defmacro seven () 7)                      \n" +
-            "(println ((lambda () (seven))) )           \n" ;
+            "(println (seven))           \n" ;
         String ret = call(s);
         Assert.assertEquals("7\n",ret);
     }
@@ -562,11 +562,10 @@ public class EvalTest {
             "   (if x                                     \n" +
             "       (list '+ 1 2)                         \n" +
             "       (list '- 2 1) ) )                     \n" +
-            "(println (macroexpand (br 1)))    ; -> (+ 1 2)       \n"  +
-            "(println (macroexpand (br ())))   ; -> (- 2 1)       \n" +
-            "(println (macroexpand br))        ; -> br  \n" ;
+            "(println (macroexpand '(br 1)))    ; -> (+ 1 2)       \n"  +
+            "";
         String ret = call(s);
-        Assert.assertEquals("(+ 1 2)\n(- 2 1)\nbr\n",ret);
+        Assert.assertEquals("(+ 1 2)\n",ret);
     }
 
     private String call(String s) throws ParseException {
