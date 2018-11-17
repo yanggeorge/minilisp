@@ -568,6 +568,18 @@ public class EvalTest {
         Assert.assertEquals("(+ 1 2)\n",ret);
     }
 
+    @Test
+    public void test235() throws ParseException {
+        String s = "\n"
+            + "(defun list (x . y) (cons x y))    \n"
+            + "(defmacro fool (x)   \n"
+            + "   (+ x 1))   \n"
+            + "(println (macroexpand '(fool 2)))  ;; -> 3  \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("3", ret);
+    }
+
+
     private String call(String s) throws ParseException {
         System.out.println(s);
         String ret = "";
