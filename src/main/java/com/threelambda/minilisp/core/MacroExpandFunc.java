@@ -22,8 +22,11 @@ public class MacroExpandFunc extends FuncType {
             SExprNode first = CellNodeUtil.getFirst(params);
             Type result = visitor.visit(first);
             if (result instanceof ExprType) {
-                ExprType expr = (ExprType) result;
-                CellNode node = expr.cellNode;
+                ExprType expr = (ExprType)result;
+                CellNode cellNode = expr.cellNode;
+                assert CellNodeUtil.length(cellNode) == 1;
+                CellNode cells = (CellNode)CellNodeUtil.getFirst(expr.cellNode).node;
+                int length = CellNodeUtil.length(cells);
 
                 return expr;
             }
