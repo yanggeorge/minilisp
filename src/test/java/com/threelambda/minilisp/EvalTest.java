@@ -571,7 +571,6 @@ public class EvalTest {
     @Test
     public void test235() throws ParseException {
         String s = "\n"
-            + "(defun list (x . y) (cons x y))    \n"
             + "(defmacro fool (x)   \n"
             + "   (+ x 1))   \n"
             + "(println (macroexpand '(fool 2)))  ;; -> 3  \n"  ;
@@ -579,6 +578,21 @@ public class EvalTest {
         Assert.assertEquals("3", ret);
     }
 
+    @Test
+    public void test236() throws ParseException {
+        String s = "\n"
+            + "(println (macroexpand '(+ 1 2)))  ;; -> (+ 1 2)  \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("(+ 1 2)\n", ret);
+    }
+
+    @Test
+    public void test237() throws ParseException {
+        String s = "\n"
+            + "(println (macroexpand 'a))  ;; -> a  \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("a\n", ret);
+    }
 
     private String call(String s) throws ParseException {
         System.out.println(s);
