@@ -32,7 +32,9 @@ public class MacroFunc extends FuncType {
         return new NullType();
     }
 
-    public Type expand(Visitor visitor) {
+    public ExprType expand(Visitor visitor, CellNode params) {
+
+
         return null;
     }
 }

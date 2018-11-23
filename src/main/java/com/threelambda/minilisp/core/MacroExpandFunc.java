@@ -19,7 +19,7 @@ public class MacroExpandFunc extends FuncType {
             SExprNode first = CellNodeUtil.getFirst(params);
             Type result = visitor.visit(first);
             if (result instanceof ExprType) {
-                return this.expand((ExprType)result, visitor);
+                return this.expand((ExprType) result, visitor, params);
             } else {
                 return result;
             }
@@ -28,9 +28,7 @@ public class MacroExpandFunc extends FuncType {
         }
     }
 
-    private Type expand(ExprType expr, Visitor visitor) {
-        Type result = null;
-
+    private Type expand(ExprType expr, Visitor visitor, CellNode params) {
         //1. 如果是 简单的SymbolExpr，则直接返回
         //2. 如果是 函数，则直接返回
         //3. 如果是 宏，则进行扩展
@@ -41,22 +39,21 @@ public class MacroExpandFunc extends FuncType {
         SExprNode firstSExpr = CellNodeUtil.getFirst(expr.cellNode);
         if (firstSExpr.node instanceof SymbolExprNode) {
             //1. 如果是 简单的SymbolExpr，则直接返回
-            result =  expr;
+            return expr;
         } else if (firstSExpr.node instanceof CellNode) {
-            CellNode cell = (CellNode)firstSExpr.node;
+            CellNode cell = (CellNode) firstSExpr.node;
             int length = CellNodeUtil.length(cell);
 
-            SExprNode car = (SExprNode)cell.car;
+            SExprNode car = (SExprNode) cell.car;
             Type visit = visitor.visit(car);
             if (visit instanceof MacroFunc) {
-                MacroFunc macroFunc = (MacroFunc)visit;
-                result = macroFunc.expand(visitor);
+                MacroFunc macroFunc = (MacroFunc) visit;
+                return this.expand(macroFunc.expand(visitor, params), visitor, null);
             } else if (visit instanceof FuncType) {
-                result = expr;
+                return expr;
             }
         }
-
-        return result;
+        return null;
     }
 
 }
