@@ -28,7 +28,6 @@ public class MacroFunc extends FuncType {
         } catch (Exception e) {
             throw new RuntimeException("MacroFunc eval fail", e);
         }
-
         return new NullType();
     }
 
