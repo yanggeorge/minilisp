@@ -32,4 +32,7 @@ public class MacroFunc extends FuncType {
         return new NullType();
     }
 
+    public Type expand(Visitor visitor) {
+        return null;
+    }
 }
