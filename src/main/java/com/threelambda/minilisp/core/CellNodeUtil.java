@@ -18,7 +18,10 @@ public class CellNodeUtil {
      */
     public static SExprNode getFirst(CellNode cellNode) {
         if (cellNode != null) {
-            return (SExprNode)cellNode.car;
+            if(cellNode.car instanceof SExprNode) {
+                return (SExprNode)cellNode.car;
+            }
+            throw new RuntimeException("cellNode.car type is " + cellNode.car.kind + ", not SExprNode .");
         }
         return null;
     }
