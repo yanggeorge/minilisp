@@ -22,7 +22,7 @@ public class MacroFunc extends FuncType {
         this.body = CellNode.NIL;
     }
 
-    public Type eval(Visitor visitor, CellNode cellNode) {
+    public Type eval(Visitor visitor, CellNode params) {
         try {
 
         } catch (Exception e) {
