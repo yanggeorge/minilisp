@@ -74,7 +74,7 @@ public class LambdaFunc extends FuncType {
      * @param params 实参
      * @param local
      */
-    private void evalParam(Visitor visitor, CellNode args, CellNode params, Env local) {
+    public static void evalParam(Visitor visitor, CellNode args, CellNode params, Env local) {
         if (args.car == null) {
             return;
         }
@@ -135,7 +135,7 @@ public class LambdaFunc extends FuncType {
      * @param func
      * @param envs
      */
-    private void keepEnvs(FuncType func, Stack<Env> envs) {
+    public static void keepEnvs(FuncType func, Stack<Env> envs) {
         func.closureEnvs = new Stack<Env>();
         for (Env env : envs) {
             func.closureEnvs.add(env.getCopy());

@@ -1,10 +1,9 @@
 package com.threelambda.minilisp.core;
 
-import java.util.UUID;
-
 import com.threelambda.minilisp.node.CellNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.threelambda.minilisp.node.SExprNode;
+
+import java.util.UUID;
 
 /**
  * @author yangming 2018/10/3
@@ -33,7 +32,37 @@ public class MacroFunc extends FuncType {
 
     public ExprType expand(Visitor visitor, CellNode params) {
 
+        //args与params进行绑定
+        Env local = new Env();
+        LambdaFunc.evalParam(visitor, args, params, local);
 
-        return null;
+        visitor.pushEnv(local);
+        Type result = null;
+        CellNode bodyCopy = body;
+        while (!bodyCopy.nil) {
+            try {
+                SExprNode expr = (SExprNode) bodyCopy.car;
+                CellNode cellNode = (CellNode) expr.node;
+                SExprNode firstSExpr = CellNodeUtil.getFirst(cellNode);
+                Type visit = visitor.visit(firstSExpr);
+
+                if (visit instanceof MacroFunc) {
+
+                } else {
+                    if (visit instanceof FuncType) {
+
+                    }
+                }
+
+                bodyCopy = (CellNode) bodyCopy.cdr;
+            } catch (Exception e) {
+                throw new RuntimeException("evalBody while loop fail.", e);
+            }
+        }
+
+        assert result != null;
+        visitor.popEnv();
+        ExprType exprType = new ExprType();
+        return exprType;
     }
 }
