@@ -2,6 +2,8 @@ package com.threelambda.minilisp.core;
 
 import com.threelambda.minilisp.node.CellNode;
 import com.threelambda.minilisp.node.SExprNode;
+import com.threelambda.minilisp.node.SymbolExprNode;
+import com.threelambda.minilisp.node.SymbolNode;
 
 import java.util.UUID;
 
@@ -50,7 +52,7 @@ public class MacroFunc extends FuncType {
 
                 } else {
                     if (visit instanceof FuncType) {
-
+                        result = visitor.visit(cellNode);
                     }
                 }
 
@@ -62,7 +64,20 @@ public class MacroFunc extends FuncType {
 
         assert result != null;
         visitor.popEnv();
+
+        //把result包装为ExprType
         ExprType exprType = new ExprType();
+        CellNode cellNode = new CellNode();
+        exprType.cellNode = cellNode;
+        SExprNode sExprNode = new SExprNode();
+        cellNode.car = sExprNode;
+        cellNode.cdr = CellNode.NIL;
+        SymbolExprNode symbolExprNode = new SymbolExprNode();
+        sExprNode.node = symbolExprNode;
+        if(result instanceof NumType) {
+            NumType num = (NumType) result;
+            symbolExprNode.node = new SymbolNode("Num", num.val.toString());
+        }
         return exprType;
     }
 }

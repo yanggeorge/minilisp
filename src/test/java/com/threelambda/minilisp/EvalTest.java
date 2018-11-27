@@ -575,7 +575,7 @@ public class EvalTest {
             + "   (+ x 1))   \n"
             + "(println (macroexpand '(fool 2)))  ;; -> 3  \n"  ;
         String ret = call(s);
-        Assert.assertEquals("3", ret);
+        Assert.assertEquals("3\n", ret);
     }
 
     @Test
