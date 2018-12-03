@@ -42,9 +42,9 @@ public class MacroFunc extends FuncType {
             try {
                 SExprNode expr = (SExprNode) bodyCopy.car;
                 Node node = expr.node;
-                if(node instanceof SymbolExprNode){
+                if (node instanceof SymbolExprNode) {
                     result = visitor.visit(node);
-                }else if(node instanceof CellNode) {
+                } else if (node instanceof CellNode) {
                     CellNode cellNode = (CellNode) expr.node;
                     SExprNode firstSExpr = CellNodeUtil.getFirst(cellNode);
                     Type visit = visitor.visit(firstSExpr);
@@ -69,6 +69,9 @@ public class MacroFunc extends FuncType {
         assert result != null;
         visitor.popEnv();
 
+        if (result instanceof ExprType) {
+            return (ExprType) result;
+        }
         //把result包装为ExprType
         ExprType exprType = new ExprType();
         CellNode cellNode = new CellNode();
@@ -78,10 +81,11 @@ public class MacroFunc extends FuncType {
         cellNode.cdr = CellNode.NIL;
         SymbolExprNode symbolExprNode = new SymbolExprNode();
         sExprNode.node = symbolExprNode;
-        if(result instanceof NumType) {
+        if (result instanceof NumType) {
             NumType num = (NumType) result;
             symbolExprNode.node = new SymbolNode("Num", num.val.toString());
         }
         return exprType;
+
     }
 }

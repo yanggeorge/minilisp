@@ -1,15 +1,15 @@
 package com.threelambda.minilisp;
 
+import com.threelambda.minilisp.core.Env;
+import com.threelambda.minilisp.core.LispVisitor;
+import com.threelambda.minilisp.node.Node;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.StringReader;
 import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Test;
-import com.threelambda.minilisp.core.Env;
-import com.threelambda.minilisp.core.LispVisitor;
-import com.threelambda.minilisp.node.Node;
 
 /**
  * Created by ym on 5/31/2017.
@@ -610,6 +610,25 @@ public class EvalTest {
                 + "(println (macroexpand '(seven) ))  ;; -> 7 \n"  ;
         String ret = call(s);
         Assert.assertEquals("7\n", ret);
+    }
+
+    @Test
+    public void test240() throws ParseException {
+        String s = "\n" +
+                "(defun list (x . y)  (cons x y)) \n"
+                + "(println (macroexpand '(list '+ 1 2) ))  ;; -> (list '+ 1 2)\n"  ;
+        String ret = call(s);
+        Assert.assertEquals("(list '+ 1 2)\n", ret);
+    }
+
+    @Test
+    public void test241() throws ParseException {
+        String s = "\n" +
+                "(defun list (x . y)  (cons x y)) \n" +
+                "(defmacro add () (list '+ 1 2)) \n"
+                + "(println (macroexpand '(add) ))  ;; \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("(+ 1 2)\n", ret);
     }
 
     private String call(String s) throws ParseException {
