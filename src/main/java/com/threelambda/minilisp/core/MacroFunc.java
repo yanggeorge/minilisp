@@ -1,9 +1,6 @@
 package com.threelambda.minilisp.core;
 
-import com.threelambda.minilisp.node.CellNode;
-import com.threelambda.minilisp.node.SExprNode;
-import com.threelambda.minilisp.node.SymbolExprNode;
-import com.threelambda.minilisp.node.SymbolNode;
+import com.threelambda.minilisp.node.*;
 
 import java.util.UUID;
 
@@ -44,16 +41,23 @@ public class MacroFunc extends FuncType {
         while (!bodyCopy.nil) {
             try {
                 SExprNode expr = (SExprNode) bodyCopy.car;
-                CellNode cellNode = (CellNode) expr.node;
-                SExprNode firstSExpr = CellNodeUtil.getFirst(cellNode);
-                Type visit = visitor.visit(firstSExpr);
+                Node node = expr.node;
+                if(node instanceof SymbolExprNode){
+                    result = visitor.visit(node);
+                }else if(node instanceof CellNode) {
+                    CellNode cellNode = (CellNode) expr.node;
+                    SExprNode firstSExpr = CellNodeUtil.getFirst(cellNode);
+                    Type visit = visitor.visit(firstSExpr);
 
-                if (visit instanceof MacroFunc) {
+                    if (visit instanceof MacroFunc) {
 
-                } else {
-                    if (visit instanceof FuncType) {
-                        result = visitor.visit(cellNode);
+                    } else {
+                        if (visit instanceof FuncType) {
+                            result = visitor.visit(cellNode);
+                        }
                     }
+                } else if (node instanceof SQuoteExprNode) {
+
                 }
 
                 bodyCopy = (CellNode) bodyCopy.cdr;

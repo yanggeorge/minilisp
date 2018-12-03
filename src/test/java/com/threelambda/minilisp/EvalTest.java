@@ -594,12 +594,22 @@ public class EvalTest {
         Assert.assertEquals("a\n", ret);
     }
 
+
     @Test
     public void test238() throws ParseException {
         String s = "\n"
             + "(println (macroexpand (+ 1 2)))  ;; -> 3  \n"  ;
         String ret = call(s);
         Assert.assertEquals("3\n", ret);
+    }
+
+    @Test
+    public void test239() throws ParseException {
+        String s = "\n" +
+                "(defmacro seven () 7) \n"
+                + "(println (macroexpand '(seven) ))  ;; -> 7 \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("7\n", ret);
     }
 
     private String call(String s) throws ParseException {
