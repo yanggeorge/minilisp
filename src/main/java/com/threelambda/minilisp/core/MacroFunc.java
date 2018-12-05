@@ -22,11 +22,12 @@ public class MacroFunc extends FuncType {
 
     public Type eval(Visitor visitor, CellNode params) {
         try {
-
+            ExprType expr = this.expand(visitor, params);
+            Type result = visitor.visit(expr.cellNode);
+            return result;
         } catch (Exception e) {
             throw new RuntimeException("MacroFunc eval fail", e);
         }
-        return new NullType();
     }
 
     public ExprType expand(Visitor visitor, CellNode params) {
@@ -53,7 +54,10 @@ public class MacroFunc extends FuncType {
 
                     } else {
                         if (visit instanceof FuncType) {
-                            result = visitor.visit(cellNode);
+                            FuncType func = (FuncType) visit;
+                            CellNode nextCell = CellNodeUtil.nextCell(cellNode);
+                            CellNode funcParams = bindParam(nextCell, visitor);
+                            result = func.eval(visitor, funcParams);
                         }
                     }
                 } else if (node instanceof SQuoteExprNode) {
@@ -88,4 +92,32 @@ public class MacroFunc extends FuncType {
         return exprType;
 
     }
+
+    private CellNode bindParam(CellNode cellNode, Visitor visitor) {
+        //顺序计算每个cell，把结果组成一个list
+        CellNode head = new CellNode();
+        CellNode tail = head;
+        while (!cellNode.nil) {
+            Type result = visitor.visit(cellNode.car);
+            if (result instanceof NumType) {
+                SExprNode sExprNode = new SExprNode();
+                SymbolExprNode symbolExprNode = new SymbolExprNode();
+                sExprNode.node = symbolExprNode;
+
+                NumType num = (NumType) result;
+                symbolExprNode.node = new SymbolNode("Num", num.val.toString());
+                tail.car = sExprNode;
+            } else if (result instanceof ExprType) {
+                ExprType exprType = (ExprType) result;
+                tail.car = exprType.cellNode.car;
+            }
+            tail.cdr = new CellNode();
+            tail = (CellNode) tail.cdr;
+            cellNode = (CellNode) cellNode.cdr;
+        }
+        tail.nil = true;
+
+        return head;
+    }
+
 }

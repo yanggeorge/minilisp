@@ -23,7 +23,7 @@ public class MinusFunc extends FuncType {
                         result += ((NumType) tmp).val;
                     } else if (tmp.kind.equals("ExprType")) {
                         ExprType e = (ExprType) tmp;
-                        tmp = visitor.visit(e.cellNode);
+                        tmp = visitor.visit(e.cellNode.car);
                         result += ((NumType) tmp).val;
                     }
                 } else {
@@ -31,7 +31,7 @@ public class MinusFunc extends FuncType {
                         result -= ((NumType) tmp).val;
                     } else if (tmp.kind.equals("ExprType")) {
                         ExprType e = (ExprType) tmp;
-                        tmp = visitor.visit(e.cellNode);
+                        tmp = visitor.visit(e.cellNode.car);
                         result -= ((NumType) tmp).val;
                     }
                 }

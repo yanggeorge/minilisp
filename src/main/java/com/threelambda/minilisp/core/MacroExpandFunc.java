@@ -52,6 +52,8 @@ public class MacroExpandFunc extends FuncType {
                 return expand(macroFunc.expand(visitor, params), visitor);
             } else {
                 if (visit instanceof FuncType) {
+
+
                     return expr;
                 }
             }

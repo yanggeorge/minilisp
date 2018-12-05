@@ -1,15 +1,8 @@
 package com.threelambda.minilisp.core;
 
-import java.util.Stack;
+import com.threelambda.minilisp.node.*;
 
-import com.threelambda.minilisp.node.CellNode;
-import com.threelambda.minilisp.node.ExprNode;
-import com.threelambda.minilisp.node.Node;
-import com.threelambda.minilisp.node.NonSExprNode;
-import com.threelambda.minilisp.node.SExprNode;
-import com.threelambda.minilisp.node.SQuoteExprNode;
-import com.threelambda.minilisp.node.SymbolExprNode;
-import com.threelambda.minilisp.node.SymbolNode;
+import java.util.Stack;
 
 /**
  * Created by ym on 5/31/2017.
@@ -176,9 +169,8 @@ public class LispVisitor implements Visitor {
                         result = macroFunc.eval(this, params);
                         return result;
                     }
-                } else if (result instanceof NumType) {
-                    return result;
                 }
+                throw new RuntimeException("The head of a list must be a function");
             }
         }
         return new NullType();

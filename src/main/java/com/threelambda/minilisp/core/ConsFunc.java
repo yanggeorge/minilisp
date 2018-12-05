@@ -1,10 +1,6 @@
 package com.threelambda.minilisp.core;
 
-import com.threelambda.minilisp.node.CellNode;
-import com.threelambda.minilisp.node.Node;
-import com.threelambda.minilisp.node.SExprNode;
-import com.threelambda.minilisp.node.SymbolExprNode;
-import com.threelambda.minilisp.node.SymbolNode;
+import com.threelambda.minilisp.node.*;
 
 /**
  * Created by ym on 7/24/2017.
@@ -48,6 +44,16 @@ public class ConsFunc extends FuncType {
         } else if (result instanceof StringType) {
             //todo 目前不支持String类型
             return new ExprType();
+        } else if (result instanceof FuncType) {
+            FuncType funcType = (FuncType) result;
+            String s = funcType.toString();
+            ExprType expr = new ExprType();
+            expr.cellNode = new CellNode();
+            expr.cellNode.car = new SExprNode();
+            SymbolExprNode symbolExprNode = new SymbolExprNode();
+            ((SExprNode)expr.cellNode.car).node = symbolExprNode;
+            symbolExprNode.node = new SymbolNode("ID", s);
+            return expr;
         }
         return null;
     }

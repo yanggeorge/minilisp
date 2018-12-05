@@ -525,48 +525,6 @@ public class EvalTest {
         Assert.assertEquals("7\n",ret);
     }
 
-    @Test
-    public void test231() throws ParseException {
-        String s = "\n" +
-            "(defmacro seven () 7)                      \n" +
-            "(println (seven))           \n" ;
-        String ret = call(s);
-        Assert.assertEquals("7\n",ret);
-    }
-
-    @Test
-    public void test232() throws ParseException {
-        String s = "\n" +
-            "(defun list (x . y) (cons x y))                      \n" +
-            "(defmacro if-zero (x then) (list 'if (list '= x 0) then))                     \n" +
-            "(println (if-zero 0 42) )           \n" ;
-        String ret = call(s);
-        Assert.assertEquals("42\n",ret);
-    }
-
-    @Test
-    public void test233() throws ParseException {
-        String s = "\n" +
-            "(defun list (x . y) (cons x y))                      \n" +
-            "(defmacro if-zero (x then) (list 'if (list '= x 0) then))                     \n" +
-            "(println (macroexpand (if-zero x (print x))) )           \n" ;
-        String ret = call(s);
-        Assert.assertEquals("(if (= x 0) (print x))\n",ret);
-    }
-
-    @Test
-    public void test234() throws ParseException {
-        String s = "\n" +
-            "(defun list (x . y) (cons x y))                      \n" +
-            "(defmacro br (x)                                     \n" +
-            "   (if x                                     \n" +
-            "       (list '+ 1 2)                         \n" +
-            "       (list '- 2 1) ) )                     \n" +
-            "(println (macroexpand '(br 1)))    ; -> (+ 1 2)       \n"  +
-            "";
-        String ret = call(s);
-        Assert.assertEquals("(+ 1 2)\n",ret);
-    }
 
     @Test
     public void test235() throws ParseException {
@@ -625,10 +583,37 @@ public class EvalTest {
     public void test241() throws ParseException {
         String s = "\n" +
                 "(defun list (x . y)  (cons x y)) \n" +
-                "(defmacro add () (list '+ 1 2)) \n"
-                + "(println (macroexpand '(add) ))  ;; \n"  ;
+                "(defmacro add (x) (list '+ 1 x)) \n"
+                + "(println (macroexpand '(add 2) ))  ;; \n"  ;
         String ret = call(s);
         Assert.assertEquals("(+ 1 2)\n", ret);
+    }
+
+    @Test
+    public void test242() throws ParseException {
+        String s = "\n" +
+                "(defun list (x . y)  (cons x y)) \n" +
+                "(defmacro add (x) (list '+ 1 x)) \n"
+                + "(println (add 2))  ;; \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("3\n", ret);
+    }
+
+    @Test
+    public void test243() throws ParseException {
+        String s = "\n" +
+                "(println (cons + '(1) )) \n"  ;
+        String ret = call(s);
+    }
+
+    @Test
+    public void test244() throws ParseException {
+        String s = "\n" +
+                "(defun list (x . y)  (cons x y)) \n" +
+                "(defmacro add (x) (list '+ 1 x)) \n"
+                + "(println (macroexpand '(add (+ 2 3) )))  ;; \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("(+ 1 (+ 2 3))\n", ret);
     }
 
     private String call(String s) throws ParseException {
