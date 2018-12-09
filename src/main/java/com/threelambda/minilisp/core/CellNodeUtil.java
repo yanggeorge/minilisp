@@ -3,7 +3,6 @@ package com.threelambda.minilisp.core;
 import com.threelambda.minilisp.node.CellNode;
 import com.threelambda.minilisp.node.Node;
 import com.threelambda.minilisp.node.SExprNode;
-import javafx.scene.control.Cell;
 
 /**
  * @author yangming 2018/8/29
@@ -18,8 +17,8 @@ public class CellNodeUtil {
      */
     public static SExprNode getFirst(CellNode cellNode) {
         if (cellNode != null) {
-            if(cellNode.car instanceof SExprNode) {
-                return (SExprNode)cellNode.car;
+            if (cellNode.car instanceof SExprNode) {
+                return (SExprNode) cellNode.car;
             }
             throw new RuntimeException("cellNode.car type is " + cellNode.car.kind + ", not SExprNode .");
         }
@@ -36,7 +35,7 @@ public class CellNodeUtil {
         if (!cellNode.nil) {
             Node cdr = cellNode.cdr;
             if (cdr instanceof CellNode) {
-                return (CellNode)cdr;
+                return (CellNode) cdr;
             } else if (cdr instanceof SExprNode) {
                 return null;
             }
@@ -74,7 +73,7 @@ public class CellNodeUtil {
         }
         int i = 0;
         while (cellNode != null && !cellNode.nil) {
-            i ++ ;
+            i++;
             cellNode = nextCell(cellNode);
         }
         return i;

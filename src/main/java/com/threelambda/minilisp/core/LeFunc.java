@@ -12,8 +12,10 @@ public class LeFunc extends FuncType {
         super("LeFunc");
     }
 
-    public Type eval(Visitor visitor, CellNode cellNode) {
+    public Type eval(Visitor visitor, CellNode params) {
         try {
+            CellNode cellNode = LambdaFunc.evalParam(visitor, params);
+
             Integer length = CellNodeUtil.length(cellNode);
             if (length != 2) {
                 throw new RuntimeException("list size is not 2.");
@@ -35,13 +37,13 @@ public class LeFunc extends FuncType {
             NumType secondNum = (NumType) secondResult;
             if (firstNum.val <= secondNum.val) {
                 return new BoolType(true);
-            }else{
+            } else {
                 return new BoolType(false);
             }
 
 
         } catch (Exception e) {
-            throw new RuntimeException("Malformed Eq func.",e);
+            throw new RuntimeException("Malformed Eq func.", e);
         }
     }
 

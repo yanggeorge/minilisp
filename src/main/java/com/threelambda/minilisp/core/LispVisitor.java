@@ -9,10 +9,10 @@ import java.util.Stack;
  */
 public class LispVisitor implements Visitor {
 
-    public String[] KEYWORDS = new String[] {
-        "lambda", "println", "define","defun",
-        "setq","quote","cons","if","defmacro",
-        "macroexpand"
+    public String[] KEYWORDS = new String[]{
+            "lambda", "println", "define", "defun",
+            "setq", "quote", "cons", "if", "defmacro",
+            "macroexpand"
     };
 
     private Stack<Env> envs = new Stack<>();
@@ -29,9 +29,9 @@ public class LispVisitor implements Visitor {
         Node node = exprNode.node;
         switch (node.kind) {
             case "NonSExprNode":
-                return this.visitNonSExprNode((NonSExprNode)node);
+                return this.visitNonSExprNode((NonSExprNode) node);
             case "SExprNode":
-                SExprNode se = (SExprNode)node;
+                SExprNode se = (SExprNode) node;
                 return this.visitSExprNode(se);
         }
         return null;
@@ -43,13 +43,13 @@ public class LispVisitor implements Visitor {
         String kind = child.kind;
         switch (kind) {
             case "SymbolExprNode":
-                SymbolExprNode sym = (SymbolExprNode)child;
+                SymbolExprNode sym = (SymbolExprNode) child;
                 return this.visitSymbolExprNode(sym);
             case "CellNode":
-                CellNode cellNode = (CellNode)child;
+                CellNode cellNode = (CellNode) child;
                 return this.visitCellNode(cellNode);
             case "SQuoteExprNode":
-                SQuoteExprNode sQuoteExprNode = (SQuoteExprNode)child;
+                SQuoteExprNode sQuoteExprNode = (SQuoteExprNode) child;
                 return this.visitSQuoteExprNode(sQuoteExprNode);
         }
 
@@ -66,14 +66,14 @@ public class LispVisitor implements Visitor {
         Node child = symbolExprNode.node;
         String kind = child.kind;
         if (kind.equalsIgnoreCase("SymbolNode")) {
-            return this.visitSymbolNode((SymbolNode)child);
+            return this.visitSymbolNode((SymbolNode) child);
         }
         return null;
     }
 
     @Override
     public Type visitSQuoteExprNode(SQuoteExprNode node) {
-        SExprNode sExprNode = (SExprNode)node.node;
+        SExprNode sExprNode = (SExprNode) node.node;
         ExprType exprType = new ExprType();
         CellNode cellNode = new CellNode();
         cellNode.car = sExprNode;
@@ -88,72 +88,72 @@ public class LispVisitor implements Visitor {
             return new NullType();
         }
         Node first = node.car;
-        CellNode params = (CellNode)node.cdr;
+        CellNode params = (CellNode) node.cdr;
         if (first instanceof SExprNode) {
-            if (Util.isLambdaFunc((SExprNode)first)) {
+            if (Util.isLambdaFunc((SExprNode) first)) {
                 return Util.buildLambdaFunc(params);
             } else {
-                Type result = this.visitSExprNode((SExprNode)first);
+                Type result = this.visitSExprNode((SExprNode) first);
                 if (result instanceof FuncType) {
-                    FuncType func = (FuncType)result;
+                    FuncType func = (FuncType) result;
                     if (func instanceof PrintLnFunc) {
-                        PrintLnFunc printLnFunc = (PrintLnFunc)func;
+                        PrintLnFunc printLnFunc = (PrintLnFunc) func;
                         result = printLnFunc.eval(this, params);
                         return result;
                     } else if (func instanceof DefineFunc) {
-                        DefineFunc defineFunc = (DefineFunc)func;
+                        DefineFunc defineFunc = (DefineFunc) func;
                         result = defineFunc.eval(this, params);
                         return result;
                     } else if (func instanceof AddFunc) {
-                        AddFunc addFunc = (AddFunc)func;
+                        AddFunc addFunc = (AddFunc) func;
                         result = addFunc.eval(this, params);
                         return result;
                     } else if (func instanceof MinusFunc) {
-                        MinusFunc minusFunc = (MinusFunc)func;
+                        MinusFunc minusFunc = (MinusFunc) func;
                         result = minusFunc.eval(this, params);
                         return result;
                     } else if (func instanceof LambdaFunc) {
-                        LambdaFunc lambdaFunc = (LambdaFunc)func;
+                        LambdaFunc lambdaFunc = (LambdaFunc) func;
                         result = lambdaFunc.eval(this, params);
                         return result;
                     } else if (func instanceof DefunFunc) {
-                        DefunFunc defunFunc = (DefunFunc)func;
+                        DefunFunc defunFunc = (DefunFunc) func;
                         result = defunFunc.eval(this, params);
                         return result;
                     } else if (func instanceof SetqFunc) {
-                        SetqFunc setqFunc = (SetqFunc)func;
+                        SetqFunc setqFunc = (SetqFunc) func;
                         result = setqFunc.eval(this, params);
                         return result;
                     } else if (func instanceof QuoteFunc) {
-                        QuoteFunc quoteFunc = (QuoteFunc)func;
+                        QuoteFunc quoteFunc = (QuoteFunc) func;
                         result = quoteFunc.eval(this, params);
                         return result;
                     } else if (func instanceof ConsFunc) {
-                        ConsFunc consFunc = (ConsFunc)func;
+                        ConsFunc consFunc = (ConsFunc) func;
                         result = consFunc.eval(this, params);
                         return result;
                     } else if (func instanceof IfFunc) {
-                        IfFunc ifFunc = (IfFunc)func;
+                        IfFunc ifFunc = (IfFunc) func;
                         result = ifFunc.eval(this, params);
                         return result;
                     } else if (func instanceof EqFunc) {
-                        EqFunc eqFunc = (EqFunc)func;
+                        EqFunc eqFunc = (EqFunc) func;
                         result = eqFunc.eval(this, params);
                         return result;
                     } else if (func instanceof LtFunc) {
-                        LtFunc eqFunc = (LtFunc)func;
+                        LtFunc eqFunc = (LtFunc) func;
                         result = eqFunc.eval(this, params);
                         return result;
                     } else if (func instanceof GtFunc) {
-                        GtFunc eqFunc = (GtFunc)func;
+                        GtFunc eqFunc = (GtFunc) func;
                         result = eqFunc.eval(this, params);
                         return result;
                     } else if (func instanceof LeFunc) {
-                        LeFunc eqFunc = (LeFunc)func;
+                        LeFunc eqFunc = (LeFunc) func;
                         result = eqFunc.eval(this, params);
                         return result;
                     } else if (func instanceof GeFunc) {
-                        GeFunc eqFunc = (GeFunc)func;
+                        GeFunc eqFunc = (GeFunc) func;
                         result = eqFunc.eval(this, params);
                         return result;
                     } else if (func instanceof DefMacroFunc) {
@@ -161,14 +161,14 @@ public class LispVisitor implements Visitor {
                         result = defmacroFunc.eval(this, params);
                         return result;
                     } else if (func instanceof MacroExpandFunc) {
-                        MacroExpandFunc macroExpandFunc = (MacroExpandFunc)func;
+                        MacroExpandFunc macroExpandFunc = (MacroExpandFunc) func;
                         result = macroExpandFunc.eval(this, params);
                         return result;
-                    } else if (func instanceof MacroFunc) {
-                        MacroFunc macroFunc = (MacroFunc) func;
-                        result = macroFunc.eval(this, params);
-                        return result;
                     }
+                } else if (result instanceof Macro) {
+                    Macro macro = (Macro) result;
+                    result = macro.eval(this, params);
+                    return result;
                 }
                 throw new RuntimeException("The head of a list must be a function");
             }
@@ -219,18 +219,23 @@ public class LispVisitor implements Visitor {
         String kind = node.kind;
         switch (kind) {
             case "ExprNode":
-                return this.visitExprNode((ExprNode)node);
+                return this.visitExprNode((ExprNode) node);
             case "SExprNode":
-                return this.visitSExprNode((SExprNode)node);
+                return this.visitSExprNode((SExprNode) node);
             case "CellNode":
-                return this.visitCellNode((CellNode)node);
+                return this.visitCellNode((CellNode) node);
             case "SymbolExprNode":
-                return this.visitSymbolExprNode((SymbolExprNode)node);
+                return this.visitSymbolExprNode((SymbolExprNode) node);
             case "SymbolNode":
-                return this.visitSymbolNode((SymbolNode)node);
+                return this.visitSymbolNode((SymbolNode) node);
             default:
                 throw new RuntimeException("node kind not exist.");
         }
+    }
+
+    @Override
+    public Type visitFuncNode(FuncNode funcNode) {
+        return null;
     }
 
     @Override

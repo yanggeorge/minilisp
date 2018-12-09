@@ -41,10 +41,14 @@ public class CellNode extends Node {
 
     @Override
     public String toString(String indent) {
-        if(nil){
+        if (nil) {
             return "";
         }
         String s = indent;
+        if (car == null) {
+            return "";
+        }
+
         if (car instanceof SExprNode) {
             SExprNode carNode = (SExprNode) car;
             s += carNode.toString("");
@@ -52,12 +56,16 @@ public class CellNode extends Node {
             throw new RuntimeException("Not support node");
         }
 
+        if (cdr == null) {
+            return s;
+        }
+
         if (cdr instanceof SExprNode) {
             SExprNode sExprNode = (SExprNode) cdr;
             s += " . " + sExprNode.toString("");
         } else if (cdr instanceof CellNode) {
             CellNode next = (CellNode) cdr;
-            if(!next.nil) {
+            if (!next.nil) {
                 s += " " + next.toString("");
             }
         } else {
@@ -65,5 +73,10 @@ public class CellNode extends Node {
         }
 
         return s;
+    }
+
+    @Override
+    public String toString() {
+        return toString("");
     }
 }

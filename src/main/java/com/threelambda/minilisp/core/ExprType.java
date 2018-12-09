@@ -1,13 +1,8 @@
 package com.threelambda.minilisp.core;
 
-import com.threelambda.minilisp.node.CellNode;
-import com.threelambda.minilisp.node.Node;
-import com.threelambda.minilisp.node.SExprNode;
-import com.threelambda.minilisp.node.SymbolExprNode;
-import com.threelambda.minilisp.node.SymbolNode;
+import com.threelambda.minilisp.node.*;
 
 /**
- *
  * Created by ym on 7/18/2017.
  */
 public class ExprType extends Type {
@@ -26,6 +21,7 @@ public class ExprType extends Type {
 
     /**
      * convert ExprType to minilisp expression , output exmaple: "(set a 1)"
+     *
      * @return
      */
     @Override
@@ -37,7 +33,7 @@ public class ExprType extends Type {
         String s = "";
         String sep = " ";
         Node child = sExprNode.node;
-        if( child instanceof SymbolExprNode) {
+        if (child instanceof SymbolExprNode) {
             SymbolExprNode symExpr = (SymbolExprNode) child;
             SymbolNode symbolNode = (SymbolNode) symExpr.node;
             s += symbolNode.image;

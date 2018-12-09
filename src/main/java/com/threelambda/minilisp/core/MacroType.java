@@ -8,7 +8,7 @@ import java.util.Stack;
 public class MacroType extends Type {
 
     public Stack<Env> closureEnvs = null;
-    public String name ;
+    public String name;
 
     public MacroType(String kind) {
         super("MacroType");

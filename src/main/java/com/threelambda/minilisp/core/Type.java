@@ -5,6 +5,7 @@ package com.threelambda.minilisp.core;
  */
 public class Type {
     public String kind;
+
     public Type(String kind) {
         this.kind = kind;
     }

@@ -15,7 +15,7 @@ public class SymbolExprNode extends Node {
 
     public SymbolExprNode(Node node) {
         super("SymbolExprNode");
-        this.node = node ;
+        this.node = node;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class SymbolExprNode extends Node {
         if (node instanceof SymbolNode) {
             SymbolNode symbolNode = (SymbolNode) node;
             s = symbolNode.toString("");
-        }else{
+        } else {
             throw new RuntimeException("Not support node");
         }
         return s;

@@ -10,7 +10,8 @@ import java.util.Stack;
 public abstract class FuncType extends Type {
 
     public Stack<Env> closureEnvs = null;
-    public String name ;
+    public String name;
+
     public FuncType() {
         super("FuncType");
     }

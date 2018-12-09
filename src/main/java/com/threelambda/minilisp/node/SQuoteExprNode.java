@@ -7,7 +7,7 @@ import com.threelambda.minilisp.core.Visitor;
  */
 public class SQuoteExprNode extends Node {
 
-    public Node node ;
+    public Node node;
 
     public SQuoteExprNode() {
         super("SQuoteExprNode");

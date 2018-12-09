@@ -11,24 +11,24 @@ public class AddFunc extends FuncType {
         super("AddFunc");
     }
 
-    public Type eval(Visitor visitor, CellNode cellNode){
+    public Type eval(Visitor visitor, CellNode cellNode) {
         Integer result = 0;
-        while(! cellNode.nil){
+        while (!cellNode.nil) {
             Type tmp = null;
 
             try {
                 tmp = visitor.visit(cellNode.car);
-                if(tmp.kind.equals("NumType")){
-                    result += ((NumType)tmp).val;
+                if (tmp.kind.equals("NumType")) {
+                    result += ((NumType) tmp).val;
 
-                }else if(tmp.kind.equals("ExprType")){
+                } else if (tmp.kind.equals("ExprType")) {
                     ExprType e = (ExprType) tmp;
                     tmp = visitor.visit(e.cellNode.car);
-                    result += ((NumType)tmp).val;
+                    result += ((NumType) tmp).val;
                 }
-            cellNode = (CellNode)cellNode.cdr;
+                cellNode = (CellNode) cellNode.cdr;
             } catch (Exception e) {
-                throw new RuntimeException("Malformed AddFunc.",e);
+                throw new RuntimeException("Malformed AddFunc.", e);
             }
         }
         return new NumType(result);

@@ -6,6 +6,7 @@ package com.threelambda.minilisp.core;
 public class SymbolType extends Type {
     public String id;
     public Type val;
+
     public SymbolType(String id) {
         super("SymbolType");
         this.id = id;

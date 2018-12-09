@@ -15,7 +15,7 @@ public class IfFunc extends FuncType {
      * 第一个cellNode的car是condition
      * 如果为true则返回第二个cellNode的car
      * 如果为false则返回最后一个cellNode的car
-     *
+     * <p>
      * 注意与rui314的实现保持一致
      *
      * @param visitor
@@ -36,12 +36,12 @@ public class IfFunc extends FuncType {
             if (result instanceof NullType) {
                 condValue = false;
             } else if (result instanceof BoolType) {
-                BoolType boolResult = (BoolType)result;
+                BoolType boolResult = (BoolType) result;
                 condValue = boolResult.getValue();
             } else if (result instanceof NumType) {
                 condValue = true;
             } else if (result instanceof ExprType) {
-                ExprType exprType = (ExprType)result;
+                ExprType exprType = (ExprType) result;
                 condValue = true;
             }
 
@@ -56,7 +56,7 @@ public class IfFunc extends FuncType {
 
             next = CellNodeUtil.nextCell(next);
             Type secondResult = null;
-            while (next!= null && !next.nil) {
+            while (next != null && !next.nil) {
                 SExprNode tmp = CellNodeUtil.getFirst(next);
                 secondResult = visitor.visit(tmp);
                 next = CellNodeUtil.nextCell(next);

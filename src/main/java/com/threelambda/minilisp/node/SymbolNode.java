@@ -7,7 +7,7 @@ import com.threelambda.minilisp.core.Visitor;
  */
 public class SymbolNode extends Node {
 
-    public String type ;
+    public String type;
 
     public String image;
 

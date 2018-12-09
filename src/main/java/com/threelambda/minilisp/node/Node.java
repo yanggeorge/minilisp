@@ -15,7 +15,7 @@ public abstract class Node {
 
     abstract public void accept(Visitor visitor) throws Exception;
 
-    public String toString(String indent){
+    public String toString(String indent) {
         return "Node";
     }
 }

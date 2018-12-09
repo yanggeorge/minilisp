@@ -1,7 +1,5 @@
 package com.threelambda.minilisp.core;
 
-import java.util.Objects;
-
 import com.threelambda.minilisp.node.CellNode;
 import com.threelambda.minilisp.node.SExprNode;
 
@@ -37,13 +35,13 @@ public class LtFunc extends FuncType {
             NumType secondNum = (NumType) secondResult;
             if (firstNum.val < secondNum.val) {
                 return new BoolType(true);
-            }else{
+            } else {
                 return new BoolType(false);
             }
 
 
         } catch (Exception e) {
-            throw new RuntimeException("Malformed Eq func.",e);
+            throw new RuntimeException("Malformed Eq func.", e);
         }
     }
 

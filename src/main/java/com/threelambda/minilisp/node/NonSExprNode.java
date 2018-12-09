@@ -23,7 +23,7 @@ public class NonSExprNode extends Node {
     }
 
     public enum NonSExprNodeType {
-        COMMENT,EMPTY
+        COMMENT, EMPTY
     }
 
     @Override

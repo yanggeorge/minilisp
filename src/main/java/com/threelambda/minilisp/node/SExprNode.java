@@ -15,7 +15,7 @@ public class SExprNode extends Node {
 
     public SExprNode(Node node) {
         super("SExprNode");
-        this.node = node ;
+        this.node = node;
     }
 
     @Override
@@ -31,11 +31,11 @@ public class SExprNode extends Node {
             s = indent + symbolExprNode.toString("");
         } else if (node instanceof CellNode) {
             CellNode cellNode = (CellNode) node;
-            s = indent + "(" +  cellNode.toString("") + ")";
-        } else if(node instanceof SQuoteExprNode) {
+            s = indent + "(" + cellNode.toString("") + ")";
+        } else if (node instanceof SQuoteExprNode) {
             SQuoteExprNode sQuoteExprNode = (SQuoteExprNode) node;
             s = indent + sQuoteExprNode.toString("");
-        }else{
+        } else {
             throw new RuntimeException("Not support node.");
         }
         return s;

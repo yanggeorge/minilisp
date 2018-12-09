@@ -194,7 +194,7 @@ public class EvalTest {
     @Test
     public void test15() throws ParseException{
         String s = "(defun call (f) ((lambda (var) (f)) 5))\n"
-                + "  (println ((lambda (var) (call (lambda () var))) 3) )";
+                + "(println ((lambda (var) (call (lambda () var))) 3) )";
         String ret = call(s);
         Assert.assertEquals("3\n", ret);
     }

@@ -7,14 +7,14 @@ import java.util.UUID;
 /**
  * @author yangming 2018/10/3
  */
-public class MacroFunc extends FuncType {
+public class Macro extends MacroType {
 
     public String id;
     public CellNode args;
     public CellNode body;
 
-    public MacroFunc() {
-        super("MacroFunc");
+    public Macro() {
+        super("Macro");
         this.id = UUID.randomUUID().toString();
         this.args = CellNode.NIL;
         this.body = CellNode.NIL;
@@ -26,7 +26,7 @@ public class MacroFunc extends FuncType {
             Type result = visitor.visit(expr.cellNode);
             return result;
         } catch (Exception e) {
-            throw new RuntimeException("MacroFunc eval fail", e);
+            throw new RuntimeException("Macro eval fail", e);
         }
     }
 
@@ -34,7 +34,7 @@ public class MacroFunc extends FuncType {
 
         //args与params进行绑定
         Env local = new Env();
-        LambdaFunc.evalParam(visitor, args, params, local);
+        LambdaFunc.bindParam(visitor, args, params, local);
 
         visitor.pushEnv(local);
         Type result = null;
@@ -50,14 +50,13 @@ public class MacroFunc extends FuncType {
                     SExprNode firstSExpr = CellNodeUtil.getFirst(cellNode);
                     Type visit = visitor.visit(firstSExpr);
 
-                    if (visit instanceof MacroFunc) {
+                    if (visit instanceof Macro) {
 
                     } else {
                         if (visit instanceof FuncType) {
                             FuncType func = (FuncType) visit;
                             CellNode nextCell = CellNodeUtil.nextCell(cellNode);
-                            CellNode funcParams = bindParam(nextCell, visitor);
-                            result = func.eval(visitor, funcParams);
+                            result = func.eval(visitor, nextCell);
                         }
                     }
                 } else if (node instanceof SQuoteExprNode) {
@@ -93,31 +92,8 @@ public class MacroFunc extends FuncType {
 
     }
 
-    private CellNode bindParam(CellNode cellNode, Visitor visitor) {
-        //顺序计算每个cell，把结果组成一个list
-        CellNode head = new CellNode();
-        CellNode tail = head;
-        while (!cellNode.nil) {
-            Type result = visitor.visit(cellNode.car);
-            if (result instanceof NumType) {
-                SExprNode sExprNode = new SExprNode();
-                SymbolExprNode symbolExprNode = new SymbolExprNode();
-                sExprNode.node = symbolExprNode;
-
-                NumType num = (NumType) result;
-                symbolExprNode.node = new SymbolNode("Num", num.val.toString());
-                tail.car = sExprNode;
-            } else if (result instanceof ExprType) {
-                ExprType exprType = (ExprType) result;
-                tail.car = exprType.cellNode.car;
-            }
-            tail.cdr = new CellNode();
-            tail = (CellNode) tail.cdr;
-            cellNode = (CellNode) cellNode.cdr;
-        }
-        tail.nil = true;
-
-        return head;
+    @Override
+    public String toString() {
+        return String.format("(macro (%s) %s)", args.toString(""), body.toString(""));
     }
-
 }

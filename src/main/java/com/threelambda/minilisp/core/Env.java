@@ -8,7 +8,7 @@ import java.util.Map.Entry;
  */
 public class Env {
 
-    private HashMap<String,Type> hash = new HashMap<String, Type>();
+    private HashMap<String, Type> hash = new HashMap<String, Type>();
 
     public Env(HashMap<String, Type> hash) {
         this.hash = hash;
@@ -25,7 +25,7 @@ public class Env {
         return hash.getOrDefault(symbol, null);
     }
 
-    public Env initPrimitiveFunc(){
+    public Env initPrimitiveFunc() {
         hash.put("define", new DefineFunc());
         hash.put("println", new PrintLnFunc());
         hash.put("<AddFunc>", new AddFunc());
@@ -50,7 +50,7 @@ public class Env {
     }
 
     public Type get(String symbol) {
-        if(!isDefined(symbol)){
+        if (!isDefined(symbol)) {
             throw new RuntimeException(String.format("<Symbol:%s>not defined.", symbol));
         }
         return hash.get(symbol);
@@ -59,7 +59,7 @@ public class Env {
     public Env getCopy() {
         Env env = new Env();
         for (Entry<String, Type> entry : hash.entrySet()) {
-            env.update(entry.getKey(),entry.getValue());
+            env.update(entry.getKey(), entry.getValue());
         }
         return env;
     }

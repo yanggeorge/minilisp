@@ -17,8 +17,8 @@ public class DefunFunc extends FuncType {
         LambdaFunc lambdaFunc = null;
 
         try {
-            SExprNode first = (SExprNode)cellNode.car;
-            CellNode second = (CellNode)cellNode.cdr;
+            SExprNode first = (SExprNode) cellNode.car;
+            CellNode second = (CellNode) cellNode.cdr;
             StringType name = (StringType) Util.getSymbolName(visitor, first);
             lambdaFunc = Util.buildLambdaFunc(second);
             visitor.peekEnv().update(name.val, lambdaFunc);
@@ -28,7 +28,6 @@ public class DefunFunc extends FuncType {
 
         return lambdaFunc;
     }
-
 
 
 }

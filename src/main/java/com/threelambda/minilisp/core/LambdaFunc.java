@@ -1,11 +1,12 @@
 package com.threelambda.minilisp.core;
 
-import java.util.Stack;
-import java.util.UUID;
-
 import com.threelambda.minilisp.node.CellNode;
 import com.threelambda.minilisp.node.SExprNode;
 import com.threelambda.minilisp.node.SymbolExprNode;
+import com.threelambda.minilisp.node.SymbolNode;
+
+import java.util.Stack;
+import java.util.UUID;
 
 /**
  * Created by ym on 6/4/2017.
@@ -23,6 +24,7 @@ public class LambdaFunc extends FuncType {
         this.args = CellNode.NIL;
         this.body = CellNode.NIL;
     }
+
 
     public Type eval(Visitor visitor, CellNode cellNode) {
 
@@ -44,12 +46,13 @@ public class LambdaFunc extends FuncType {
     private Type evalBody(Visitor visitor, CellNode cellNode) {
         Env local = new Env();
 
-        evalParam(visitor, args, cellNode, local);
+        CellNode evaluatedParams = evalParam(visitor, cellNode);
+        bindParam(visitor, args, evaluatedParams, local);
 
         visitor.pushEnv(local);
         Type result = null;
         CellNode bodyCopy = body;
-        while(!bodyCopy.nil){
+        while (!bodyCopy.nil) {
             try {
                 result = visitor.visit(bodyCopy.car);
                 bodyCopy = (CellNode) bodyCopy.cdr;
@@ -68,55 +71,94 @@ public class LambdaFunc extends FuncType {
     }
 
     /**
-     * 输入的是一个S表达式，args也是一个S表达式。需要进行解析
+     * 顺序计算每个cell，把结果组成一个list
+     *
      * @param visitor
-     * @param args  函数的形参
-     * @param params 实参
-     * @param local
+     * @param params  实参
      */
-    public static void evalParam(Visitor visitor, CellNode args, CellNode params, Env local) {
+    public static CellNode evalParam(Visitor visitor, CellNode params) {
+
+        CellNode head = new CellNode();
+        CellNode tail = head;
+        while (!params.nil) {
+            Type result = visitor.visit(params.car);
+            if (result instanceof NumType) {
+                SExprNode sExprNode = new SExprNode();
+                SymbolExprNode symbolExprNode = new SymbolExprNode();
+                sExprNode.node = symbolExprNode;
+
+                NumType num = (NumType) result;
+                symbolExprNode.node = new SymbolNode("NUM", num.val.toString());
+                tail.car = sExprNode;
+            } else if (result instanceof ExprType) {
+                ExprType exprType = (ExprType) result;
+                tail.car = exprType.cellNode.car;
+            } else if (result instanceof FuncType) {
+                //当参数是函数的时候，需要进行lexical scope binding。
+                keepEnvs((FuncType) result, visitor.getEnvStack());
+                //需要增加一个FuncNode，否则无法把FuncType的结果构成一个CellNodeList
+            }
+            tail.cdr = new CellNode();
+            tail = (CellNode) tail.cdr;
+            params = (CellNode) params.cdr;
+        }
+        tail.nil = true;
+
+        return head;
+
+    }
+
+    /**
+     * 输入的是一个S表达式，args也是一个S表达式。需要进行解析
+     *
+     * @param visitor
+     * @param args            函数的形参
+     * @param evaluatedParams 参数求值后的list
+     * @param local           局部环境
+     */
+    public static void bindParam(Visitor visitor, CellNode args, CellNode evaluatedParams, Env local) {
         if (args.car == null) {
             return;
         }
 
-        if(args.car instanceof SExprNode && params.car instanceof SExprNode){
+        if (args.car instanceof SExprNode && evaluatedParams.car instanceof SExprNode) {
             Type name = Util.getSymbolName(visitor, (SExprNode) args.car);
             StringType nameString = (StringType) name;
-            SExprNode param = (SExprNode) params.car;
-            Type tmp = visitor.visit(param);
-            if(tmp instanceof FuncType){
-                //当参数是函数的时候，需要进行lexical scope binding。
-                keepEnvs((FuncType) tmp, visitor.getEnvStack());
-            }
-            local.update(nameString.val, tmp);
-        }else{
+            SExprNode param = (SExprNode) evaluatedParams.car;
+
+            ExprType exprType = new ExprType();
+            exprType.cellNode = new CellNode();
+            exprType.cellNode.car = param;
+            exprType.cellNode.cdr = CellNode.NIL;
+            local.update(nameString.val, exprType);
+        } else {
             throw new RuntimeException("Parameter must be Symbol");
         }
 
-        if(!(params.cdr instanceof CellNode)){
+        if (!(evaluatedParams.cdr instanceof CellNode)) {
             throw new RuntimeException("params must be simple list");
         }
 
-        if(args.cdr instanceof CellNode ){
+        if (args.cdr instanceof CellNode) {
             CellNode argsCdr = (CellNode) args.cdr;
-            CellNode paramsCdr = (CellNode) params.cdr;
-            if(!argsCdr.nil ) {
-                evalParam(visitor, argsCdr, paramsCdr, local);
+            CellNode paramsCdr = (CellNode) evaluatedParams.cdr;
+            if (!argsCdr.nil) {
+                bindParam(visitor, argsCdr, paramsCdr, local);
             }
         } else if (args.cdr instanceof SExprNode) {
             SExprNode argsCdr = (SExprNode) args.cdr;
             if (argsCdr.node instanceof CellNode) {
                 CellNode argsCdrNode = (CellNode) argsCdr.node;
-                CellNode paramsCdr = (CellNode) params.cdr;
+                CellNode paramsCdr = (CellNode) evaluatedParams.cdr;
                 if (!argsCdrNode.nil) {
-                    evalParam(visitor, argsCdrNode, paramsCdr, local);
+                    bindParam(visitor, argsCdrNode, paramsCdr, local);
                 }
             } else if (argsCdr.node instanceof SymbolExprNode) {
                 Type name = Util.getSymbolName(visitor, argsCdr);
                 StringType nameString = (StringType) name;
 
                 SExprNode param = new SExprNode();
-                param.node = params.cdr;
+                param.node = evaluatedParams.cdr;
                 ExprType exprType = new ExprType();
                 exprType.cellNode = new CellNode();
                 exprType.cellNode.car = param;
@@ -126,7 +168,6 @@ public class LambdaFunc extends FuncType {
 
 
         }
-
     }
 
     /**
@@ -140,5 +181,10 @@ public class LambdaFunc extends FuncType {
         for (Env env : envs) {
             func.closureEnvs.add(env.getCopy());
         }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("(lambda (%s) %s)", args.toString(""), body.toString(""));
     }
 }

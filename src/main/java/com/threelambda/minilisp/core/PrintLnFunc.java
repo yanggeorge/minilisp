@@ -14,8 +14,8 @@ public class PrintLnFunc extends FuncType {
 
     public Type eval(Visitor visitor, CellNode cellNode) {
         String s = "";
-        while(!cellNode.nil) {
-            Type result =visitor.visit(cellNode.car);
+        while (!cellNode.nil) {
+            Type result = visitor.visit(cellNode.car);
             String kind = result.kind;
             Object val = null;
             switch (kind) {
@@ -23,7 +23,7 @@ public class PrintLnFunc extends FuncType {
                     val = result;
                     break;
                 case "StringType":
-                    val = ((StringType)result).val;
+                    val = ((StringType) result).val;
                     break;
                 case "FuncType":
                     val = result;
@@ -35,19 +35,19 @@ public class PrintLnFunc extends FuncType {
                     val = result.toString();
                     break;
                 case "BoolType":
-                    val = ((BoolType)result).toString();
+                    val = ((BoolType) result).toString();
                     break;
                 default:
                     throw new RuntimeException("type not known.");
             }
-            if(s.length() == 0) {
+            if (s.length() == 0) {
                 s += String.format("%s", val);
-            }else{
+            } else {
                 s += String.format(" %s", val);
             }
             cellNode = (CellNode) cellNode.cdr;
         }
-        if(s.length() != 0) {
+        if (s.length() != 0) {
             //NonSExprNode返回""
             s += "\n";
             System.out.printf(s);

@@ -13,11 +13,11 @@ public class DefMacroFunc extends FuncType {
     }
 
     public Type eval(Visitor visitor, CellNode cellNode) {
-        MacroFunc macroFunc = null;
+        Macro macroFunc = null;
         try {
-            SExprNode first = (SExprNode)cellNode.car;
-            CellNode second = (CellNode)cellNode.cdr;
-            StringType name = (StringType)Util.getSymbolName(visitor, first);
+            SExprNode first = (SExprNode) cellNode.car;
+            CellNode second = (CellNode) cellNode.cdr;
+            StringType name = (StringType) Util.getSymbolName(visitor, first);
             macroFunc = Util.buildMacroFunc(second);
             visitor.peekEnv().update(name.val, macroFunc);
         } catch (Exception e) {

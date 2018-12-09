@@ -1,9 +1,9 @@
 package com.threelambda.minilisp.core;
 
-import java.util.Objects;
-
 import com.threelambda.minilisp.node.CellNode;
 import com.threelambda.minilisp.node.SExprNode;
+
+import java.util.Objects;
 
 /**
  * @author yangming 2018/9/27
@@ -37,13 +37,13 @@ public class EqFunc extends FuncType {
             NumType secondNum = (NumType) secondResult;
             if (Objects.equals(firstNum.val, secondNum.val)) {
                 return new BoolType(true);
-            }else{
+            } else {
                 return new BoolType(false);
             }
 
 
         } catch (Exception e) {
-            throw new RuntimeException("Malformed Eq func.",e);
+            throw new RuntimeException("Malformed Eq func.", e);
         }
     }
 

@@ -35,13 +35,13 @@ public class GeFunc extends FuncType {
             NumType secondNum = (NumType) secondResult;
             if (firstNum.val >= secondNum.val) {
                 return new BoolType(true);
-            }else{
+            } else {
                 return new BoolType(false);
             }
 
 
         } catch (Exception e) {
-            throw new RuntimeException("Malformed Eq func.",e);
+            throw new RuntimeException("Malformed Eq func.", e);
         }
     }
 

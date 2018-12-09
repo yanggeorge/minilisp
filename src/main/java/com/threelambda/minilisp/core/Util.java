@@ -1,10 +1,6 @@
 package com.threelambda.minilisp.core;
 
-import com.threelambda.minilisp.node.CellNode;
-import com.threelambda.minilisp.node.Node;
-import com.threelambda.minilisp.node.SExprNode;
-import com.threelambda.minilisp.node.SymbolExprNode;
-import com.threelambda.minilisp.node.SymbolNode;
+import com.threelambda.minilisp.node.*;
 
 /**
  * Created by ym on 6/4/2017.
@@ -25,7 +21,7 @@ class Util {
     static LambdaFunc buildLambdaFunc(CellNode cellNode) {
         LambdaFunc lambdaFunc = new LambdaFunc();
         try {
-            lambdaFunc.args = (CellNode) ((SExprNode)cellNode.car).node;
+            lambdaFunc.args = (CellNode) ((SExprNode) cellNode.car).node;
             lambdaFunc.body = (CellNode) cellNode.cdr;
         } catch (Exception e) {
             throw new RuntimeException("Malformed lambda func.", e);
@@ -75,10 +71,10 @@ class Util {
         return null;
     }
 
-    public static MacroFunc buildMacroFunc(CellNode cellNode) {
-        MacroFunc macroFunc = new MacroFunc();
+    public static Macro buildMacroFunc(CellNode cellNode) {
+        Macro macroFunc = new Macro();
         try {
-            macroFunc.args = (CellNode) ((SExprNode)cellNode.car).node;
+            macroFunc.args = (CellNode) ((SExprNode) cellNode.car).node;
             macroFunc.body = (CellNode) cellNode.cdr;
         } catch (Exception e) {
             throw new RuntimeException("Malformed lambda func.", e);

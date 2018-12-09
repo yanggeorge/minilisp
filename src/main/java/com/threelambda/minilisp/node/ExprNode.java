@@ -22,16 +22,16 @@ public class ExprNode extends Node {
     @Override
     public String toString(String indent) {
         String s = "";
-        if(node instanceof SExprNode){
+        if (node instanceof SExprNode) {
             SExprNode sExprNode = (SExprNode) node;
-            s = sExprNode.toString(indent) ;
+            s = sExprNode.toString(indent);
         } else if (node instanceof NonSExprNode) {
             NonSExprNode nonSExprNode = (NonSExprNode) node;
             s = nonSExprNode.toString(indent);
-        } else if( node instanceof SymbolExprNode){
+        } else if (node instanceof SymbolExprNode) {
             SymbolExprNode symbolExprNode = (SymbolExprNode) node;
             s = symbolExprNode.toString(indent);
-        } else{
+        } else {
             throw new RuntimeException("Not support node.");
         }
         return s;

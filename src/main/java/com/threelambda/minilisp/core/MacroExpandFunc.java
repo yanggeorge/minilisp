@@ -46,18 +46,15 @@ public class MacroExpandFunc extends FuncType {
 
             SExprNode car = (SExprNode) cell.car;
             Type visit = visitor.visit(car);
-            if (visit instanceof MacroFunc) {
-                MacroFunc macroFunc = (MacroFunc) visit;
+            if (visit instanceof FuncType) {
+                return expr;
+            } else if (visit instanceof Macro) {
+                Macro macroFunc = (Macro) visit;
                 CellNode params = CellNodeUtil.nextCell(cell);
                 return expand(macroFunc.expand(visitor, params), visitor);
-            } else {
-                if (visit instanceof FuncType) {
-
-
-                    return expr;
-                }
             }
         }
+
         return null;
     }
 
