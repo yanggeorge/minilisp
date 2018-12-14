@@ -169,6 +169,8 @@ public class LispVisitor implements Visitor {
                     Macro macro = (Macro) result;
                     result = macro.eval(this, params);
                     return result;
+                } else if(result instanceof ExprType){
+                    ExprType exprType = (ExprType)result;
                 }
                 throw new RuntimeException("The head of a list must be a function");
             }

@@ -14,4 +14,14 @@ public class FuncNode extends Node {
     public void accept(Visitor visitor) throws Exception {
         visitor.visitFuncNode(this);
     }
+
+    @Override
+    public String toString(String indent) {
+        return func.toString();
+    }
+
+    @Override
+    public String toString() {
+        return func.toString();
+    }
 }

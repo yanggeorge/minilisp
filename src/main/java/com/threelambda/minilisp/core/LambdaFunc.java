@@ -1,9 +1,6 @@
 package com.threelambda.minilisp.core;
 
-import com.threelambda.minilisp.node.CellNode;
-import com.threelambda.minilisp.node.SExprNode;
-import com.threelambda.minilisp.node.SymbolExprNode;
-import com.threelambda.minilisp.node.SymbolNode;
+import com.threelambda.minilisp.node.*;
 
 import java.util.Stack;
 import java.util.UUID;
@@ -97,6 +94,11 @@ public class LambdaFunc extends FuncType {
                 //当参数是函数的时候，需要进行lexical scope binding。
                 keepEnvs((FuncType) result, visitor.getEnvStack());
                 //需要增加一个FuncNode，否则无法把FuncType的结果构成一个CellNodeList
+                FuncNode funcNode = new FuncNode();
+                funcNode.func = (FuncType) result;
+                SExprNode sExprNode = new SExprNode();
+                sExprNode.node = funcNode;
+                tail.car = sExprNode;
             }
             tail.cdr = new CellNode();
             tail = (CellNode) tail.cdr;
@@ -126,11 +128,16 @@ public class LambdaFunc extends FuncType {
             StringType nameString = (StringType) name;
             SExprNode param = (SExprNode) evaluatedParams.car;
 
-            ExprType exprType = new ExprType();
-            exprType.cellNode = new CellNode();
-            exprType.cellNode.car = param;
-            exprType.cellNode.cdr = CellNode.NIL;
-            local.update(nameString.val, exprType);
+            if(param.node instanceof FuncNode){
+                FuncNode funcNode = (FuncNode) param.node;
+                local.update(nameString.val, funcNode.func);
+            }else {
+                ExprType exprType = new ExprType();
+                exprType.cellNode = new CellNode();
+                exprType.cellNode.car = param;
+                exprType.cellNode.cdr = CellNode.NIL;
+                local.update(nameString.val, exprType);
+            }
         } else {
             throw new RuntimeException("Parameter must be Symbol");
         }
