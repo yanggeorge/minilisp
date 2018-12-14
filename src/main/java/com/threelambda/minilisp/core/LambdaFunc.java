@@ -129,6 +129,7 @@ public class LambdaFunc extends FuncType {
             SExprNode param = (SExprNode) evaluatedParams.car;
 
             if(param.node instanceof FuncNode){
+                //如果入参是一个函数
                 FuncNode funcNode = (FuncNode) param.node;
                 local.update(nameString.val, funcNode.func);
             }else {
