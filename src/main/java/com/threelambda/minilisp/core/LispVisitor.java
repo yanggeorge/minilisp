@@ -96,75 +96,8 @@ public class LispVisitor implements Visitor {
                 Type result = this.visitSExprNode((SExprNode) first);
                 if (result instanceof FuncType) {
                     FuncType func = (FuncType) result;
-                    if (func instanceof PrintLnFunc) {
-                        PrintLnFunc printLnFunc = (PrintLnFunc) func;
-                        result = printLnFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof DefineFunc) {
-                        DefineFunc defineFunc = (DefineFunc) func;
-                        result = defineFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof AddFunc) {
-                        AddFunc addFunc = (AddFunc) func;
-                        result = addFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof MinusFunc) {
-                        MinusFunc minusFunc = (MinusFunc) func;
-                        result = minusFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof LambdaFunc) {
-                        LambdaFunc lambdaFunc = (LambdaFunc) func;
-                        result = lambdaFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof DefunFunc) {
-                        DefunFunc defunFunc = (DefunFunc) func;
-                        result = defunFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof SetqFunc) {
-                        SetqFunc setqFunc = (SetqFunc) func;
-                        result = setqFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof QuoteFunc) {
-                        QuoteFunc quoteFunc = (QuoteFunc) func;
-                        result = quoteFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof ConsFunc) {
-                        ConsFunc consFunc = (ConsFunc) func;
-                        result = consFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof IfFunc) {
-                        IfFunc ifFunc = (IfFunc) func;
-                        result = ifFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof EqFunc) {
-                        EqFunc eqFunc = (EqFunc) func;
-                        result = eqFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof LtFunc) {
-                        LtFunc eqFunc = (LtFunc) func;
-                        result = eqFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof GtFunc) {
-                        GtFunc eqFunc = (GtFunc) func;
-                        result = eqFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof LeFunc) {
-                        LeFunc eqFunc = (LeFunc) func;
-                        result = eqFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof GeFunc) {
-                        GeFunc eqFunc = (GeFunc) func;
-                        result = eqFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof DefMacroFunc) {
-                        DefMacroFunc defmacroFunc = (DefMacroFunc) func;
-                        result = defmacroFunc.eval(this, params);
-                        return result;
-                    } else if (func instanceof MacroExpandFunc) {
-                        MacroExpandFunc macroExpandFunc = (MacroExpandFunc) func;
-                        result = macroExpandFunc.eval(this, params);
-                        return result;
-                    }
+                    result = func.eval(this, params);
+                    return result;
                 } else if (result instanceof Macro) {
                     Macro macro = (Macro) result;
                     result = macro.eval(this, params);
