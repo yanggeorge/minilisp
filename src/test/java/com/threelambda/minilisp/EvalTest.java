@@ -138,8 +138,8 @@ public class EvalTest {
     @Test
     public void test121() throws ParseException{
         String s = "(define count 0)\n"
-            + "     (setq count (+ count 2))\n"
-            + "     (println count)";
+            + "(setq count (+ count 2))\n"
+            + "(println count)";
         String ret = call(s);
         Assert.assertEquals("2\n", ret);
     }
