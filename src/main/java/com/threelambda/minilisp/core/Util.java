@@ -1,6 +1,9 @@
 package com.threelambda.minilisp.core;
 
-import com.threelambda.minilisp.node.*;
+import com.threelambda.minilisp.node.CellNode;
+import com.threelambda.minilisp.node.SExprNode;
+import com.threelambda.minilisp.node.SymbolExprNode;
+import com.threelambda.minilisp.node.SymbolNode;
 
 /**
  * Created by ym on 6/4/2017.
@@ -49,7 +52,7 @@ class Util {
 
     }
 
-    public static Node convertToSExpr(Type result) {
+    public static SExprNode convertToSExpr(Type result) {
         if (result instanceof NumType) {
             NumType first = (NumType) result;
             SymbolNode sym = new SymbolNode("NUM", String.valueOf(first.val));
@@ -62,8 +65,8 @@ class Util {
             return new SExprNode(sen);
         } else if (result instanceof ExprType) {
             ExprType first = (ExprType) result;
-            if (first.cellNode != null) {
-                return first.cellNode;
+            if (first.sExprNode != null) {
+                return first.sExprNode;
             }
         } else {
             throw new RuntimeException("convertToSExpr failed.");

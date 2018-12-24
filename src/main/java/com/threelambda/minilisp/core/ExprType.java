@@ -1,21 +1,21 @@
 package com.threelambda.minilisp.core;
 
-import com.threelambda.minilisp.node.*;
+import com.threelambda.minilisp.node.SExprNode;
 
 /**
  * Created by ym on 7/18/2017.
  */
 public class ExprType extends Type {
-    public CellNode cellNode;
+    public SExprNode sExprNode;
 
     public ExprType() {
         super("ExprType");
-        this.cellNode = null;
+        this.sExprNode = null;
     }
 
-    public ExprType(CellNode cellNode) {
+    public ExprType(SExprNode sExprNode) {
         super("ExprType");
-        this.cellNode = cellNode;
+        this.sExprNode = sExprNode;
     }
 
 
@@ -26,21 +26,7 @@ public class ExprType extends Type {
      */
     @Override
     public String toString() {
-        return cellNode.toString("");
+        return sExprNode.toString("");
     }
-
-    private String convert(SExprNode sExprNode) {
-        String s = "";
-        String sep = " ";
-        Node child = sExprNode.node;
-        if (child instanceof SymbolExprNode) {
-            SymbolExprNode symExpr = (SymbolExprNode) child;
-            SymbolNode symbolNode = (SymbolNode) symExpr.node;
-            s += symbolNode.image;
-            return s;
-        }
-        return s;
-    }
-
 
 }

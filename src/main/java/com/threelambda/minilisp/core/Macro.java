@@ -23,7 +23,7 @@ public class Macro extends MacroType {
     public Type eval(Visitor visitor, CellNode params) {
         try {
             ExprType expr = this.expand(visitor, params);
-            Type result = visitor.visit(expr.cellNode);
+            Type result = visitor.visit(expr.sExprNode);
             return result;
         } catch (Exception e) {
             throw new RuntimeException("Macro eval fail", e);
@@ -78,12 +78,9 @@ public class Macro extends MacroType {
         //把result包装为ExprType
         ExprType exprType = new ExprType();
         CellNode cellNode = new CellNode();
-        exprType.cellNode = cellNode;
-        SExprNode sExprNode = new SExprNode();
-        cellNode.car = sExprNode;
-        cellNode.cdr = CellNode.NIL;
+        exprType.sExprNode = new SExprNode();
         SymbolExprNode symbolExprNode = new SymbolExprNode();
-        sExprNode.node = symbolExprNode;
+        exprType.sExprNode.node = symbolExprNode;
         if (result instanceof NumType) {
             NumType num = (NumType) result;
             symbolExprNode.node = new SymbolNode("Num", num.val.toString());

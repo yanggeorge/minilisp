@@ -34,9 +34,7 @@ public class MacroExpandFunc extends FuncType {
         //3. 如果是 宏，则进行扩展
         //   3.1 宏内部的函数直接求值
         //   3.2 宏内部的宏则进行直接扩展，不绑定实参。
-        CellNode cellNode = expr.cellNode;
-        assert CellNodeUtil.length(cellNode) == 1;
-        SExprNode firstSExpr = CellNodeUtil.getFirst(expr.cellNode);
+        SExprNode firstSExpr = expr.sExprNode;
         if (firstSExpr.node instanceof SymbolExprNode) {
             //1. 如果是 简单的SymbolExpr，则直接返回
             return expr;

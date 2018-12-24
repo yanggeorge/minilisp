@@ -35,11 +35,7 @@ public class ConsFunc extends FuncType {
             //如果是numType包装成ExprType
             NumType firstNum = (NumType) result;
             ExprType expr = new ExprType();
-            expr.cellNode = new CellNode();
-            expr.cellNode.car = new SExprNode();
-            SymbolExprNode symbolExprNode = new SymbolExprNode();
-            ((SExprNode) expr.cellNode.car).node = symbolExprNode;
-            symbolExprNode.node = new SymbolNode("NUM", firstNum.val.toString());
+            expr.sExprNode = Util.convertToSExpr(firstNum);
             return expr;
         } else if (result instanceof StringType) {
             //todo 目前不支持String类型
@@ -48,10 +44,9 @@ public class ConsFunc extends FuncType {
             FuncType funcType = (FuncType) result;
             String s = funcType.toString();
             ExprType expr = new ExprType();
-            expr.cellNode = new CellNode();
-            expr.cellNode.car = new SExprNode();
+            expr.sExprNode = new SExprNode();
             SymbolExprNode symbolExprNode = new SymbolExprNode();
-            ((SExprNode) expr.cellNode.car).node = symbolExprNode;
+            expr.sExprNode.node = symbolExprNode;
             symbolExprNode.node = new SymbolNode("ID", s);
             return expr;
         }
@@ -61,59 +56,36 @@ public class ConsFunc extends FuncType {
     private ExprType cons(ExprType first, ExprType second) {
         if (second == null) {
             // null when eval '()'
-            ExprType expr = new ExprType();
-            expr.cellNode = new CellNode();
-            expr.cellNode.car = new SExprNode();
-            ((SExprNode) expr.cellNode.car).node = ((SExprNode) first.cellNode.car).node;
-            expr.cellNode.cdr = CellNode.NIL;
-
             ExprType result = new ExprType();
-            result.cellNode = new CellNode();
-            result.cellNode.car = new SExprNode();
-            result.cellNode.cdr = CellNode.NIL;
-            ((SExprNode) result.cellNode.car).node = expr.cellNode;
+            CellNode cellNode = new CellNode();
+            cellNode.car = first.sExprNode;
+            cellNode.cdr = CellNode.NIL;
+            result.sExprNode = new SExprNode();
+            result.sExprNode.node = cellNode;
             return result;
-        } else if (isAtom(second.cellNode)) {
+        } else if (isAtom(second.sExprNode)) {
             //atom element
-            ExprType expr = new ExprType();
-            expr.cellNode = new CellNode();
-            expr.cellNode.car = new SExprNode();
-            ((SExprNode) expr.cellNode.car).node = ((SExprNode) first.cellNode.car).node;
-            expr.cellNode.cdr = second.cellNode.car;
+            CellNode cellNode = new CellNode();
+            cellNode.car = first.sExprNode;
+            cellNode.cdr = second.sExprNode;
 
             ExprType result = new ExprType();
-            result.cellNode = new CellNode();
-            result.cellNode.car = new SExprNode();
-            result.cellNode.cdr = CellNode.NIL;
-            ((SExprNode) result.cellNode.car).node = expr.cellNode;
+            result.sExprNode = new SExprNode();
+            result.sExprNode.node = cellNode;
             return result;
         } else {
             //list expr
             ExprType expr = new ExprType();
-            expr.cellNode = new CellNode();
-            expr.cellNode.car = new SExprNode();
-            ((SExprNode) expr.cellNode.car).node = ((SExprNode) first.cellNode.car).node;
-            expr.cellNode.cdr = new CellNode();
-            ((CellNode) expr.cellNode.cdr).car = new SExprNode();
-            if (((CellNode) ((SExprNode) second.cellNode.car).node).nil) {
-                expr.cellNode.cdr = ((SExprNode) second.cellNode.car).node;
-            } else {
-                ((SExprNode) ((CellNode) expr.cellNode.cdr).car).node
-                        = ((SExprNode) ((CellNode) ((SExprNode) second.cellNode.car).node).car).node;
-                ((CellNode) expr.cellNode.cdr).cdr = ((CellNode) ((SExprNode) second.cellNode.car).node).cdr;
-            }
-
-            ExprType result = new ExprType();
-            result.cellNode = new CellNode();
-            result.cellNode.car = new SExprNode();
-            result.cellNode.cdr = CellNode.NIL;
-            ((SExprNode) result.cellNode.car).node = expr.cellNode;
-            return result;
+            CellNode cellNode = new CellNode();
+            cellNode.car = first.sExprNode;
+            cellNode.cdr = second.sExprNode.node;
+            expr.sExprNode = new SExprNode();
+            expr.sExprNode.node = cellNode;
+            return expr;
         }
     }
 
-    private boolean isAtom(CellNode cellNode) {
-        SExprNode sExprNode = (SExprNode) cellNode.car;
+    private boolean isAtom(SExprNode sExprNode) {
         Node node = sExprNode.node;
         return node instanceof SymbolExprNode;
     }

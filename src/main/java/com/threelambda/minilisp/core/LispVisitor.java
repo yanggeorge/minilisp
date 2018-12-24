@@ -75,10 +75,7 @@ public class LispVisitor implements Visitor {
     public Type visitSQuoteExprNode(SQuoteExprNode node) {
         SExprNode sExprNode = (SExprNode) node.node;
         ExprType exprType = new ExprType();
-        CellNode cellNode = new CellNode();
-        cellNode.car = sExprNode;
-        cellNode.cdr = CellNode.NIL;
-        exprType.cellNode = cellNode;
+        exprType.sExprNode = sExprNode;
         return exprType;
     }
 

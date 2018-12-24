@@ -23,7 +23,7 @@ public class AddFunc extends FuncType {
 
                 } else if (tmp.kind.equals("ExprType")) {
                     ExprType e = (ExprType) tmp;
-                    tmp = visitor.visit(e.cellNode.car);
+                    tmp = visitor.visit(e.sExprNode);
                     result += ((NumType) tmp).val;
                 }
                 cellNode = (CellNode) cellNode.cdr;

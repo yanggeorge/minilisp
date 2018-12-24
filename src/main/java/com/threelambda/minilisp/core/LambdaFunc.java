@@ -89,7 +89,7 @@ public class LambdaFunc extends FuncType {
                 tail.car = sExprNode;
             } else if (result instanceof ExprType) {
                 ExprType exprType = (ExprType) result;
-                tail.car = exprType.cellNode.car;
+                tail.car = exprType.sExprNode;
             } else if (result instanceof FuncType) {
                 //当参数是函数的时候，需要进行lexical scope binding。
                 keepEnvs((FuncType) result, visitor.getEnvStack());
@@ -134,9 +134,7 @@ public class LambdaFunc extends FuncType {
                 local.update(nameString.val, funcNode.func);
             }else {
                 ExprType exprType = new ExprType();
-                exprType.cellNode = new CellNode();
-                exprType.cellNode.car = param;
-                exprType.cellNode.cdr = CellNode.NIL;
+                exprType.sExprNode = param;
                 local.update(nameString.val, exprType);
             }
         } else {
@@ -168,9 +166,7 @@ public class LambdaFunc extends FuncType {
                 SExprNode param = new SExprNode();
                 param.node = evaluatedParams.cdr;
                 ExprType exprType = new ExprType();
-                exprType.cellNode = new CellNode();
-                exprType.cellNode.car = param;
-                exprType.cellNode.cdr = CellNode.NIL;
+                exprType.sExprNode = param;
                 local.update(nameString.val, exprType);
             }
 
