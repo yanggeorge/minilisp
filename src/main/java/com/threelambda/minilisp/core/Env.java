@@ -46,6 +46,7 @@ public class Env {
         hash.put("cdr", new CdrFunc());
         hash.put("setcar", new SetCarFunc());
         hash.put("eq", new SExprEqFunc());
+        hash.put("while", new WhileFunc());
         //全局变量
         hash.put("t", new BoolType(true));
         return this;

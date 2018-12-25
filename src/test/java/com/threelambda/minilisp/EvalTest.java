@@ -671,9 +671,23 @@ public class EvalTest {
     }
 
     @Test
+    public void test300() throws ParseException {
+        String s = "(define i 0)\n" +
+                "(while (< i 10) \n" +
+                " (println i) \n" +
+                " (setq i (+ i 1)) ) \n" +
+                " \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n", ret);
+    }
+
+    @Test
     public void test() throws ParseException {
-        String s = "\n" +
-                "(println ((lambda () t)) ) \n"  ;
+        String s = "(define i 0)\n" +
+                "(while (< i 10) \n" +
+                " (println i) \n" +
+                " (setq i (+ i 1)) ) \n" +
+                " \n"  ;
         String ret = call(s);
     }
 
