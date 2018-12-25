@@ -128,11 +128,11 @@ public class LambdaFunc extends FuncType {
             StringType nameString = (StringType) name;
             SExprNode param = (SExprNode) evaluatedParams.car;
 
-            if(param.node instanceof FuncNode){
+            if (param.node instanceof FuncNode) {
                 //如果入参是一个函数
                 FuncNode funcNode = (FuncNode) param.node;
                 local.update(nameString.val, funcNode.func);
-            }else {
+            } else {
                 ExprType exprType = new ExprType();
                 exprType.sExprNode = param;
                 local.update(nameString.val, exprType);

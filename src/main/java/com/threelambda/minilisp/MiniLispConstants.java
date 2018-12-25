@@ -8,69 +8,111 @@ package com.threelambda.minilisp;
  */
 public interface MiniLispConstants {
 
-  /** End of File. */
-  int EOF = 0;
-  /** RegularExpression Id. */
-  int EMPTY = 1;
-  /** RegularExpression Id. */
-  int LP = 2;
-  /** RegularExpression Id. */
-  int RP = 3;
-  /** RegularExpression Id. */
-  int DOT = 4;
-  /** RegularExpression Id. */
-  int MINUS = 5;
-  /** RegularExpression Id. */
-  int PLUS = 6;
-  /** RegularExpression Id. */
-  int EQ = 7;
-  /** RegularExpression Id. */
-  int AND = 8;
-  /** RegularExpression Id. */
-  int NOT = 9;
-  /** RegularExpression Id. */
-  int OR = 10;
-  /** RegularExpression Id. */
-  int GT = 11;
-  /** RegularExpression Id. */
-  int LT = 12;
-  /** RegularExpression Id. */
-  int LE = 13;
-  /** RegularExpression Id. */
-  int GE = 14;
-  /** RegularExpression Id. */
-  int SQUOTE = 15;
-  /** RegularExpression Id. */
-  int NUM = 16;
-  /** RegularExpression Id. */
-  int ID = 17;
-  /** RegularExpression Id. */
-  int COMMENT = 18;
+    /**
+     * End of File.
+     */
+    int EOF = 0;
+    /**
+     * RegularExpression Id.
+     */
+    int EMPTY = 1;
+    /**
+     * RegularExpression Id.
+     */
+    int LP = 2;
+    /**
+     * RegularExpression Id.
+     */
+    int RP = 3;
+    /**
+     * RegularExpression Id.
+     */
+    int DOT = 4;
+    /**
+     * RegularExpression Id.
+     */
+    int MINUS = 5;
+    /**
+     * RegularExpression Id.
+     */
+    int PLUS = 6;
+    /**
+     * RegularExpression Id.
+     */
+    int EQ = 7;
+    /**
+     * RegularExpression Id.
+     */
+    int AND = 8;
+    /**
+     * RegularExpression Id.
+     */
+    int NOT = 9;
+    /**
+     * RegularExpression Id.
+     */
+    int OR = 10;
+    /**
+     * RegularExpression Id.
+     */
+    int GT = 11;
+    /**
+     * RegularExpression Id.
+     */
+    int LT = 12;
+    /**
+     * RegularExpression Id.
+     */
+    int LE = 13;
+    /**
+     * RegularExpression Id.
+     */
+    int GE = 14;
+    /**
+     * RegularExpression Id.
+     */
+    int SQUOTE = 15;
+    /**
+     * RegularExpression Id.
+     */
+    int NUM = 16;
+    /**
+     * RegularExpression Id.
+     */
+    int ID = 17;
+    /**
+     * RegularExpression Id.
+     */
+    int COMMENT = 18;
 
-  /** Lexical state. */
-  int DEFAULT = 0;
+    /**
+     * Lexical state.
+     */
+    int DEFAULT = 0;
 
-  /** Literal token values. */
-  String[] tokenImage = {
-    "<EOF>",
-    "<EMPTY>",
-    "\"(\"",
-    "\")\"",
-    "\".\"",
-    "\"-\"",
-    "\"+\"",
-    "\"=\"",
-    "\"and\"",
-    "\"not\"",
-    "\"or\"",
-    "\">\"",
-    "\"<\"",
-    "\"<=\"",
-    "\">=\"",
-    "\"\\\'\"",
-    "<NUM>",
-    "<ID>",
-    "<COMMENT>",
-  };
+    /**
+     * Literal token values.
+     */
+    String[] tokenImage = {
+            "<EOF>",
+            "<EMPTY>",
+            "\"(\"",
+            "\")\"",
+            "\".\"",
+            "\"-\"",
+            "\"+\"",
+            "\"=\"",
+            "\"and\"",
+            "\"not\"",
+            "\"or\"",
+            "\">\"",
+            "\"<\"",
+            "\"<=\"",
+            "\">=\"",
+            "\"\\\'\"",
+            "<NUM>",
+            "<ID>",
+            "<COMMENT>",
+    };
 
 }

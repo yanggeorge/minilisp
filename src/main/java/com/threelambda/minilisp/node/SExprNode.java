@@ -35,10 +35,10 @@ public class SExprNode extends Node {
         } else if (node instanceof SQuoteExprNode) {
             SQuoteExprNode sQuoteExprNode = (SQuoteExprNode) node;
             s = indent + sQuoteExprNode.toString("");
-        } else if(node instanceof FuncNode) {
+        } else if (node instanceof FuncNode) {
             FuncNode funcNode = (FuncNode) node;
             s = indent + funcNode.toString("");
-        }else {
+        } else {
             throw new RuntimeException("Not support node.");
         }
         return s;
