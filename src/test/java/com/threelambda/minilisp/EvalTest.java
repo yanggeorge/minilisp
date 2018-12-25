@@ -610,6 +610,26 @@ public class EvalTest {
     }
 
     @Test
+    public void test245() throws ParseException {
+        String s = "(defun list (x . y) (cons x y))\n" +
+                "  (defmacro if-zero (x then) (list 'if (list '= x 0) then))\n" +
+                "  (println (macroexpand '(if-zero x (print x))) )" +
+                " \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("(if (= x 0) (print x))\n", ret);
+    }
+
+    @Test
+    public void test246() throws ParseException {
+        String s = "(defun list (x . y) (cons x y))\n" +
+                "  (defmacro if-zero (x then) (list 'if (list '= x 0) then))\n" +
+                "  (println (if-zero 0 42))" +
+                " \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("42\n", ret);
+    }
+
+    @Test
     public void test250() throws ParseException {
         String s = "\n" +
                 "(define a (cons 1 2)) \n"
@@ -683,10 +703,9 @@ public class EvalTest {
 
     @Test
     public void test() throws ParseException {
-        String s = "(define i 0)\n" +
-                "(while (< i 10) \n" +
-                " (println i) \n" +
-                " (setq i (+ i 1)) ) \n" +
+        String s = "(defun list (x . y) (cons x y))\n" +
+                "  (defmacro if-zero (x then) (list 'if (list '= x 0) then))\n" +
+                "  (println (if-zero 0 42))" +
                 " \n"  ;
         String ret = call(s);
     }
