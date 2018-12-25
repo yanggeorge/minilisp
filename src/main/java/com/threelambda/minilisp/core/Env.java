@@ -42,6 +42,12 @@ public class Env {
         hash.put("<GeFunc>", new GeFunc());
         hash.put("defmacro", new DefMacroFunc());
         hash.put("macroexpand", new MacroExpandFunc());
+        hash.put("car", new CarFunc());
+        hash.put("cdr", new CdrFunc());
+        hash.put("setcar", new SetCarFunc());
+        hash.put("eq", new SExprEqFunc());
+        //全局变量
+        hash.put("t", new BoolType(true));
         return this;
     }
 
@@ -67,10 +73,15 @@ public class Env {
     public static void main(String[] args) {
         Env env = new Env();
         env.initPrimitiveFunc();
+        env.initSymbol();
         System.out.println(env.get("println"));
         env.update("a", new NumType(1));
         System.out.println(env.get("a"));
         env.update("a", new NumType(2));
         System.out.println(env.get("a"));
+    }
+
+    private void initSymbol() {
+
     }
 }

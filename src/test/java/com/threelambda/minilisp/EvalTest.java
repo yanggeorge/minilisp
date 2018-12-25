@@ -600,13 +600,6 @@ public class EvalTest {
     }
 
     @Test
-    public void test243() throws ParseException {
-        String s = "\n" +
-                "(println (cons + '(1) )) \n"  ;
-        String ret = call(s);
-    }
-
-    @Test
     public void test244() throws ParseException {
         String s = "\n" +
                 "(defun list (x . y)  (cons x y)) \n" +
@@ -614,6 +607,74 @@ public class EvalTest {
                 + "(println (macroexpand '(add (+ 2 3) )))  ;; \n"  ;
         String ret = call(s);
         Assert.assertEquals("(+ 1 (+ 2 3))\n", ret);
+    }
+
+    @Test
+    public void test250() throws ParseException {
+        String s = "\n" +
+                "(define a (cons 1 2)) \n"
+                + "(println (car a))  ;; \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("1\n", ret);
+    }
+
+    @Test
+    public void test260() throws ParseException {
+        String s = "\n" +
+                "(define a (cons 1 2)) \n"
+                + "(println (cdr a))  ;; \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("2\n", ret);
+    }
+
+    @Test
+    public void test261() throws ParseException {
+        String s = "\n" +
+                "(define a (cons 1 '(2))) \n"
+                + "(println (cdr a))  ;; \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("(2)\n", ret);
+    }
+
+    @Test
+    public void test270() throws ParseException {
+        String s = "\n" +
+                "(define a (cons 1 2)) \n"
+                + "(setcar a '3)  \n"
+                + "(println a)  ;; \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("(3 . 2)\n", ret);
+    }
+
+    @Test
+    public void test280() throws ParseException {
+        String s = "\n" +
+                "(println ((lambda () t)) ) \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("t\n", ret);
+    }
+
+    @Test
+    public void test290() throws ParseException {
+        String s = "\n" +
+                "(println (eq 'a 'a) ) \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("t\n", ret);
+    }
+
+    @Test
+    public void test291() throws ParseException {
+        String s = "\n" +
+                "(println (eq 'a 'b) ) \n"  ;
+        String ret = call(s);
+        Assert.assertEquals("()\n", ret);
+    }
+
+    @Test
+    public void test() throws ParseException {
+        String s = "\n" +
+                "(println ((lambda () t)) ) \n"  ;
+        String ret = call(s);
     }
 
     private String call(String s) throws ParseException {
