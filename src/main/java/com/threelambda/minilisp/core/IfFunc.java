@@ -42,7 +42,12 @@ public class IfFunc extends FuncType {
                 condValue = true;
             } else if (result instanceof ExprType) {
                 ExprType exprType = (ExprType) result;
-                condValue = true;
+                //当"()"为false
+                if(exprType.toString().equalsIgnoreCase("()")){
+                    condValue = false;
+                }else {
+                    condValue = true;
+                }
             }
 
             if (condValue == null) {

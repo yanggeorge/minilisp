@@ -703,10 +703,13 @@ public class EvalTest {
 
     @Test
     public void test() throws ParseException {
-        String s = "(defun list (x . y) (cons x y))\n" +
-                "  (defmacro if-zero (x then) (list 'if (list '= x 0) then))\n" +
-                "  (println (if-zero 0 42))" +
-                " \n"  ;
+        String s = "(defun list (x . y) (cons x y))" +
+
+                "(defun nth (lis n)\n" +
+                "  (if (= n 0)\n" +
+                "      (car lis)\n" +
+                "    (nth (cdr lis) (- n 1))))\n" +
+                "(println (nth '(1 2 3) 2) )"  ;
         String ret = call(s);
     }
 

@@ -25,10 +25,16 @@ public class EqFunc extends FuncType {
             SExprNode secondExpr = CellNodeUtil.getFirst(CellNodeUtil.nextCell(cellNode));
 
             Type firstResult = visitor.visit(firstExpr);
+            if (firstResult instanceof ExprType) {
+                firstResult = visitor.visit(((ExprType)firstResult).sExprNode);
+            }
             if (!(firstResult instanceof NumType)) {
                 throw new RuntimeException("must be num.");
             }
             Type secondResult = visitor.visit(secondExpr);
+            if(secondResult instanceof ExprType){
+                secondResult = visitor.visit(((ExprType) secondResult).sExprNode);
+            }
             if (!(secondResult instanceof NumType)) {
                 throw new RuntimeException("must be num.");
             }

@@ -5,795 +5,635 @@ import com.threelambda.minilisp.node.*;
 import com.threelambda.minilisp.node.NonSExprNode.NonSExprNodeType;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class MiniLisp implements MiniLispConstants {
 
-    /**
-     * Main entry point.
-     */
-    public static void main(String args[]) throws ParseException {
-        MiniLisp parser = new MiniLisp(System.in);
-        parser.Input();
-    }
+  /** Main entry point. */
+  public static void main(String args[]) throws ParseException {
+    MiniLisp parser = new MiniLisp(System.in);
+    parser.Input();
+  }
 
-    /**
-     * Root production.
-     */
-    final public List<Node> Input() throws ParseException {
-        List<Node> list = new ArrayList<Node>();
-        Node n;
-        label_1:
+/** Root production. */
+  final public List<Node> Input() throws ParseException {
+    List<Node> list = new ArrayList<Node>();
+    Node n;
+    label_1:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case EMPTY:
+      case LP:
+      case MINUS:
+      case PLUS:
+      case EQ:
+      case GT:
+      case LT:
+      case LE:
+      case GE:
+      case SQUOTE:
+      case NUM:
+      case ID:
+      case COMMENT:
+        ;
+        break;
+      default:
+        jj_la1[0] = jj_gen;
+        break label_1;
+      }
+      n = Expr();
+                list.add(n);
+    }
+    jj_consume_token(0);
+                                         {if (true) return list;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public ExprNode Expr() throws ParseException {
+    NonSExprNode nse;
+    SExprNode se;
+    ExprNode exprNode;
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case EMPTY:
+    case COMMENT:
+      nse = NonSExpr();
+                      exprNode = new ExprNode(); exprNode.node = nse; {if (true) return exprNode;}
+      break;
+    case LP:
+    case MINUS:
+    case PLUS:
+    case EQ:
+    case GT:
+    case LT:
+    case LE:
+    case GE:
+    case SQUOTE:
+    case NUM:
+    case ID:
+      se = SExpr();
+                     exprNode = new ExprNode(); exprNode.node = se; {if (true) return exprNode;}
+      break;
+    default:
+      jj_la1[1] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    throw new Error("Missing return statement in function");
+  }
+
+  final public NonSExprNode NonSExpr() throws ParseException {
+    Token t;
+    NonSExprNode nse;
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case EMPTY:
+      t = jj_consume_token(EMPTY);
+                 nse =  new NonSExprNode(); nse.image = t.image; nse.type = NonSExprNodeType.EMPTY; {if (true) return nse;}
+      break;
+    case COMMENT:
+      t = jj_consume_token(COMMENT);
+                 nse =  new NonSExprNode(); nse.image = t.image; nse.type = NonSExprNodeType.COMMENT; {if (true) return nse;}
+      break;
+    default:
+      jj_la1[2] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    throw new Error("Missing return statement in function");
+  }
+
+  final public SExprNode SExpr() throws ParseException {
+    SymbolExprNode sym;
+    SExprNode se;
+    CellNode nextCell = new CellNode();
+    NonSExprNode nse;
+    SQuoteExprNode sqe;
+    List<SExprNode> selist = new ArrayList<SExprNode>();
+    List<SExprNode> rselist = new ArrayList<SExprNode>();
+    Token dot = new Token();
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case MINUS:
+    case PLUS:
+    case EQ:
+    case GT:
+    case LT:
+    case LE:
+    case GE:
+    case NUM:
+    case ID:
+      sym = SymbolExpr();
+                        se=new SExprNode(); se.node = (Node)sym ; {if (true) return se;}
+      break;
+    case LP:
+      jj_consume_token(LP);
+      label_2:
+      while (true) {
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case EMPTY:
+        case COMMENT:
+          ;
+          break;
+        default:
+          jj_la1[3] = jj_gen;
+          break label_2;
+        }
+        nse = NonSExpr();
+      }
+      label_3:
+      while (true) {
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case LP:
+        case MINUS:
+        case PLUS:
+        case EQ:
+        case GT:
+        case LT:
+        case LE:
+        case GE:
+        case SQUOTE:
+        case NUM:
+        case ID:
+          ;
+          break;
+        default:
+          jj_la1[4] = jj_gen;
+          break label_3;
+        }
+        se = SExpr();
+                         selist.add(se);
+        label_4:
         while (true) {
-            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-                case EMPTY:
-                case LP:
-                case MINUS:
-                case PLUS:
-                case EQ:
-                case AND:
-                case NOT:
-                case OR:
-                case GT:
-                case LT:
-                case LE:
-                case GE:
-                case SQUOTE:
-                case NUM:
-                case ID:
-                case COMMENT:
-                    ;
-                    break;
-                default:
-                    jj_la1[0] = jj_gen;
-                    break label_1;
-            }
-            n = Expr();
-            list.add(n);
+          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+          case EMPTY:
+          case COMMENT:
+            ;
+            break;
+          default:
+            jj_la1[5] = jj_gen;
+            break label_4;
+          }
+          nse = NonSExpr();
         }
-        jj_consume_token(0);
-        {
-            if (true) return list;
+      }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case DOT:
+        dot = jj_consume_token(DOT);
+        label_5:
+        while (true) {
+          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+          case EMPTY:
+          case COMMENT:
+            ;
+            break;
+          default:
+            jj_la1[6] = jj_gen;
+            break label_5;
+          }
+          nse = NonSExpr();
         }
-        throw new Error("Missing return statement in function");
-    }
-
-    final public ExprNode Expr() throws ParseException {
-        NonSExprNode nse;
-        SExprNode se;
-        ExprNode exprNode;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-            case EMPTY:
-            case COMMENT:
-                nse = NonSExpr();
-                exprNode = new ExprNode();
-                exprNode.node = nse;
-            {
-                if (true) return exprNode;
-            }
+        se = SExpr();
+                             rselist.add(se);
+        label_6:
+        while (true) {
+          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+          case EMPTY:
+          case COMMENT:
+            ;
             break;
-            case LP:
-            case MINUS:
-            case PLUS:
-            case EQ:
-            case AND:
-            case NOT:
-            case OR:
-            case GT:
-            case LT:
-            case LE:
-            case GE:
-            case SQUOTE:
-            case NUM:
-            case ID:
-                se = SExpr();
-                exprNode = new ExprNode();
-                exprNode.node = se;
-            {
-                if (true) return exprNode;
-            }
-            break;
-            default:
-                jj_la1[1] = jj_gen;
-                jj_consume_token(-1);
-                throw new ParseException();
+          default:
+            jj_la1[7] = jj_gen;
+            break label_6;
+          }
+          nse = NonSExpr();
         }
-        throw new Error("Missing return statement in function");
-    }
-
-    final public NonSExprNode NonSExpr() throws ParseException {
-        Token t;
-        NonSExprNode nse;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-            case EMPTY:
-                t = jj_consume_token(EMPTY);
-                nse = new NonSExprNode();
-                nse.image = t.image;
-                nse.type = NonSExprNodeType.EMPTY;
-            {
-                if (true) return nse;
-            }
-            break;
-            case COMMENT:
-                t = jj_consume_token(COMMENT);
-                nse = new NonSExprNode();
-                nse.image = t.image;
-                nse.type = NonSExprNodeType.COMMENT;
-            {
-                if (true) return nse;
-            }
-            break;
-            default:
-                jj_la1[2] = jj_gen;
-                jj_consume_token(-1);
-                throw new ParseException();
-        }
-        throw new Error("Missing return statement in function");
-    }
-
-    final public SExprNode SExpr() throws ParseException {
-        SymbolExprNode sym;
-        SExprNode se;
-        CellNode nextCell = new CellNode();
-        NonSExprNode nse;
-        SQuoteExprNode sqe;
-        List<SExprNode> selist = new ArrayList<SExprNode>();
-        List<SExprNode> rselist = new ArrayList<SExprNode>();
-        Token dot = new Token();
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-            case MINUS:
-            case PLUS:
-            case EQ:
-            case AND:
-            case NOT:
-            case OR:
-            case GT:
-            case LT:
-            case LE:
-            case GE:
-            case NUM:
-            case ID:
-                sym = SymbolExpr();
-                se = new SExprNode();
-                se.node = (Node) sym;
-            {
-                if (true) return se;
-            }
-            break;
-            case LP:
-                jj_consume_token(LP);
-                label_2:
-                while (true) {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-                        case EMPTY:
-                        case COMMENT:
-                            ;
-                            break;
-                        default:
-                            jj_la1[3] = jj_gen;
-                            break label_2;
-                    }
-                    nse = NonSExpr();
-                }
-                label_3:
-                while (true) {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-                        case LP:
-                        case MINUS:
-                        case PLUS:
-                        case EQ:
-                        case AND:
-                        case NOT:
-                        case OR:
-                        case GT:
-                        case LT:
-                        case LE:
-                        case GE:
-                        case SQUOTE:
-                        case NUM:
-                        case ID:
-                            ;
-                            break;
-                        default:
-                            jj_la1[4] = jj_gen;
-                            break label_3;
-                    }
-                    se = SExpr();
-                    selist.add(se);
-                    label_4:
-                    while (true) {
-                        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-                            case EMPTY:
-                            case COMMENT:
-                                ;
-                                break;
-                            default:
-                                jj_la1[5] = jj_gen;
-                                break label_4;
-                        }
-                        nse = NonSExpr();
-                    }
-                }
-                switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-                    case DOT:
-                        dot = jj_consume_token(DOT);
-                        label_5:
-                        while (true) {
-                            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-                                case EMPTY:
-                                case COMMENT:
-                                    ;
-                                    break;
-                                default:
-                                    jj_la1[6] = jj_gen;
-                                    break label_5;
-                            }
-                            nse = NonSExpr();
-                        }
-                        se = SExpr();
-                        rselist.add(se);
-                        label_6:
-                        while (true) {
-                            switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-                                case EMPTY:
-                                case COMMENT:
-                                    ;
-                                    break;
-                                default:
-                                    jj_la1[7] = jj_gen;
-                                    break label_6;
-                            }
-                            nse = NonSExpr();
-                        }
-                        break;
-                    default:
-                        jj_la1[8] = jj_gen;
-                        ;
-                }
-                jj_consume_token(RP);
-                if (dot.kind != DOT) {
-                    if (selist.size() == 1) {
+        break;
+      default:
+        jj_la1[8] = jj_gen;
+        ;
+      }
+      jj_consume_token(RP);
+                if(dot.kind != DOT){
+                    if(selist.size() == 1){
                         nextCell = new CellNode();
                         nextCell.car = selist.get(0);
                         nextCell.cdr = CellNode.NIL;
-                    } else if (selist.size() > 1) {
-                        int i = selist.size() - 1;
+                    }else if( selist.size() > 1){
+                        int i = selist.size() -1 ;
                         nextCell = CellNode.NIL;
-                        while (i >= 0) {
+                        while( i >= 0 ){
                             CellNode cell = new CellNode();
                             cell.car = selist.get(i);
                             cell.cdr = nextCell;
                             nextCell = cell;
                             i--;
                         }
-                    } else {
+                    }else{
                         nextCell.nil = true;
                     }
-                    {
-                        if (true) return new SExprNode((Node) nextCell);
-                    }
-                } else {
-                    if (selist.size() == 1) {
+                    {if (true) return new SExprNode((Node)nextCell);}
+                }else{
+                    if(selist.size() == 1){
                         nextCell = new CellNode();
                         nextCell.car = selist.get(0);
                         nextCell.cdr = rselist.get(0);
-                    } else if (selist.size() > 1) {
-                        int i = selist.size() - 1;
+                    }else if( selist.size() > 1){
+                        int i = selist.size() -1 ;
                         nextCell = new CellNode();
                         nextCell.car = selist.get(i);
                         nextCell.cdr = rselist.get(0);
                         i--;
-                        while (i >= 0) {
+                        while( i >= 0 ){
                             CellNode cell = new CellNode();
                             cell.car = selist.get(i);
                             cell.cdr = nextCell;
                             nextCell = cell;
                             i--;
                         }
-                    } else {
+                    }else{
                         nextCell.nil = true;
                     }
-                    {
-                        if (true) return new SExprNode((Node) nextCell);
-                    }
+                    {if (true) return new SExprNode((Node)nextCell);}
                 }
-                break;
-            case SQUOTE:
-                sqe = SQuoteExpr();
-                se = new SExprNode();
-                se.node = (Node) sqe;
-            {
-                if (true) return se;
-            }
-            break;
-            default:
-                jj_la1[9] = jj_gen;
-                jj_consume_token(-1);
-                throw new ParseException();
+      break;
+    case SQUOTE:
+      sqe = SQuoteExpr();
+                        se=new SExprNode(); se.node = (Node)sqe ; {if (true) return se;}
+      break;
+    default:
+      jj_la1[9] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    throw new Error("Missing return statement in function");
+  }
+
+  final public SQuoteExprNode SQuoteExpr() throws ParseException {
+    SExprNode se;
+    SQuoteExprNode sqe;
+    jj_consume_token(SQUOTE);
+    se = SExpr();
+                         sqe = new SQuoteExprNode(); sqe.node = se; {if (true) return sqe;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public SymbolExprNode SymbolExpr() throws ParseException {
+    SymbolNode sym;
+    sym = Symbol();
+    if (getToken(1).kind == LP || getToken(1).kind == RP|| getToken(1).kind == DOT
+           || getToken(1).kind == COMMENT || getToken(1).kind == EMPTY || getToken(1).kind == EOF) {
+
+    } else {
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+            {if (true) return new SymbolExprNode(sym);}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public SymbolNode Symbol() throws ParseException {
+    Token t;
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case PLUS:
+      t = jj_consume_token(PLUS);
+                                       {if (true) return new SymbolNode("PLUS",t.image);}
+      break;
+    case EQ:
+      t = jj_consume_token(EQ);
+                                       {if (true) return new SymbolNode("EQ",t.image);}
+      break;
+    case GT:
+      t = jj_consume_token(GT);
+                                       {if (true) return new SymbolNode("GT",t.image);}
+      break;
+    case LT:
+      t = jj_consume_token(LT);
+                                       {if (true) return new SymbolNode("LT",t.image);}
+      break;
+    case LE:
+      t = jj_consume_token(LE);
+                                       {if (true) return new SymbolNode("LE",t.image);}
+      break;
+    case GE:
+      t = jj_consume_token(GE);
+                                       {if (true) return new SymbolNode("GE",t.image);}
+      break;
+    default:
+      jj_la1[10] = jj_gen;
+      if (jj_2_1(2)) {
+        jj_consume_token(MINUS);
+        t = jj_consume_token(NUM);
+                                       {if (true) return new SymbolNode("NUM","-"+t.image);}
+      } else {
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case MINUS:
+          t = jj_consume_token(MINUS);
+                                       {if (true) return new SymbolNode("MINUS",t.image);}
+          break;
+        case NUM:
+          t = jj_consume_token(NUM);
+                                       {if (true) return new SymbolNode("NUM",t.image);}
+          break;
+        case ID:
+          t = jj_consume_token(ID);
+                                       {if (true) return new SymbolNode("ID",t.image);}
+          break;
+        default:
+          jj_la1[11] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
         }
-        throw new Error("Missing return statement in function");
+      }
     }
+    throw new Error("Missing return statement in function");
+  }
 
-    final public SQuoteExprNode SQuoteExpr() throws ParseException {
-        SExprNode se;
-        SQuoteExprNode sqe;
-        jj_consume_token(SQUOTE);
-        se = SExpr();
-        sqe = new SQuoteExprNode();
-        sqe.node = se;
-        {
-            if (true) return sqe;
+  private boolean jj_2_1(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_1(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(0, xla); }
+  }
+
+  private boolean jj_3_1() {
+    if (jj_scan_token(MINUS)) return true;
+    if (jj_scan_token(NUM)) return true;
+    return false;
+  }
+
+  /** Generated Token Manager. */
+  public MiniLispTokenManager token_source;
+  SimpleCharStream jj_input_stream;
+  /** Current token. */
+  public Token token;
+  /** Next token. */
+  public Token jj_nt;
+  private int jj_ntk;
+  private Token jj_scanpos, jj_lastpos;
+  private int jj_la;
+  private int jj_gen;
+  final private int[] jj_la1 = new int[12];
+  static private int[] jj_la1_0;
+  static {
+      jj_la1_init_0();
+   }
+   private static void jj_la1_init_0() {
+      jj_la1_0 = new int[] {0xffe6,0xffe6,0x8002,0x8002,0x7fe4,0x8002,0x8002,0x8002,0x10,0x7fe4,0xfc0,0x6020,};
+   }
+  final private JJCalls[] jj_2_rtns = new JJCalls[1];
+  private boolean jj_rescan = false;
+  private int jj_gc = 0;
+
+  /** Constructor with InputStream. */
+  public MiniLisp(java.io.InputStream stream) {
+     this(stream, null);
+  }
+  /** Constructor with InputStream and supplied encoding */
+  public MiniLisp(java.io.InputStream stream, String encoding) {
+    try { jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+    token_source = new MiniLispTokenManager(jj_input_stream);
+    token = new Token();
+    jj_ntk = -1;
+    jj_gen = 0;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
+    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
+  }
+
+  /** Reinitialise. */
+  public void ReInit(java.io.InputStream stream) {
+     ReInit(stream, null);
+  }
+  /** Reinitialise. */
+  public void ReInit(java.io.InputStream stream, String encoding) {
+    try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+    token_source.ReInit(jj_input_stream);
+    token = new Token();
+    jj_ntk = -1;
+    jj_gen = 0;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
+    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
+  }
+
+  /** Constructor. */
+  public MiniLisp(java.io.Reader stream) {
+    jj_input_stream = new SimpleCharStream(stream, 1, 1);
+    token_source = new MiniLispTokenManager(jj_input_stream);
+    token = new Token();
+    jj_ntk = -1;
+    jj_gen = 0;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
+    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
+  }
+
+  /** Reinitialise. */
+  public void ReInit(java.io.Reader stream) {
+    jj_input_stream.ReInit(stream, 1, 1);
+    token_source.ReInit(jj_input_stream);
+    token = new Token();
+    jj_ntk = -1;
+    jj_gen = 0;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
+    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
+  }
+
+  /** Constructor with generated Token Manager. */
+  public MiniLisp(MiniLispTokenManager tm) {
+    token_source = tm;
+    token = new Token();
+    jj_ntk = -1;
+    jj_gen = 0;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
+    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
+  }
+
+  /** Reinitialise. */
+  public void ReInit(MiniLispTokenManager tm) {
+    token_source = tm;
+    token = new Token();
+    jj_ntk = -1;
+    jj_gen = 0;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
+    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
+  }
+
+  private Token jj_consume_token(int kind) throws ParseException {
+    Token oldToken;
+    if ((oldToken = token).next != null) token = token.next;
+    else token = token.next = token_source.getNextToken();
+    jj_ntk = -1;
+    if (token.kind == kind) {
+      jj_gen++;
+      if (++jj_gc > 100) {
+        jj_gc = 0;
+        for (int i = 0; i < jj_2_rtns.length; i++) {
+          JJCalls c = jj_2_rtns[i];
+          while (c != null) {
+            if (c.gen < jj_gen) c.first = null;
+            c = c.next;
+          }
         }
-        throw new Error("Missing return statement in function");
+      }
+      return token;
     }
+    token = oldToken;
+    jj_kind = kind;
+    throw generateParseException();
+  }
 
-    final public SymbolExprNode SymbolExpr() throws ParseException {
-        SymbolNode sym;
-        sym = Symbol();
-        if (getToken(1).kind == LP || getToken(1).kind == RP || getToken(1).kind == DOT
-                || getToken(1).kind == COMMENT || getToken(1).kind == EMPTY || getToken(1).kind == EOF) {
+  static private final class LookaheadSuccess extends java.lang.Error { }
+  final private LookaheadSuccess jj_ls = new LookaheadSuccess();
+  private boolean jj_scan_token(int kind) {
+    if (jj_scanpos == jj_lastpos) {
+      jj_la--;
+      if (jj_scanpos.next == null) {
+        jj_lastpos = jj_scanpos = jj_scanpos.next = token_source.getNextToken();
+      } else {
+        jj_lastpos = jj_scanpos = jj_scanpos.next;
+      }
+    } else {
+      jj_scanpos = jj_scanpos.next;
+    }
+    if (jj_rescan) {
+      int i = 0; Token tok = token;
+      while (tok != null && tok != jj_scanpos) { i++; tok = tok.next; }
+      if (tok != null) jj_add_error_token(kind, i);
+    }
+    if (jj_scanpos.kind != kind) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) throw jj_ls;
+    return false;
+  }
 
-        } else {
-            jj_consume_token(-1);
-            throw new ParseException();
+
+/** Get the next Token. */
+  final public Token getNextToken() {
+    if (token.next != null) token = token.next;
+    else token = token.next = token_source.getNextToken();
+    jj_ntk = -1;
+    jj_gen++;
+    return token;
+  }
+
+/** Get the specific Token. */
+  final public Token getToken(int index) {
+    Token t = token;
+    for (int i = 0; i < index; i++) {
+      if (t.next != null) t = t.next;
+      else t = t.next = token_source.getNextToken();
+    }
+    return t;
+  }
+
+  private int jj_ntk() {
+    if ((jj_nt=token.next) == null)
+      return (jj_ntk = (token.next=token_source.getNextToken()).kind);
+    else
+      return (jj_ntk = jj_nt.kind);
+  }
+
+  private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
+  private int[] jj_expentry;
+  private int jj_kind = -1;
+  private int[] jj_lasttokens = new int[100];
+  private int jj_endpos;
+
+  private void jj_add_error_token(int kind, int pos) {
+    if (pos >= 100) return;
+    if (pos == jj_endpos + 1) {
+      jj_lasttokens[jj_endpos++] = kind;
+    } else if (jj_endpos != 0) {
+      jj_expentry = new int[jj_endpos];
+      for (int i = 0; i < jj_endpos; i++) {
+        jj_expentry[i] = jj_lasttokens[i];
+      }
+      jj_entries_loop: for (java.util.Iterator<?> it = jj_expentries.iterator(); it.hasNext();) {
+        int[] oldentry = (int[])(it.next());
+        if (oldentry.length == jj_expentry.length) {
+          for (int i = 0; i < jj_expentry.length; i++) {
+            if (oldentry[i] != jj_expentry[i]) {
+              continue jj_entries_loop;
+            }
+          }
+          jj_expentries.add(jj_expentry);
+          break jj_entries_loop;
         }
-        {
-            if (true) return new SymbolExprNode(sym);
+      }
+      if (pos != 0) jj_lasttokens[(jj_endpos = pos) - 1] = kind;
+    }
+  }
+
+  /** Generate ParseException. */
+  public ParseException generateParseException() {
+    jj_expentries.clear();
+    boolean[] la1tokens = new boolean[16];
+    if (jj_kind >= 0) {
+      la1tokens[jj_kind] = true;
+      jj_kind = -1;
+    }
+    for (int i = 0; i < 12; i++) {
+      if (jj_la1[i] == jj_gen) {
+        for (int j = 0; j < 32; j++) {
+          if ((jj_la1_0[i] & (1<<j)) != 0) {
+            la1tokens[j] = true;
+          }
         }
-        throw new Error("Missing return statement in function");
+      }
     }
+    for (int i = 0; i < 16; i++) {
+      if (la1tokens[i]) {
+        jj_expentry = new int[1];
+        jj_expentry[0] = i;
+        jj_expentries.add(jj_expentry);
+      }
+    }
+    jj_endpos = 0;
+    jj_rescan_token();
+    jj_add_error_token(0, 0);
+    int[][] exptokseq = new int[jj_expentries.size()][];
+    for (int i = 0; i < jj_expentries.size(); i++) {
+      exptokseq[i] = jj_expentries.get(i);
+    }
+    return new ParseException(token, exptokseq, tokenImage);
+  }
 
-    final public SymbolNode Symbol() throws ParseException {
-        Token t;
-        switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-            case PLUS:
-                t = jj_consume_token(PLUS);
-            {
-                if (true) return new SymbolNode("PLUS", t.image);
-            }
-            break;
-            case EQ:
-                t = jj_consume_token(EQ);
-            {
-                if (true) return new SymbolNode("EQ", t.image);
-            }
-            break;
-            case AND:
-                t = jj_consume_token(AND);
-            {
-                if (true) return new SymbolNode("AND", t.image);
-            }
-            break;
-            case NOT:
-                t = jj_consume_token(NOT);
-            {
-                if (true) return new SymbolNode("NOT", t.image);
-            }
-            break;
-            case OR:
-                t = jj_consume_token(OR);
-            {
-                if (true) return new SymbolNode("OR", t.image);
-            }
-            break;
-            case GT:
-                t = jj_consume_token(GT);
-            {
-                if (true) return new SymbolNode("GT", t.image);
-            }
-            break;
-            case LT:
-                t = jj_consume_token(LT);
-            {
-                if (true) return new SymbolNode("LT", t.image);
-            }
-            break;
-            case LE:
-                t = jj_consume_token(LE);
-            {
-                if (true) return new SymbolNode("LE", t.image);
-            }
-            break;
-            case GE:
-                t = jj_consume_token(GE);
-            {
-                if (true) return new SymbolNode("GE", t.image);
-            }
-            break;
-            default:
-                jj_la1[10] = jj_gen;
-                if (jj_2_1(2)) {
-                    jj_consume_token(MINUS);
-                    t = jj_consume_token(NUM);
-                    {
-                        if (true) return new SymbolNode("NUM", "-" + t.image);
-                    }
-                } else {
-                    switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
-                        case MINUS:
-                            t = jj_consume_token(MINUS);
-                        {
-                            if (true) return new SymbolNode("MINUS", t.image);
-                        }
-                        break;
-                        case NUM:
-                            t = jj_consume_token(NUM);
-                        {
-                            if (true) return new SymbolNode("NUM", t.image);
-                        }
-                        break;
-                        case ID:
-                            t = jj_consume_token(ID);
-                        {
-                            if (true) return new SymbolNode("ID", t.image);
-                        }
-                        break;
-                        default:
-                            jj_la1[11] = jj_gen;
-                            jj_consume_token(-1);
-                            throw new ParseException();
-                    }
-                }
+  /** Enable tracing. */
+  final public void enable_tracing() {
+  }
+
+  /** Disable tracing. */
+  final public void disable_tracing() {
+  }
+
+  private void jj_rescan_token() {
+    jj_rescan = true;
+    for (int i = 0; i < 1; i++) {
+    try {
+      JJCalls p = jj_2_rtns[i];
+      do {
+        if (p.gen > jj_gen) {
+          jj_la = p.arg; jj_lastpos = jj_scanpos = p.first;
+          switch (i) {
+            case 0: jj_3_1(); break;
+          }
         }
-        throw new Error("Missing return statement in function");
+        p = p.next;
+      } while (p != null);
+      } catch(LookaheadSuccess ls) { }
     }
+    jj_rescan = false;
+  }
 
-    private boolean jj_2_1(int xla) {
-        jj_la = xla;
-        jj_lastpos = jj_scanpos = token;
-        try {
-            return !jj_3_1();
-        } catch (LookaheadSuccess ls) {
-            return true;
-        } finally {
-            jj_save(0, xla);
-        }
+  private void jj_save(int index, int xla) {
+    JJCalls p = jj_2_rtns[index];
+    while (p.gen > jj_gen) {
+      if (p.next == null) { p = p.next = new JJCalls(); break; }
+      p = p.next;
     }
+    p.gen = jj_gen + xla - jj_la; p.first = token; p.arg = xla;
+  }
 
-    private boolean jj_3_1() {
-        if (jj_scan_token(MINUS)) return true;
-        if (jj_scan_token(NUM)) return true;
-        return false;
-    }
-
-    /**
-     * Generated Token Manager.
-     */
-    public MiniLispTokenManager token_source;
-    SimpleCharStream jj_input_stream;
-    /**
-     * Current token.
-     */
-    public Token token;
-    /**
-     * Next token.
-     */
-    public Token jj_nt;
-    private int jj_ntk;
-    private Token jj_scanpos, jj_lastpos;
-    private int jj_la;
-    private int jj_gen;
-    final private int[] jj_la1 = new int[12];
-    static private int[] jj_la1_0;
-
-    static {
-        jj_la1_init_0();
-    }
-
-    private static void jj_la1_init_0() {
-        jj_la1_0 = new int[]{0x7ffe6, 0x7ffe6, 0x40002, 0x40002, 0x3ffe4, 0x40002, 0x40002, 0x40002, 0x10, 0x3ffe4, 0x7fc0, 0x30020,};
-    }
-
-    final private JJCalls[] jj_2_rtns = new JJCalls[1];
-    private boolean jj_rescan = false;
-    private int jj_gc = 0;
-
-    /**
-     * Constructor with InputStream.
-     */
-    public MiniLisp(java.io.InputStream stream) {
-        this(stream, null);
-    }
-
-    /**
-     * Constructor with InputStream and supplied encoding
-     */
-    public MiniLisp(java.io.InputStream stream, String encoding) {
-        try {
-            jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1);
-        } catch (java.io.UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-        token_source = new MiniLispTokenManager(jj_input_stream);
-        token = new Token();
-        jj_ntk = -1;
-        jj_gen = 0;
-        for (int i = 0; i < 12; i++) jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
-    }
-
-    /**
-     * Reinitialise.
-     */
-    public void ReInit(java.io.InputStream stream) {
-        ReInit(stream, null);
-    }
-
-    /**
-     * Reinitialise.
-     */
-    public void ReInit(java.io.InputStream stream, String encoding) {
-        try {
-            jj_input_stream.ReInit(stream, encoding, 1, 1);
-        } catch (java.io.UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-        token_source.ReInit(jj_input_stream);
-        token = new Token();
-        jj_ntk = -1;
-        jj_gen = 0;
-        for (int i = 0; i < 12; i++) jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
-    }
-
-    /**
-     * Constructor.
-     */
-    public MiniLisp(java.io.Reader stream) {
-        jj_input_stream = new SimpleCharStream(stream, 1, 1);
-        token_source = new MiniLispTokenManager(jj_input_stream);
-        token = new Token();
-        jj_ntk = -1;
-        jj_gen = 0;
-        for (int i = 0; i < 12; i++) jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
-    }
-
-    /**
-     * Reinitialise.
-     */
-    public void ReInit(java.io.Reader stream) {
-        jj_input_stream.ReInit(stream, 1, 1);
-        token_source.ReInit(jj_input_stream);
-        token = new Token();
-        jj_ntk = -1;
-        jj_gen = 0;
-        for (int i = 0; i < 12; i++) jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
-    }
-
-    /**
-     * Constructor with generated Token Manager.
-     */
-    public MiniLisp(MiniLispTokenManager tm) {
-        token_source = tm;
-        token = new Token();
-        jj_ntk = -1;
-        jj_gen = 0;
-        for (int i = 0; i < 12; i++) jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
-    }
-
-    /**
-     * Reinitialise.
-     */
-    public void ReInit(MiniLispTokenManager tm) {
-        token_source = tm;
-        token = new Token();
-        jj_ntk = -1;
-        jj_gen = 0;
-        for (int i = 0; i < 12; i++) jj_la1[i] = -1;
-        for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
-    }
-
-    private Token jj_consume_token(int kind) throws ParseException {
-        Token oldToken;
-        if ((oldToken = token).next != null) token = token.next;
-        else token = token.next = token_source.getNextToken();
-        jj_ntk = -1;
-        if (token.kind == kind) {
-            jj_gen++;
-            if (++jj_gc > 100) {
-                jj_gc = 0;
-                for (int i = 0; i < jj_2_rtns.length; i++) {
-                    JJCalls c = jj_2_rtns[i];
-                    while (c != null) {
-                        if (c.gen < jj_gen) c.first = null;
-                        c = c.next;
-                    }
-                }
-            }
-            return token;
-        }
-        token = oldToken;
-        jj_kind = kind;
-        throw generateParseException();
-    }
-
-    static private final class LookaheadSuccess extends Error {
-    }
-
-    final private LookaheadSuccess jj_ls = new LookaheadSuccess();
-
-    private boolean jj_scan_token(int kind) {
-        if (jj_scanpos == jj_lastpos) {
-            jj_la--;
-            if (jj_scanpos.next == null) {
-                jj_lastpos = jj_scanpos = jj_scanpos.next = token_source.getNextToken();
-            } else {
-                jj_lastpos = jj_scanpos = jj_scanpos.next;
-            }
-        } else {
-            jj_scanpos = jj_scanpos.next;
-        }
-        if (jj_rescan) {
-            int i = 0;
-            Token tok = token;
-            while (tok != null && tok != jj_scanpos) {
-                i++;
-                tok = tok.next;
-            }
-            if (tok != null) jj_add_error_token(kind, i);
-        }
-        if (jj_scanpos.kind != kind) return true;
-        if (jj_la == 0 && jj_scanpos == jj_lastpos) throw jj_ls;
-        return false;
-    }
-
-
-    /**
-     * Get the next Token.
-     */
-    final public Token getNextToken() {
-        if (token.next != null) token = token.next;
-        else token = token.next = token_source.getNextToken();
-        jj_ntk = -1;
-        jj_gen++;
-        return token;
-    }
-
-    /**
-     * Get the specific Token.
-     */
-    final public Token getToken(int index) {
-        Token t = token;
-        for (int i = 0; i < index; i++) {
-            if (t.next != null) t = t.next;
-            else t = t.next = token_source.getNextToken();
-        }
-        return t;
-    }
-
-    private int jj_ntk() {
-        if ((jj_nt = token.next) == null)
-            return (jj_ntk = (token.next = token_source.getNextToken()).kind);
-        else
-            return (jj_ntk = jj_nt.kind);
-    }
-
-    private List<int[]> jj_expentries = new ArrayList<int[]>();
-    private int[] jj_expentry;
-    private int jj_kind = -1;
-    private int[] jj_lasttokens = new int[100];
-    private int jj_endpos;
-
-    private void jj_add_error_token(int kind, int pos) {
-        if (pos >= 100) return;
-        if (pos == jj_endpos + 1) {
-            jj_lasttokens[jj_endpos++] = kind;
-        } else if (jj_endpos != 0) {
-            jj_expentry = new int[jj_endpos];
-            for (int i = 0; i < jj_endpos; i++) {
-                jj_expentry[i] = jj_lasttokens[i];
-            }
-            jj_entries_loop:
-            for (Iterator<?> it = jj_expentries.iterator(); it.hasNext(); ) {
-                int[] oldentry = (int[]) (it.next());
-                if (oldentry.length == jj_expentry.length) {
-                    for (int i = 0; i < jj_expentry.length; i++) {
-                        if (oldentry[i] != jj_expentry[i]) {
-                            continue jj_entries_loop;
-                        }
-                    }
-                    jj_expentries.add(jj_expentry);
-                    break jj_entries_loop;
-                }
-            }
-            if (pos != 0) jj_lasttokens[(jj_endpos = pos) - 1] = kind;
-        }
-    }
-
-    /**
-     * Generate ParseException.
-     */
-    public ParseException generateParseException() {
-        jj_expentries.clear();
-        boolean[] la1tokens = new boolean[19];
-        if (jj_kind >= 0) {
-            la1tokens[jj_kind] = true;
-            jj_kind = -1;
-        }
-        for (int i = 0; i < 12; i++) {
-            if (jj_la1[i] == jj_gen) {
-                for (int j = 0; j < 32; j++) {
-                    if ((jj_la1_0[i] & (1 << j)) != 0) {
-                        la1tokens[j] = true;
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < 19; i++) {
-            if (la1tokens[i]) {
-                jj_expentry = new int[1];
-                jj_expentry[0] = i;
-                jj_expentries.add(jj_expentry);
-            }
-        }
-        jj_endpos = 0;
-        jj_rescan_token();
-        jj_add_error_token(0, 0);
-        int[][] exptokseq = new int[jj_expentries.size()][];
-        for (int i = 0; i < jj_expentries.size(); i++) {
-            exptokseq[i] = jj_expentries.get(i);
-        }
-        return new ParseException(token, exptokseq, tokenImage);
-    }
-
-    /**
-     * Enable tracing.
-     */
-    final public void enable_tracing() {
-    }
-
-    /**
-     * Disable tracing.
-     */
-    final public void disable_tracing() {
-    }
-
-    private void jj_rescan_token() {
-        jj_rescan = true;
-        for (int i = 0; i < 1; i++) {
-            try {
-                JJCalls p = jj_2_rtns[i];
-                do {
-                    if (p.gen > jj_gen) {
-                        jj_la = p.arg;
-                        jj_lastpos = jj_scanpos = p.first;
-                        switch (i) {
-                            case 0:
-                                jj_3_1();
-                                break;
-                        }
-                    }
-                    p = p.next;
-                } while (p != null);
-            } catch (LookaheadSuccess ls) {
-            }
-        }
-        jj_rescan = false;
-    }
-
-    private void jj_save(int index, int xla) {
-        JJCalls p = jj_2_rtns[index];
-        while (p.gen > jj_gen) {
-            if (p.next == null) {
-                p = p.next = new JJCalls();
-                break;
-            }
-            p = p.next;
-        }
-        p.gen = jj_gen + xla - jj_la;
-        p.first = token;
-        p.arg = xla;
-    }
-
-    static final class JJCalls {
-        int gen;
-        Token first;
-        int arg;
-        JJCalls next;
-    }
+  static final class JJCalls {
+    int gen;
+    Token first;
+    int arg;
+    JJCalls next;
+  }
 
 }

@@ -46,7 +46,7 @@ class Util {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Error("Malformed define func.");
+            throw new RuntimeException("Malformed define func.", e);
         }
 
 
@@ -83,5 +83,15 @@ class Util {
             throw new RuntimeException("Malformed lambda func.", e);
         }
         return macroFunc;
+    }
+
+    public static boolean isNumSymbol(SExprNode sExprNode) {
+        if(sExprNode.node instanceof SymbolExprNode){
+            SymbolExprNode symbolExprNode = (SymbolExprNode) sExprNode.node;
+            SymbolNode symbolNode = (SymbolNode)symbolExprNode.node;
+            return "NUM".equals(symbolNode.kind);
+        }
+        return false;
+
     }
 }

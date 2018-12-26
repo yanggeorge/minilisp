@@ -49,6 +49,12 @@ public class ConsFunc extends FuncType {
             expr.sExprNode.node = symbolExprNode;
             symbolExprNode.node = new SymbolNode("ID", s);
             return expr;
+        } else if (result instanceof NullType) {
+            //包装成"()"
+            ExprType exprType = new ExprType();
+            exprType.sExprNode = new SExprNode();
+            exprType.sExprNode.node = new CellNode();
+            return exprType;
         }
         return null;
     }

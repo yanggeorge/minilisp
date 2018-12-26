@@ -51,7 +51,9 @@ public class Macro extends MacroType {
                     Type visit = visitor.visit(firstSExpr);
 
                     if (visit instanceof Macro) {
-
+                        //在宏的内部调用宏
+                        Macro macro = (Macro) visit;
+                        result = macro.eval(visitor, params);
                     } else {
                         if (visit instanceof FuncType) {
                             FuncType func = (FuncType) visit;

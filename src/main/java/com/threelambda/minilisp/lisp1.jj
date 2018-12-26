@@ -44,9 +44,6 @@ TOKEN :
     | <MINUS: "-">
     | <PLUS: "+">
     | <EQ: "=">
-    | <AND: "and">
-    | <NOT: "not">
-    | <OR: "or">
     | <GT: ">">
     | <LT: "<">
     | <LE: "<=">
@@ -185,9 +182,6 @@ SymbolNode Symbol():
 {
        t=<PLUS>                       {return new SymbolNode("PLUS",t.image);}
     |  t=<EQ>                         {return new SymbolNode("EQ",t.image);}
-    |  t=<AND>                        {return new SymbolNode("AND",t.image);}
-    |  t=<NOT>                        {return new SymbolNode("NOT",t.image);}
-    |  t=<OR>                         {return new SymbolNode("OR",t.image);}
     |  t=<GT>                         {return new SymbolNode("GT",t.image);}
     |  t=<LT>                         {return new SymbolNode("LT",t.image);}
     |  t=<LE>                         {return new SymbolNode("LE",t.image);}
