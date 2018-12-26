@@ -89,7 +89,7 @@ class Util {
         if(sExprNode.node instanceof SymbolExprNode){
             SymbolExprNode symbolExprNode = (SymbolExprNode) sExprNode.node;
             SymbolNode symbolNode = (SymbolNode)symbolExprNode.node;
-            return "NUM".equals(symbolNode.kind);
+            return "NUM".equals(symbolNode.type);
         }
         return false;
 

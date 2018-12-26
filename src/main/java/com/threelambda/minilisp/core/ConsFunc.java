@@ -53,7 +53,7 @@ public class ConsFunc extends FuncType {
             //包装成"()"
             ExprType exprType = new ExprType();
             exprType.sExprNode = new SExprNode();
-            exprType.sExprNode.node = new CellNode();
+            exprType.sExprNode.node = CellNode.NIL;
             return exprType;
         }
         return null;
