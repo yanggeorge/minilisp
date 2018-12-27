@@ -900,13 +900,12 @@ public class EvalTest {
                 ";;;\n" +
                 ";;; Main\n" +
                 ";;;\n" +
-                ";;(define board-size 4)\n" +
-                ";;(define board (make-board board-size))\n" +
-                ";;(print board)\n" +
-                ";;(println 'a) \n" +
+                "(define board-size 4)\n" +
+                "(define board (make-board board-size))\n" +
+                "(print board)\n" +
+                "(println 'a) \n" +
                 ";;(set board 0 1)\n" +
                 ";;(print board)\n" +
-                "(println (%iota 0 0))" +
                 ";;(conflict? board 0 0)\n"
                 ;
         String ret = call(s);
