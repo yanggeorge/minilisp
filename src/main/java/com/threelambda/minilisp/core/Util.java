@@ -105,4 +105,11 @@ class Util {
         }
         return firstResult;
     }
+
+    public static ExprType getEmptyList() {
+        ExprType exprType = new ExprType();
+        exprType.sExprNode = new SExprNode();
+        exprType.sExprNode.node = CellNode.NIL;
+        return exprType;
+    }
 }

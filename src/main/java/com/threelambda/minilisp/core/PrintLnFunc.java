@@ -28,9 +28,6 @@ public class PrintLnFunc extends FuncType {
                 case "FuncType":
                     val = result;
                     break;
-                case "NullType":
-                    val = "()";
-                    break;
                 case "ExprType":
                     val = result.toString();
                     break;

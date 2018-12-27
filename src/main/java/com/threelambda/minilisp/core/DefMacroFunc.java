@@ -23,6 +23,6 @@ public class DefMacroFunc extends FuncType {
         } catch (Exception e) {
             throw new RuntimeException("DefMacroFunc eval fail.", e);
         }
-        return new NullType();
+        return null;
     }
 }

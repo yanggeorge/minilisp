@@ -34,7 +34,7 @@ public class LispVisitor implements Visitor {
                 SExprNode se = (SExprNode) node;
                 return this.visitSExprNode(se);
         }
-        return null;
+        return Util.getEmptyList();
     }
 
     @Override
@@ -53,7 +53,7 @@ public class LispVisitor implements Visitor {
                 return this.visitSQuoteExprNode(sQuoteExprNode);
         }
 
-        return null;
+        return Util.getEmptyList();
     }
 
     @Override
@@ -68,7 +68,7 @@ public class LispVisitor implements Visitor {
         if (kind.equalsIgnoreCase("SymbolNode")) {
             return this.visitSymbolNode((SymbolNode) child);
         }
-        return null;
+        return Util.getEmptyList();
     }
 
     @Override
@@ -82,7 +82,7 @@ public class LispVisitor implements Visitor {
     @Override
     public Type visitCellNode(CellNode node) {
         if (node.nil) {
-            return new NullType();
+            return Util.getEmptyList();
         }
         Node first = node.car;
         CellNode params = (CellNode) node.cdr;
@@ -103,7 +103,7 @@ public class LispVisitor implements Visitor {
                 throw new RuntimeException("The head of a list must be a function");
             }
         }
-        return new NullType();
+        return Util.getEmptyList();
     }
 
     @Override
@@ -202,7 +202,7 @@ public class LispVisitor implements Visitor {
             Env env = this.envs.get(i);
             if (env.isDefined(name)) {
                 env.update(name, val);
-                return new NullType();
+                return Util.getEmptyList();
             }
         }
         throw new RuntimeException(String.format("<Symbol:%s> is not defined.", name));
