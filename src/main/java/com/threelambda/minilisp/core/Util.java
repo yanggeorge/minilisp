@@ -94,4 +94,15 @@ class Util {
         return false;
 
     }
+
+    public static Type evalNumResult(Visitor visitor, SExprNode firstExpr) {
+        Type firstResult = visitor.visit(firstExpr);
+        if (firstResult instanceof ExprType && Util.isNumSymbol(((ExprType) firstResult).sExprNode)) {
+            firstResult = visitor.visit(((ExprType) firstResult).sExprNode);
+        }
+        if (!(firstResult instanceof NumType)) {
+            throw new RuntimeException("must be num.");
+        }
+        return firstResult;
+    }
 }

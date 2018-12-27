@@ -5,6 +5,8 @@ import com.threelambda.minilisp.node.SExprNode;
 
 import java.util.Objects;
 
+import static com.threelambda.minilisp.core.Util.evalNumResult;
+
 /**
  * @author yangming 2018/9/27
  */
@@ -24,20 +26,8 @@ public class EqFunc extends FuncType {
             SExprNode firstExpr = CellNodeUtil.getFirst(cellNode);
             SExprNode secondExpr = CellNodeUtil.getFirst(CellNodeUtil.nextCell(cellNode));
 
-            Type firstResult = visitor.visit(firstExpr);
-            if (firstResult instanceof ExprType && Util.isNumSymbol(((ExprType)firstResult).sExprNode)) {
-                firstResult = visitor.visit(((ExprType)firstResult).sExprNode);
-            }
-            if (!(firstResult instanceof NumType)) {
-                throw new RuntimeException("must be num.");
-            }
-            Type secondResult = visitor.visit(secondExpr);
-            if(secondResult instanceof ExprType && Util.isNumSymbol(((ExprType)secondResult).sExprNode)){
-                secondResult = visitor.visit(((ExprType) secondResult).sExprNode);
-            }
-            if (!(secondResult instanceof NumType)) {
-                throw new RuntimeException("must be num.");
-            }
+            Type firstResult = evalNumResult(visitor, firstExpr);
+            Type secondResult = evalNumResult(visitor, secondExpr);
 
             NumType firstNum = (NumType) firstResult;
             NumType secondNum = (NumType) secondResult;
@@ -52,5 +42,7 @@ public class EqFunc extends FuncType {
             throw new RuntimeException("Malformed Eq func.", e);
         }
     }
+
+
 
 }

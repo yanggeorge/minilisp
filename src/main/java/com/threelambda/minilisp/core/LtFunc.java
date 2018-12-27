@@ -3,6 +3,8 @@ package com.threelambda.minilisp.core;
 import com.threelambda.minilisp.node.CellNode;
 import com.threelambda.minilisp.node.SExprNode;
 
+import static com.threelambda.minilisp.core.Util.evalNumResult;
+
 /**
  * @author yangming 2018/9/27
  */
@@ -22,14 +24,8 @@ public class LtFunc extends FuncType {
             SExprNode firstExpr = CellNodeUtil.getFirst(cellNode);
             SExprNode secondExpr = CellNodeUtil.getFirst(CellNodeUtil.nextCell(cellNode));
 
-            Type firstResult = visitor.visit(firstExpr);
-            if (!(firstResult instanceof NumType)) {
-                throw new RuntimeException("must be num.");
-            }
-            Type secondResult = visitor.visit(secondExpr);
-            if (!(secondResult instanceof NumType)) {
-                throw new RuntimeException("must be num.");
-            }
+            Type firstResult = evalNumResult(visitor, firstExpr);
+            Type secondResult = evalNumResult(visitor, secondExpr);
 
             NumType firstNum = (NumType) firstResult;
             NumType secondNum = (NumType) secondResult;

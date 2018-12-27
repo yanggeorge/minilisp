@@ -92,7 +92,7 @@ public class LambdaFunc extends FuncType {
                 tail.car = exprType.sExprNode;
             } else if (result instanceof FuncType) {
                 //当参数是函数的时候，需要进行lexical scope binding。
-                keepEnvs((FuncType) result, visitor.getEnvStack());
+                //keepEnvs((FuncType) result, visitor.getEnvStack());
                 //需要增加一个FuncNode，否则无法把FuncType的结果构成一个CellNodeList
                 FuncNode funcNode = new FuncNode();
                 funcNode.func = (FuncType) result;

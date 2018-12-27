@@ -43,4 +43,9 @@ public class SExprNode extends Node {
         }
         return s;
     }
+
+    @Override
+    public String toString() {
+        return toString("");
+    }
 }

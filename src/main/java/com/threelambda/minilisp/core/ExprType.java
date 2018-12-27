@@ -26,7 +26,7 @@ public class ExprType extends Type {
      */
     @Override
     public String toString() {
-        return sExprNode.toString("");
+        return sExprNode.toString();
     }
 
 }
