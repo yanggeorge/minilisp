@@ -2,7 +2,7 @@ package com.threelambda.minilisp.core;
 
 import com.threelambda.minilisp.node.*;
 
-import java.util.Stack;
+import java.util.LinkedList;
 
 /**
  * Created by ym on 5/31/2017.
@@ -12,10 +12,10 @@ public class LispVisitor implements Visitor {
     public String[] KEYWORDS = new String[]{
             "lambda", "println", "define", "defun",
             "setq", "quote", "cons", "if", "defmacro",
-            "macroexpand"
+            "macroexpand", "car", "cdr", "setcar"
     };
 
-    private Stack<Env> envs = new Stack<>();
+    private LinkedList<Env> envs = new LinkedList<>();
 
     public LispVisitor(Env env) {
         pushEnv(env);
@@ -170,17 +170,17 @@ public class LispVisitor implements Visitor {
 
     @Override
     public void pushEnv(Env env) {
-        this.envs.push(env);
+        this.envs.addLast(env);
     }
 
     @Override
     public Env popEnv() {
-        return this.envs.pop();
+        return this.envs.removeLast();
     }
 
     @Override
     public Env peekEnv() {
-        return this.envs.peek();
+        return this.envs.getLast();
     }
 
     @Override
@@ -209,12 +209,14 @@ public class LispVisitor implements Visitor {
     }
 
     @Override
-    public Stack<Env> getEnvStack() {
+    public LinkedList<Env> getEnvStack() {
         return this.envs;
     }
 
     @Override
-    public void setEnvStack(Stack<Env> envs) {
+    public void setEnvStack(LinkedList<Env> envs) {
         this.envs = envs;
     }
+
+
 }

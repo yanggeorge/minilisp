@@ -19,15 +19,15 @@ public class SExprEqFunc extends FuncType {
 
             ExprType firstResult = (ExprType) visitor.visit(first);
             ExprType secondResult = (ExprType) visitor.visit(second);
-            if(firstResult.toString().equalsIgnoreCase(secondResult.toString())){
+            if (firstResult.toString().equalsIgnoreCase(secondResult.toString())) {
                 return new BoolType(true);
-            }else{
+            } else {
                 return new BoolType(false);
             }
 
 
         } catch (Exception e) {
-            throw new RuntimeException("Malformed SExprEqFunc.",e);
+            throw new RuntimeException("Malformed SExprEqFunc.", e);
         }
     }
 }

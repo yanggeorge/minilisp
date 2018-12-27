@@ -14,7 +14,7 @@ public class WhileFunc extends FuncType {
         try {
             assert CellNodeUtil.length(params) >= 2;
             SExprNode cond = CellNodeUtil.getFirst(params);
-            while(evalCond(visitor, cond)){
+            while (evalCond(visitor, cond)) {
                 LambdaFunc.evalParam(visitor, CellNodeUtil.nextCell(params));
             }
 

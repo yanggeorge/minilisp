@@ -159,10 +159,11 @@ public class EvalTest {
 
                 + "(define counter (closure))\n"
                 + "(counter)\n"
-                + "(counter)\n";
+                + "(counter)\n" +
+                "((lambda (count) (counter)) 123)\n";
         String ret = call(s);
         Assert.assertEquals("1\n"
-                + "2\n", ret);
+                + "2\n3\n", ret);
     }
 
     @Test
@@ -179,6 +180,18 @@ public class EvalTest {
         String ret = call(s);
         Assert.assertEquals("1\n"
                 + "2\n", ret);
+    }
+
+    @Test
+    public void test132() throws ParseException {
+        String s = "(define counter\n" +
+                "    ((lambda (val)\n" +
+                "       (lambda () (setq val (+ val size)) val))\n" +
+                "     1))\n" +
+                "(define size 10)\n" +
+                "(println (counter))\n";
+        String ret = call(s);
+        Assert.assertEquals("11\n", ret);
     }
 
     @Test
@@ -900,13 +913,15 @@ public class EvalTest {
                 ";;;\n" +
                 ";;; Main\n" +
                 ";;;\n" +
-                "(define board-size 8)\n" +
+                "(define board-size 6)\n" +
                 "(define board (make-board board-size))\n" +
-                "(print board)\n" +
+                ";;(print board)\n" +
                 ";;(println 'a) \n" +
                 ";;(set board 0 1)\n" +
                 "(solve board)\n" +
-                ";;(println (conflict? board 0 0))\n"
+                ";;(println (conflict? board 0 0))\n" +
+                ";;(defun add (x) (+ 1 x))\n" +
+                ";;(map '(1) add)\n"
                 ;
         String ret = call(s);
     }

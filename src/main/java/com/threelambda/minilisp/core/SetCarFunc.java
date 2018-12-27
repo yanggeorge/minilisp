@@ -3,7 +3,7 @@ package com.threelambda.minilisp.core;
 import com.threelambda.minilisp.node.CellNode;
 import com.threelambda.minilisp.node.SExprNode;
 
-public class SetCarFunc extends FuncType{
+public class SetCarFunc extends FuncType {
 
     public SetCarFunc() {
         super("SetCarFunc");

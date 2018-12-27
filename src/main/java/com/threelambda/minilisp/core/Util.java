@@ -86,9 +86,9 @@ class Util {
     }
 
     public static boolean isNumSymbol(SExprNode sExprNode) {
-        if(sExprNode.node instanceof SymbolExprNode){
+        if (sExprNode.node instanceof SymbolExprNode) {
             SymbolExprNode symbolExprNode = (SymbolExprNode) sExprNode.node;
-            SymbolNode symbolNode = (SymbolNode)symbolExprNode.node;
+            SymbolNode symbolNode = (SymbolNode) symbolExprNode.node;
             return "NUM".equals(symbolNode.type);
         }
         return false;

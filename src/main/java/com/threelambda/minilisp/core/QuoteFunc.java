@@ -19,7 +19,7 @@ public class QuoteFunc extends FuncType {
         try {
             result.sExprNode = (SExprNode) cellNode.car;
         } catch (Exception e) {
-            throw new RuntimeException("MalFormed QuoteFunc.");
+            throw new RuntimeException("MalFormed QuoteFunc.", e);
         }
 
         return result;

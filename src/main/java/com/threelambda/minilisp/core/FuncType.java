@@ -2,14 +2,14 @@ package com.threelambda.minilisp.core;
 
 import com.threelambda.minilisp.node.CellNode;
 
-import java.util.Stack;
+import java.util.LinkedList;
 
 /**
  * Created by ym on 6/1/2017.
  */
 public abstract class FuncType extends Type {
 
-    public Stack<Env> closureEnvs = null;
+    public LinkedList<Env> closureEnvs = null;
     public String name;
 
     public FuncType() {

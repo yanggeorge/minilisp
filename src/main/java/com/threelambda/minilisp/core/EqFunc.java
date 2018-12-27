@@ -44,5 +44,4 @@ public class EqFunc extends FuncType {
     }
 
 
-
 }

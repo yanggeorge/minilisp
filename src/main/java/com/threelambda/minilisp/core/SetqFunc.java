@@ -23,7 +23,7 @@ public class SetqFunc extends FuncType {
             visitor.seekAndSetValue(name.val, val);
 
         } catch (Exception e) {
-            throw new RuntimeException("Malformed setq func.");
+            throw new RuntimeException("Malformed setq func.", e);
         }
 
         return new StringType("");

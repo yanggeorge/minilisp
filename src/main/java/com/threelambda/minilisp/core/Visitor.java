@@ -2,7 +2,7 @@ package com.threelambda.minilisp.core;
 
 import com.threelambda.minilisp.node.*;
 
-import java.util.Stack;
+import java.util.LinkedList;
 
 /**
  * Created by ym on 5/31/2017.
@@ -37,9 +37,10 @@ public interface Visitor {
 
     boolean isKeyword(String image);
 
-    Stack<Env> getEnvStack();
+    LinkedList<Env> getEnvStack();
 
-    void setEnvStack(Stack<Env> envStack);
+    void setEnvStack(LinkedList<Env> envStack);
 
     Type visitFuncNode(FuncNode funcNode);
+
 }

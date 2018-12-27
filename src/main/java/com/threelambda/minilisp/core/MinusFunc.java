@@ -37,7 +37,7 @@ public class MinusFunc extends FuncType {
                 }
                 cellNode = (CellNode) cellNode.cdr;
             } catch (Exception e) {
-                throw new RuntimeException("MinusFunc fail", e);
+                throw new RuntimeException("MinusFunc Malformed", e);
             }
         }
 

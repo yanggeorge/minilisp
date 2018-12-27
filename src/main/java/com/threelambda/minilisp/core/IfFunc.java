@@ -43,9 +43,9 @@ public class IfFunc extends FuncType {
             } else if (result instanceof ExprType) {
                 ExprType exprType = (ExprType) result;
                 //当"()"为false
-                if(exprType.toString().equalsIgnoreCase("()")){
+                if (exprType.toString().equalsIgnoreCase("()")) {
                     condValue = false;
-                }else {
+                } else {
                     condValue = true;
                 }
             }

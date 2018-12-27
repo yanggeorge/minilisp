@@ -2,7 +2,7 @@ package com.threelambda.minilisp.core;
 
 import com.threelambda.minilisp.node.*;
 
-import java.util.Stack;
+import java.util.LinkedList;
 import java.util.UUID;
 
 /**
@@ -29,8 +29,9 @@ public class LambdaFunc extends FuncType {
             return evalBody(visitor, cellNode);
         } else {
             //closure有自己的环境。
-            //eval的时候先要替换。
-            Stack<Env> old = visitor.getEnvStack();
+            //eval的时候先要先把自己环境压入，最后再弹出
+            LinkedList<Env> old = visitor.getEnvStack();
+
             visitor.setEnvStack(closureEnvs);
 
             Type result = evalBody(visitor, cellNode);
@@ -54,7 +55,7 @@ public class LambdaFunc extends FuncType {
                 result = visitor.visit(bodyCopy.car);
                 bodyCopy = (CellNode) bodyCopy.cdr;
             } catch (Exception e) {
-                throw new RuntimeException("evalBody while loop fail.", e);
+                throw new RuntimeException("evalBody while loop fail.|bodyCopy=" + bodyCopy.toString(""), e);
             }
         }
 
@@ -180,10 +181,10 @@ public class LambdaFunc extends FuncType {
      * @param func
      * @param envs
      */
-    public static void keepEnvs(FuncType func, Stack<Env> envs) {
-        func.closureEnvs = new Stack<Env>();
+    public static void keepEnvs(FuncType func, LinkedList<Env> envs) {
+        func.closureEnvs = new LinkedList<>();
         for (Env env : envs) {
-            func.closureEnvs.add(env.getCopy());
+            func.closureEnvs.addLast(env);
         }
     }
 
