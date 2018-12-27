@@ -204,7 +204,7 @@ public class EvalTest {
     }
 
 
-    @Test
+    //@Test
     public void test15() throws ParseException{
         String s = "(defun call (f) ((lambda (var) (f)) 5))\n"
                 + "(println ((lambda (var) (call (lambda () var))) 3) )";
@@ -936,7 +936,7 @@ public class EvalTest {
         LispVisitor visitor = new LispVisitor((new Env()).initPrimitiveFunc());
 
         for (Node node : result) {
-            visitor.visit(node);
+             visitor.visit(node);
         }
         redirectBack(old);
         System.out.println(baos.toString());
