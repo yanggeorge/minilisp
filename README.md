@@ -83,6 +83,7 @@ done
 
 1. 闭包
 
+
 ```
 ;; A countup function. We use lambda to introduce local variables because we
 ;; do not have "let" and the like.
@@ -102,6 +103,8 @@ done
 ```
 
 2. 宏
+
+unless是一个宏。list是一个工具函数，会生成一个list expression。macroexpand是一个函数实现对宏的扩展。
 
 ```
 (defun list (x . y)
