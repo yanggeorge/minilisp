@@ -139,7 +139,7 @@ public class LambdaFunc extends FuncType {
                 local.update(nameString.val, exprType);
             }
         } else {
-            throw new RuntimeException("Parameter must be Symbol");
+            throw new RuntimeException("Parameter does not match.");
         }
 
         if (!(evaluatedParams.cdr instanceof CellNode)) {
