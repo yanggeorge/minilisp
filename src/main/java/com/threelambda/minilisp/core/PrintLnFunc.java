@@ -35,7 +35,7 @@ public class PrintLnFunc extends FuncType {
                     val = ((BoolType) result).toString();
                     break;
                 default:
-                    throw new RuntimeException("type not known.");
+                    throw new RuntimeException("type<" + kind + "> not known.");
             }
             if (s.length() == 0) {
                 s += String.format("%s", val);
