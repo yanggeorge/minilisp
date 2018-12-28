@@ -58,7 +58,7 @@
 ;;; Numeric operators
 ;;;
 
-;; !!! here different from rui341, because I implement '<=' func as primitive.
+;; !!! here different from rui314, because I implement '<=' func as primitive.
 ;;(defun <= (e1 e2)
 ;;  (or (< e1 e2)
 ;;      (= e1 e2)))
