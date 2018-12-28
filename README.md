@@ -29,7 +29,7 @@ cons组成一个cell
 
 - 基本的函数，如：+，-，if, while, setq
 
-
+define关键字定义一个变量，println打印结果。
 ```
 (if (= 1 1) 
    (println 'yes)
@@ -52,7 +52,7 @@ cons组成一个cell
 (println (add 1 2)) ;; -> 3 
 ```
 
-可以进行参数的匹配，因为 `(1 2) <=> (1 . (2))`, 所以当形参是 (x . y) 的时候，
+可以进行参数的匹配，因为 `(1 2) <=> (1 . (2))`, 所以当形参是 `(x . y)` 的时候，
 x 为 1，y 为 (2)。
 
 ```
@@ -67,7 +67,7 @@ x 为 1，y 为 (2)。
 (println arr) ;; -> (1 2)
 
 ```
-在看一个例子
+再看一个例子，形参是`(x . (y z))` 匹配 `(1 2 3)`的话，结果是` x -> 1，y -> 2, z -> 3`
 
 ```
 (defun match ( x . ( y z ))
@@ -104,7 +104,7 @@ x 为 1，y 为 (2)。
 
 - 宏
 
-unless是一个宏。list是一个工具函数，会生成一个list expression。macroexpand是一个函数实现对宏的扩展。
+defmacro关键字定义一个宏。unless是一个宏。list是一个工具函数，会生成一个list expression。macroexpand是一个函数，实现对宏的扩展。
 
 ```
 (defun list (x . y)
