@@ -12,7 +12,8 @@ public class LispVisitor implements Visitor {
     public String[] KEYWORDS = new String[]{
             "lambda", "println", "define", "defun",
             "setq", "quote", "cons", "if", "defmacro",
-            "macroexpand", "car", "cdr", "setcar"
+            "macroexpand", "car", "cdr", "setcar","=",
+             "+","-","<","<=",">",">="
     };
 
     private LinkedList<Env> envs = new LinkedList<>();
@@ -100,7 +101,7 @@ public class LispVisitor implements Visitor {
                     result = macro.eval(this, params);
                     return result;
                 }
-                throw new RuntimeException("The head of a list must be a function");
+                throw new RuntimeException(String.format("The head<%s> of a list<(%s)> must be a function",first, node));
             }
         }
         return Util.getEmptyList();
