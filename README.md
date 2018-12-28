@@ -4,18 +4,122 @@
 写一个主流语言的编译器非常困难，仅仅前端Parser的工作量就很大。直到看到
 这个项目[rui314/minilisp](https://github.com/rui314/minilisp) 。
 
-用Java实现一遍应该很有趣。
+用Java实现一个这样的Lisp解释器应该很有趣。
 
 ## 功能 ##
 
 目前的版本包含了如下特性，
 
 - 整数
+
+```
+(+ 1 2) ;; -> 3
+```
+
 - cell的操作，如：cons，car，cdr
-- 基本的函数，如：+，-，if, while
+
+cons组成一个cell
+
+```
+(define pair (cons 'a 'b))
+(println pair) ;; -> (a . b)
+(println (car pair)) ;; -> a
+(println (cdr pair)) ;; -> b
+```
+
+- 基本的函数，如：+，-，if, while, setq
+
+
+```
+(if (= 1 1) 
+   (println 'yes)
+   (println 'no)) ;; -> yes
+   
+(define i 0)
+(define array ())
+(while (<= i 3)
+   (setq array (cons i array))
+   (setq i (+ i 1)))
+(println array)  ;; -> (3 2 1 0)
+```
+
 - 自定义函数
+
+用defun关键字定义函数
+```
+(defun add (x y)
+   (+ x y)) 
+(println (add 1 2)) ;; -> 3 
+```
+
+可以进行参数的匹配，因为 `(1 2) <=> (1 . (2))`, 所以当形参是 (x . y) 的时候，
+x 为 1，y 为 (2)。
+
+```
+(defun list (x . y)
+    (println x)
+    (println y)
+    (cons x y)) 
+
+(define arr (list 1 2))
+;;x -> 1
+;;y -> (2)
+(println arr) ;; -> (1 2)
+
+```
+在看一个例子
+
+```
+(defun match ( x . ( y z ))
+   (println x)
+   (println y)
+   (println z))
+(match 1 2 3)
+;; x -> 1
+;; y -> 2
+;; z -> 3
+```
+
 - 闭包
+
+每次执行都有结果返回，但是默认不打印。所以需要调用println来对返回的结果进行打印。
+
+```
+;; A countup function. We use lambda to introduce local variables because we
+;; do not have "let" and the like.
+(define counter
+  ((lambda (count)
+     (lambda ()
+       (setq count (+ count 1))
+       count))  ;;
+   0))
+
+(println (counter))  ; -> 1
+(println (counter))  ; -> 2
+
+;; This will not return 12345 but 3. Variable "count" in counter function
+;; is resolved based on its lexical context rather than dynamic context.
+(println ((lambda (count) (counter)) 12345))  ; -> 3
+```
+
 - 宏
+
+unless是一个宏。list是一个工具函数，会生成一个list expression。macroexpand是一个函数实现对宏的扩展。
+
+```
+(defun list (x . y)
+  (cons x y))
+  
+(defmacro unless (condition expr)
+  (list 'if condition () expr))
+  
+(define x 0)
+(println (unless (= x 0) '(x is not 0)))  ; -> ()
+(println (unless (= x 1) '(x is not 1)))  ; -> (x is not 1)
+
+(println (macroexpand '(unless (= x 1) '(x is not 1))))
+;; -> (if (= x 1) () '(x is not 1))
+```
 
 ## 运行 ##
 
@@ -79,45 +183,3 @@ done
 ![show_minilisp](./doc/show.gif)
 
 
-### 功能 ###
-
-1. 闭包
-
-每次执行都有结果返回，但是默认不打印。所以需要调用println来对返回的结果进行打印。
-
-```
-;; A countup function. We use lambda to introduce local variables because we
-;; do not have "let" and the like.
-(define counter
-  ((lambda (count)
-     (lambda ()
-       (setq count (+ count 1))
-       count))  ;;
-   0))
-
-(println (counter))  ; -> 1
-(println (counter))  ; -> 2
-
-;; This will not return 12345 but 3. Variable "count" in counter function
-;; is resolved based on its lexical context rather than dynamic context.
-(println ((lambda (count) (counter)) 12345))  ; -> 3
-```
-
-2. 宏
-
-unless是一个宏。list是一个工具函数，会生成一个list expression。macroexpand是一个函数实现对宏的扩展。
-
-```
-(defun list (x . y)
-  (cons x y))
-  
-(defmacro unless (condition expr)
-  (list 'if condition () expr))
-  
-(define x 0)
-(println (unless (= x 0) '(x is not 0)))  ; -> ()
-(println (unless (= x 1) '(x is not 1)))  ; -> (x is not 1)
-
-(println (macroexpand '(unless (= x 1) '(x is not 1))))
-;; -> (if (= x 1) () '(x is not 1))
-```
