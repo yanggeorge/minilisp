@@ -74,3 +74,46 @@ $
 done
 ```
 
+### 演示 ###
+
+![show_minilisp](./doc/show.gif)
+
+
+### 功能 ###
+
+1. 闭包
+
+```
+;; A countup function. We use lambda to introduce local variables because we
+;; do not have "let" and the like.
+(define counter
+  ((lambda (count)
+     (lambda ()
+       (setq count (+ count 1))
+       count))  ;;
+   0))
+
+(println (counter))  ; -> 1
+(println (counter))  ; -> 2
+
+;; This will not return 12345 but 3. Variable "count" in counter function
+;; is resolved based on its lexical context rather than dynamic context.
+(println ((lambda (count) (counter)) 12345))  ; -> 3
+```
+
+2. 宏
+
+```
+(defun list (x . y)
+  (cons x y))
+  
+(defmacro unless (condition expr)
+  (list 'if condition () expr))
+  
+(define x 0)
+(println (unless (= x 0) '(x is not 0)))  ; -> ()
+(println (unless (= x 1) '(x is not 1)))  ; -> (x is not 1)
+
+(println (macroexpand '(unless (= x 1) '(x is not 1))))
+;; -> (if (= x 1) () '(x is not 1))
+```
