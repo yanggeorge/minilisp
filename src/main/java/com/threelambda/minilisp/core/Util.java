@@ -37,11 +37,11 @@ class Util {
             SymbolExprNode symbolExprNode = (SymbolExprNode) sExprNode.node;
             SymbolNode sym = (SymbolNode) symbolExprNode.node;
             if (visitor.isKeyword(sym.image)) {
-                throw new Exception(String.format("<%s> is keyword.",sym.image));
+                throw new Exception(String.format("<%s> is keyword.", sym.image));
             }
 
             if (!sym.type.equals("ID")) {
-                throw new Exception(String.format("<%s> is not ID",sym.image));
+                throw new Exception(String.format("<%s> is not ID", sym.image));
             }
 
             return new StringType(sym.image);
