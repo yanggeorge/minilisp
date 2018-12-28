@@ -83,6 +83,7 @@ done
 
 1. 闭包
 
+每次执行都有结果返回，但是默认不打印。所以需要调用println来对返回的结果进行打印。
 
 ```
 ;; A countup function. We use lambda to introduce local variables because we
