@@ -26,7 +26,15 @@
 进入项目根目录，运行如下命令
 
 ```
-./bin/package.sh
+ ~/work/minilisp/$ ./bin/package.sh 
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< com.threelambda:minilisp >----------------------
+[INFO] Building minilisp 1.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+......
+......
+
 ```
 
 ### 执行hello.sh ###
@@ -44,9 +52,10 @@
  hello
 ```
 
-### 执行 ###
+### 执行文件 ###
 
-以下是4皇后的解乏。nqueens.lisp来自于[rui314/minilisp](https://github.com/rui314/minilisp) 
+nqueens.lisp来自于[rui314/minilisp](https://github.com/rui314/minilisp/blob/master/examples/nqueens.lisp) 。
+但是我修改了几个地方，因为实现的有点不同。以下是4皇后的解法。
 
 
 ```
@@ -64,3 +73,4 @@ $
 $
 done
 ```
+

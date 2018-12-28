@@ -55,6 +55,7 @@
 ;;	    (list 'let1 var expr
 ;;		  (list 'if var var (cons 'or rest))))
  ;;   expr))
+;; 这里与原实现不同，因为我没有实现 gensym 函数
 (defmacro or (expr . rest)
   (if rest
       (let1 var expr
@@ -75,6 +76,7 @@
 ;;; Numeric operators
 ;;;
 
+;; 这里与原实现不同，因为 <= 已经是基本函数，不需要了。
 ;;(defun <= (e1 e2)
 ;;  (or (< e1 e2)
 ;;      (= e1 e2)))
