@@ -36,9 +36,10 @@
 ;;
 ;; The reason to use the temporary variables is to avoid evaluating the
 ;; arguments more than once.
+
+;; !!! here different from rui314, because I don't implement gensym
 (defmacro or (expr . rest)
   (if rest
-          ;;这里与原实现不同，因为我没有实现 gensym 函数
            (let var expr
                  (list 'if var var (cons 'or rest)))
     expr))
@@ -57,7 +58,7 @@
 ;;; Numeric operators
 ;;;
 
-;;这里与原文件不同，因为我实现了 <= 函数
+;; !!! here different from rui341, because I implement '<=' func as primitive.
 ;;(defun <= (e1 e2)
 ;;  (or (< e1 e2)
 ;;      (= e1 e2)))
