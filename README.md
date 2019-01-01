@@ -180,6 +180,17 @@ done
 
 ### 演示 ###
 
+- 运行 hello.sh
+- REPL运行
+
+```
+(define name 'ym)
+(define put println)  
+(put name) ;; -> ym 
+```
+
+- 运行examples/life.lisp和examples/nqueens.lisp
+
 ![show_minilisp](./doc/show.gif)
 
 
