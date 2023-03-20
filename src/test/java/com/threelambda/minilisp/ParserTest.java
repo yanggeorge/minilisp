@@ -1,7 +1,9 @@
 package com.threelambda.minilisp;
 
 import java.io.StringReader;
+import java.util.List;
 
+import com.threelambda.minilisp.node.Node;
 import org.junit.Test;
 
 public class ParserTest {
@@ -517,6 +519,7 @@ public class ParserTest {
 
     private void call(String s) throws ParseException {
         MiniLisp parser = new MiniLisp(new StringReader(s));
-        parser.Input();
+        List<Node> nodes = parser.Input();
+        System.out.println(nodes.size());
     }
 }
